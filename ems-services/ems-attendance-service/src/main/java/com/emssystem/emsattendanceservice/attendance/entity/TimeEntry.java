@@ -1,0 +1,4 @@
+package com.emssystem.emsattendanceservice.attendance.entity;
+
+public class TimeEntry {
+}
