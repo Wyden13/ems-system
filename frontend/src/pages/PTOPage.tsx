@@ -1,8 +1,10 @@
+import PlaceholderCard from "../components/layout/PlaceholderCard";
+
 export default function PTOPage() {
   return (
-    <div>
-      <h1>PTO Page</h1>
-      <p>Welcome to the PTO Page!</p>
-    </div>
+    <PlaceholderCard
+      title="Paid Time Off"
+      description="Leave balances and time-off requests will appear here."
+    />
   );
 }

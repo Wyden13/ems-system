@@ -1,8 +1,10 @@
+import PlaceholderCard from "../components/layout/PlaceholderCard";
+
 export default function PayrollPage() {
   return (
-    <div>
-      <h1>Payroll Page</h1>
-      <p>Welcome to the Payroll Page!</p>
-    </div>
+    <PlaceholderCard
+      title="Payroll"
+      description="Pay runs, payslips and adjustments will appear here."
+    />
   );
 }

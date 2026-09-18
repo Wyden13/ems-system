@@ -1,8 +1,10 @@
+import PlaceholderCard from "../components/layout/PlaceholderCard";
+
 export default function SchedulePage() {
   return (
-    <div>
-      <h1>Schedule Page</h1>
-      <p>Welcome to the Schedule Page!</p>
-    </div>
+    <PlaceholderCard
+      title="Schedule"
+      description="Shift planning and rota assignments will appear here."
+    />
   );
 }

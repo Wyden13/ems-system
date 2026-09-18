@@ -1,8 +1,10 @@
+import PlaceholderCard from "../components/layout/PlaceholderCard";
+
 export default function AttendancePage() {
   return (
-    <div>
-      <h1>Attendance Page</h1>
-      <p>Welcome to the Attendance Page!</p>
-    </div>
+    <PlaceholderCard
+      title="Attendance"
+      description="Clock-in records and daily attendance will appear here."
+    />
   );
 }
