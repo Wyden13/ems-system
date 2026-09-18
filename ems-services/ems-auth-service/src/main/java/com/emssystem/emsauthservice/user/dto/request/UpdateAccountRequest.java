@@ -5,11 +5,8 @@ import com.emssystem.emsauthservice.user.entity.AccountRole;
 import java.time.Instant;
 import java.util.UUID;
 
-public Record UpdateAccountRequest(
-        UUID id,
+public record UpdateAccountRequest(
         String email,
         AccountRole role,
-        boolean active,
-        Instant createdAt,
-        Instant updatedAT
+        boolean active
 ){}

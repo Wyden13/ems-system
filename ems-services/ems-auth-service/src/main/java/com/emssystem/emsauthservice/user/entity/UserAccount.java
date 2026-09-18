@@ -71,7 +71,7 @@ public class UserAccount {
         return lastLoginAt;
     }
 
-    public void changePassword(String passwordHard){
+    public void changePassword(String passwordHash){
         this.passwordHash = passwordHash;
     }
 
