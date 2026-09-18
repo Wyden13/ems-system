@@ -1,21 +1,21 @@
 package com.emssystem.emsauthservice.security.userdetails;
 
-import com.emssystem.emsauthservice.user.entity.AccountRole;
+import com.emssystem.emsauthservice.user.entity.RoleType;
 import com.emssystem.emsauthservice.user.entity.UserAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.management.relation.Role;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public record AccountPrincipal(
         UUID accountId,
         String email,
         String passwordHash,
-        AccountRole role,
+        RoleType role,
         boolean active
 ) implements UserDetails {
 

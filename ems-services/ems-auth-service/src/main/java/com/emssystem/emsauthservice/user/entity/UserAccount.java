@@ -26,7 +26,7 @@ public class UserAccount {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length=30)
-    private AccountRole role;
+    private RoleType role;
 
     @Column(name="created_at",nullable = false)
     private Instant createdAt;
@@ -37,7 +37,7 @@ public class UserAccount {
 
     protected UserAccount(){}
 
-    public UserAccount(String email, String passwordHash, AccountRole role){
+    public UserAccount(String email, String passwordHash, RoleType role){
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
@@ -59,7 +59,7 @@ public class UserAccount {
         return active;
     }
 
-    public AccountRole getRole() {
+    public RoleType getRole() {
         return role;
     }
 
@@ -75,7 +75,7 @@ public class UserAccount {
         this.passwordHash = passwordHash;
     }
 
-    public void changeRole(AccountRole role){
+    public void changeRole(RoleType role){
         this.role = role;
     }
     public void deactivate(){

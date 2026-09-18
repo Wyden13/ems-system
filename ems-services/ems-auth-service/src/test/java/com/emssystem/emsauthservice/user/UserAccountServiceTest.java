@@ -4,7 +4,7 @@ import com.emssystem.emsauthservice.shared.exception.EmailAlreadyExistsException
 import com.emssystem.emsauthservice.shared.exception.UserNotFoundException;
 import com.emssystem.emsauthservice.user.dto.request.CreateAccountRequest;
 import com.emssystem.emsauthservice.user.dto.response.UserAccountResponse;
-import com.emssystem.emsauthservice.user.entity.AccountRole;
+import com.emssystem.emsauthservice.user.entity.RoleType;
 import com.emssystem.emsauthservice.user.entity.UserAccount;
 import com.emssystem.emsauthservice.user.repository.UserAccountRepository;
 import com.emssystem.emsauthservice.user.service.UserAccountService;
@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.management.relation.Role;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ class UserAccountServiceTest {
 
     @Test
     void createAccount_shouldNormalizeEmailEncodePasswordAndSaveAccount() {
-        AccountRole role = role();
+        RoleType role = role();
         CreateAccountRequest request = new CreateAccountRequest(
                 "  Employee@Example.COM  ",
                 "plainPassword",
@@ -81,7 +82,7 @@ class UserAccountServiceTest {
 
     @Test
     void createAccount_shouldThrowWhenEmailAlreadyExists() {
-        AccountRole role = role();
+        RoleType role = role();
         CreateAccountRequest request = new CreateAccountRequest(
                 " EXISTING@Example.com ",
                 "plainPassword",
@@ -106,7 +107,7 @@ class UserAccountServiceTest {
     @Test
     void findById_shouldReturnAccountWhenItExists() {
         UUID accountId = UUID.randomUUID();
-        AccountRole role = role();
+        RoleType role = role();
         UserAccount account = account(accountId, role);
 
         when(userAccountRepository.findById(accountId))
@@ -137,8 +138,8 @@ class UserAccountServiceTest {
     @Test
     void changeRole_shouldUpdateTheAccountRole() {
         UUID accountId = UUID.randomUUID();
-        AccountRole originalRole = role();
-        AccountRole newRole = role();
+        RoleType originalRole = role();
+        RoleType newRole = role();
         UserAccount account = account(accountId, originalRole);
 
         when(userAccountRepository.findById(accountId))
@@ -224,7 +225,7 @@ class UserAccountServiceTest {
         verify(passwordEncoder, never()).encode(any(String.class));
     }
 
-    private UserAccount account(UUID accountId, AccountRole role) {
+    private UserAccount account(UUID accountId, RoleType role) {
         UserAccount account = new UserAccount(
                 "employee@example.com",
                 "old-password-hash",
@@ -234,7 +235,7 @@ class UserAccountServiceTest {
         return account;
     }
 
-    private AccountRole role() {
-        return org.mockito.Mockito.mock(AccountRole.class);
+    private RoleType role() {
+        return org.mockito.Mockito.mock(RoleType.class);
     }
 }

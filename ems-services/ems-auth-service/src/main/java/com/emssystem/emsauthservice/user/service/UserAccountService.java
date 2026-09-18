@@ -4,7 +4,7 @@ import com.emssystem.emsauthservice.shared.exception.EmailAlreadyExistsException
 import com.emssystem.emsauthservice.shared.exception.UserNotFoundException;
 import com.emssystem.emsauthservice.user.dto.request.CreateAccountRequest;
 import com.emssystem.emsauthservice.user.dto.response.UserAccountResponse;
-import com.emssystem.emsauthservice.user.entity.AccountRole;
+import com.emssystem.emsauthservice.user.entity.RoleType;
 import com.emssystem.emsauthservice.user.entity.UserAccount;
 import com.emssystem.emsauthservice.user.repository.UserAccountRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -72,7 +73,7 @@ public class UserAccountService {
      * @return
      */
     @PreAuthorize("hasRole('ADMIN')")
-    public UserAccountResponse changeRole(UUID accountId, AccountRole newRole){
+    public UserAccountResponse changeRole(UUID accountId, RoleType newRole){
         UserAccount account = findAccount(accountId);
         // JPA automatically detects changes to a managed entity inside a transaction.
         // methods such as changeRole() don't need explicit save() call:

@@ -1,6 +1,6 @@
 package com.emssystem.emsauthservice.user.dto.response;
 
-import com.emssystem.emsauthservice.user.entity.AccountRole;
+import com.emssystem.emsauthservice.user.entity.RoleType;
 import com.emssystem.emsauthservice.user.entity.UserAccount;
 
 import java.time.Instant;
@@ -9,7 +9,7 @@ import java.util.UUID;
 public record UserAccountResponse(
         UUID id,
         String email,
-        AccountRole role,
+        RoleType role,
         boolean active,
         Instant createdAt,
         Instant updatedAT

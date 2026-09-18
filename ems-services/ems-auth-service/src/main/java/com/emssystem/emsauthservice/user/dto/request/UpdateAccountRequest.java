@@ -1,12 +1,11 @@
 package com.emssystem.emsauthservice.user.dto.request;
 
-import com.emssystem.emsauthservice.user.entity.AccountRole;
+import com.emssystem.emsauthservice.user.entity.RoleType;
 
-import java.time.Instant;
-import java.util.UUID;
+import javax.management.relation.Role;
 
 public record UpdateAccountRequest(
         String email,
-        AccountRole role,
+        RoleType role,
         boolean active
 ){}
