@@ -27,6 +27,9 @@ public class AccountUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Invalid email or password");
         }
         String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+        if(!userAccountRepository.existsByEmailIgnoreCase(normalizedEmail)){
+            throw new UsernameNotFoundException("Invalid email or password");
+        }
         UserAccount account = userAccountRepository.
                 findByEmailIgnoreCase(normalizedEmail);
         return AccountPrincipal.from(account);

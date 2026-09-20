@@ -1,8 +1,12 @@
 package com.emssystem.emsauthservice.user.entity;
 
+import com.emssystem.emsauthservice.user.enums.AccountStatus;
+import com.emssystem.emsauthservice.user.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -10,6 +14,8 @@ import java.util.UUID;
 
 @Getter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+
 public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,18 +27,22 @@ public class UserAccount {
     @Column(name = "password_hash",nullable = false)
     private String passwordHash;
 
-    @Column(name = "active",nullable = false)
-    private boolean active = true;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "active",nullable = false,length=20)
+    private AccountStatus status = AccountStatus.ACTIVE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length=30)
     private RoleType role;
 
-    @Column(name="created_at",nullable = false)
+    @Column(name="created_at",nullable = false,updatable = false)
     private Instant createdAt;
 
+    @Column(name="updated_at",nullable = false)
+    private Instant updatedAt;
+
     @LastModifiedDate
-    @Column(name = "last_login_at",nullable = false)
+    @Column(name = "last_login_at")
     private Instant lastLoginAt;
 
     protected UserAccount(){}
@@ -55,12 +65,16 @@ public class UserAccount {
         return email;
     }
 
-    public boolean isActive() {
-        return active;
+    public AccountStatus getStatus() {
+        return status;
     }
 
     public RoleType getRole() {
         return role;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
     public Instant getCreatedAt() {
@@ -78,17 +92,10 @@ public class UserAccount {
     public void changeRole(RoleType role){
         this.role = role;
     }
-    public void deactivate(){
-        this.active = false;
+    public void changeStatus(AccountStatus status){
+        this.status = status;
     }
-    public void activate(){
-        this.active = true;
+    public void changeEmail(String newEmail){
+        this.email = newEmail;
     }
-    @Override
-    public int hashCode(){
-        return Objects.hash(this.id,this.email,this.passwordHash,this.role);
-    }
-    @Override
-    public String toString(){
-        return "User{" + "id=" + this.id + ", email='" + this.email + '\'' + ", role='" + this.role + '\'' + '}';    }
 }

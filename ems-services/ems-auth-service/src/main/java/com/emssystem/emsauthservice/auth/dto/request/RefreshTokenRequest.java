@@ -1,4 +1,9 @@
 package com.emssystem.emsauthservice.auth.dto.request;
 
-public class RefreshTokenRequest {
+import jakarta.validation.constraints.NotBlank;
+
+public record RefreshTokenRequest(
+        @NotBlank(message = "Refresh token is required")
+        String refreshToken
+) {
 }

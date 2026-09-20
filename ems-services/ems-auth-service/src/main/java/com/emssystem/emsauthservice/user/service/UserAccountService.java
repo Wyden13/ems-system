@@ -4,7 +4,8 @@ import com.emssystem.emsauthservice.shared.exception.EmailAlreadyExistsException
 import com.emssystem.emsauthservice.shared.exception.UserNotFoundException;
 import com.emssystem.emsauthservice.user.dto.request.CreateAccountRequest;
 import com.emssystem.emsauthservice.user.dto.response.UserAccountResponse;
-import com.emssystem.emsauthservice.user.entity.RoleType;
+import com.emssystem.emsauthservice.user.enums.AccountStatus;
+import com.emssystem.emsauthservice.user.enums.RoleType;
 import com.emssystem.emsauthservice.user.entity.UserAccount;
 import com.emssystem.emsauthservice.user.repository.UserAccountRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -43,7 +43,7 @@ public class UserAccountService {
      */
     @PreAuthorize("hasRole('ADMIN')")
     public UserAccountResponse createAccount(CreateAccountRequest request) {
-        String normalizedEmail = request.email().trim().toLowerCase(Locale.ROOT);
+        String normalizedEmail = normalizeEmail(request.email());
 
         if (userAccountRepository.existsByEmailIgnoreCase(normalizedEmail)) {
             throw new EmailAlreadyExistsException("Email already exists!");
@@ -81,17 +81,6 @@ public class UserAccountService {
         return UserAccountResponse.from(account);
     }
 
-    /**
-     * activate an account
-     * @param accountId
-     * @return UserAccountResponse
-     */
-    @PreAuthorize("hasRole('ADMIN')")
-    public UserAccountResponse activate(UUID accountId){
-        UserAccount account = findAccount(accountId);
-        account.activate();
-        return UserAccountResponse.from(account);
-    }
 
     /**
      * Deactivate an account
@@ -99,9 +88,9 @@ public class UserAccountService {
      * @return UserAccountResponse
      */
     @PreAuthorize("hasRole('ADMIN')")
-    public UserAccountResponse deactivate(UUID accountId){
+    public UserAccountResponse changeStatus(UUID accountId, AccountStatus status){
         UserAccount account = findAccount(accountId);
-        account.deactivate();
+        account.changeStatus(status);
         return UserAccountResponse.from(account);
     }
 
@@ -123,10 +112,36 @@ public class UserAccountService {
         account.changePassword(newPasswordHash);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public UserAccountResponse updateOwnProfile(
+            UUID accountId,
+            String requestedEmail
+    ) {
+        UserAccount account = findAccount(accountId);
+        String normalizedEmail = normalizeEmail(requestedEmail);
+
+        boolean emailChanged = !account.getEmail().equalsIgnoreCase(normalizedEmail);
+        if (emailChanged
+                && userAccountRepository.existsByEmailIgnoreCase(normalizedEmail)) {
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
+
+        if (emailChanged) {
+            account.changeEmail(normalizedEmail);
+        }
+
+        return UserAccountResponse.from(account);
+    }
+
     private UserAccount findAccount(UUID accountId){
         return userAccountRepository.findById(accountId).
                 orElseThrow(()-> new UserNotFoundException(
                         "User account not found:"+accountId
                 ));
     }
+
+    private String normalizeEmail(String email) {
+        return email.trim().toLowerCase(Locale.ROOT);
+    }
+
 }

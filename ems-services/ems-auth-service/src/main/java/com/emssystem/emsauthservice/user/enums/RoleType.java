@@ -1,4 +1,4 @@
-package com.emssystem.emsauthservice.user.entity;
+package com.emssystem.emsauthservice.user.enums;
 
 public enum RoleType {
     EMPLOYEE,

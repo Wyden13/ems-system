@@ -11,18 +11,18 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Clock;
+import java.time.Instant;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class) // Required for auto-population
 public abstract class AuditableEntity {
     @CreatedDate
     @Column(name="created_at",nullable = false,updatable=false)
-    private Clock createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
     @Column(name="last_modified_at",nullable = false,updatable=true)
-    private Clock updatedAt;
+    private Instant updatedAt;
 
     @CreatedBy
     @Column(name="created_by",updatable=false)

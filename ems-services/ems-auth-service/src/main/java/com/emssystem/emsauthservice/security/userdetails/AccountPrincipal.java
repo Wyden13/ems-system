@@ -1,12 +1,12 @@
 package com.emssystem.emsauthservice.security.userdetails;
 
-import com.emssystem.emsauthservice.user.entity.RoleType;
+import com.emssystem.emsauthservice.user.enums.AccountStatus;
+import com.emssystem.emsauthservice.user.enums.RoleType;
 import com.emssystem.emsauthservice.user.entity.UserAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.management.relation.Role;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +16,7 @@ public record AccountPrincipal(
         String email,
         String passwordHash,
         RoleType role,
-        boolean active
+        AccountStatus status
 ) implements UserDetails {
 
     public static AccountPrincipal from(UserAccount account) {
@@ -25,7 +25,7 @@ public record AccountPrincipal(
                 account.getEmail(),
                 account.getPasswordHash(),
                 account.getRole(),
-                account.isActive()
+                account.getStatus()
         );
     }
 
@@ -63,8 +63,8 @@ public record AccountPrincipal(
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return active;
+//    @Override
+    public boolean isActive() {
+        return status == AccountStatus.ACTIVE;
     }
 }
