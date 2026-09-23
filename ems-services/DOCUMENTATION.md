@@ -1,1392 +1,874 @@
 # EMS — Employee Management System
 
-## Backend Architecture & System Documentation
+## Backend architecture and project reference
 
-> **Read this first.** This document is a **blueprint with a status tracker**, not a
-> description of running software. The backend is currently a package skeleton: the
-> directory structure and class names for seven microservices exist, but almost all of
-> the classes are empty bodies, and **no HTTP endpoint is implemented anywhere in
-> `ems-services`**. Sections marked **Target** describe the intended design to build
-> toward. Sections marked **Current** describe what is on disk today. Where the two
-> differ, the status tables in [§2](#2-status-at-a-glance) are the authority.
+> **Current state, verified 2026-09-23.** The backend contains nine independent
+> Spring Boot projects. Auth, employee, and organization have concrete HTTP APIs.
+> Attendance, leave, scheduling, payroll, and notification have persistence models
+> and contracts, but their business workflows are not implemented. Gateway is a
+> bare application. The services are not yet connected into a working system.
+>
+> **Current** describes code or configuration on disk. **Planned** describes an
+> intended workflow that is not implemented. **Decision pending** means the
+> implementation has not been selected. Passing unit tests does not establish
+> database startup or end-to-end functionality.
 
-|                        |                                     |
-| ---------------------- | ----------------------------------- |
-| **Repository**         | `ems-system`                        |
-| **Backend root**       | `ems-services/`                     |
-| **Language / runtime** | Java 17                             |
-| **Framework**          | Spring Boot 4.1.1                   |
-| **Intended database**  | PostgreSQL                          |
-| **Frontend**           | React 19 + Vite + MUI (`frontend/`) |
-| **Document date**      | 2026-09-17                          |
+| Item | Current value |
+| --- | --- |
+| Repository / backend root | `ems-system` / `ems-services/` |
+| Java target | 17 in every service POM and Docker build |
+| Spring Boot parent | 4.1.1 in every service; auth has dependency overrides noted below |
+| Build | Independent Maven projects; wrapper distribution 3.9.16 |
+| Database configuration | PostgreSQL 18; separate databases and login roles on one server |
+| Frontend | React 19, TypeScript, Vite 8, MUI 9, React Router 7 in `../frontend/` |
+| Latest baseline | 100 tests: 99 passed, 1 application-context error |
+| Verification limits | Database integration profile, container builds, and full-stack workflows not verified in this pass |
 
----
+This document includes the baseline audit and outstanding implementation
+questions and serves as the main project reference.
 
 ## Table of contents
 
 1. [Overview](#1-overview)
 2. [Status at a glance](#2-status-at-a-glance)
 3. [Architecture](#3-architecture)
-4. [Repository & package hierarchy](#4-repository--package-hierarchy)
-5. [API gateway](#5-api-gateway)
+4. [Repository and package hierarchy](#4-repository-and-package-hierarchy)
+5. [HTTP APIs and gateway](#5-http-apis-and-gateway)
 6. [Security model](#6-security-model)
 7. [System workflows](#7-system-workflows)
 8. [Data model](#8-data-model)
-9. [Unplaced domains: `organization` and `reporting`](#9-unplaced-domains-organization-and-reporting)
-10. [Architecture recommendations](#10-architecture-recommendations)
-11. [Local development setup](#11-local-development-setup)
-12. [Roadmap](#12-roadmap)
+9. [Organization and reporting](#9-organization-and-reporting)
+10. [Integration and outstanding decisions](#10-integration-and-outstanding-decisions)
+11. [Local development and verification](#11-local-development-and-verification)
+12. [Remaining work](#12-remaining-work)
 13. [Frontend consumers](#13-frontend-consumers)
-
----
 
 ## 1. Overview
 
-EMS is an employee management system for an hourly/shift-based workforce. It covers six
-business capabilities:
+EMS manages an hourly or shift-based workforce. Its intended capabilities are
+identity and access, employee and organization records, attendance, paid time off
+(PTO), scheduling, payroll, and notifications.
 
-| Capability            | What it does                                                                                  |
-| --------------------- | --------------------------------------------------------------------------------------------- |
-| **Identity & access** | Accounts, passwords, roles, login, token issuance                                             |
-| **Workforce**         | Employee master data, departments, locations                                                  |
-| **Time & attendance** | Clock in/out, time entries, timesheets, supervisor approval, overtime                         |
-| **Leave (PTO)**       | Leave requests, balances, accrual, approval workflow, ledger                                  |
-| **Scheduling**        | Shift categories, shift creation and publishing, assignment, availability, conflict detection |
-| **Payroll**           | Pay periods, payroll generation from approved hours, earnings, deductions, pay statements     |
+The backend was split from a monolithic package structure into separate service
+projects. Organization is now its own service, responsible for departments and
+locations. Reporting has no service project. The working tree has progressed
+beyond the original scaffold, but models and interface declarations must not be
+mistaken for completed workflows.
 
-### How the codebase got here
-
-The project began as a single Spring Boot monolith at `ems-backend/`
-(`com.emssystem.ems`), organized into ten domain packages. In the most recent commit the
-monolith's package tree was **copied and split** into eight independent Maven projects
-under `ems-services/`, one per intended microservice plus a gateway.
-
-That split moved the _taxonomy_ — folder names, class names, layering — but not much
-else. The monolith it was split from was itself mostly empty scaffolding (13 of its 227
-Java files contain real code), so there was little working logic to carry across. The
-result is a well-organized, largely unimplemented backend.
-
-This document treats that structure as a design artifact worth taking seriously — the
-domain decomposition and package conventions are sound and consistent — and fills in the
-architecture, contracts, and build order needed to turn it into a working system.
-
-> This document supersedes `ems-services/ems-auth-service/API-ENDPOINTS.md`, which
-> describes three endpoints that no code implements.
-
----
+| Service | Ownership |
+| --- | --- |
+| Auth | Accounts, passwords, roles, access and refresh tokens |
+| Employee | Workforce records and account-to-employee mapping |
+| Organization | Departments and locations |
+| Attendance | Recorded time, adjustments, timesheets |
+| Leave | PTO types, requests, balances, ledger |
+| Scheduling | Shift categories, shifts, assignments, availability |
+| Payroll | Pay periods, payroll records, earnings, deductions |
+| Notification | Notification records and intended event/email delivery |
+| Gateway | Intended public entry point; routing not implemented |
 
 ## 2. Status at a glance
 
-**Legend:** ✅ implemented · 🟡 partial · ⬜ scaffold (files exist, bodies empty) · ❌ not started
+### Service implementation
 
-### What is runnable today
+“Concrete HTTP operations” counts annotated methods on implemented domain REST
+controllers. It excludes controller interfaces, static documentation, and actuator
+endpoints. These are source-level counts, not proof that each service starts.
 
-**Nothing.** No service can serve a request:
+| Service | Concrete HTTP operations | Current implementation | Main gaps |
+| --- | ---: | --- | --- |
+| Auth | 9 | Login, refresh rotation, account APIs, BCrypt, JWT encoder/decoder, security filter chain | Database startup/migrations, security wiring verification, logout, bootstrap account, configuration cleanup |
+| Employee | 9 | CRUD, lookups, filtering, summary, activation, validation, transactional service, error handling | Authorization and remote department/account validation |
+| Organization | 10 | Location/department CRUD, validation, errors, migrations, health configuration, static OpenAPI, unit/MVC and PostgreSQL integration tests | Authorization and checking references from other services |
+| Attendance | 0 | Entities, enums, repositories, DTOs, mappers, migration, controller/service/calculation interfaces | Clock, approval, adjustment, calculation, timesheet implementations |
+| Leave | 0 | Entities, enums, repositories, DTOs, mappers, migration, controller/service/validator interfaces | Reservations, approvals, cancellation, accrual, ledger workflows |
+| Scheduling | 0 | Entities, enums, repositories, DTOs, mappers, migration, controller/service/validator interfaces | Shift management, availability, conflicts, assignment and publication workflows |
+| Payroll | 0 | Entities, enums, repositories, DTOs, mappers, migration, controller/service/calculation interfaces | Generation, calculations, finalization, statements |
+| Notification | 0 | Entity, enum, repository, DTO/mapper, migration, event records, service/listener interfaces | HTTP controller, event transport, consumers, email, retries and deduplication |
+| Gateway | 0 | Application entry point, basic starter, context test | Gateway dependency, routes, JWT checks, CORS, identity propagation |
 
-- Seven of the eight modules declare only `spring-boot-starter` and
-  `spring-boot-starter-test`. They have **no web server, no JPA, and no database driver**
-  on the classpath — so they start as non-web applications and exit immediately.
-- The eighth (`ems-auth-service`) has the right dependencies but **does not currently
-  compile**, and has no datasource configured.
-- Every service's entire configuration is one line, `spring.application.name=…`. No
-  ports, no datasource, no JWT settings exist anywhere in the repository.
-- `ems-services/docker-compose.yml` contains one word — `services:` — so there is no
-  database, broker, or container to run against.
-- There is **no parent aggregator `pom.xml`** at `ems-services/`, so the backend cannot
-  be built with a single command.
+### Cross-cutting implementation
 
-### Per-service status
+| Concern | Current state |
+| --- | --- |
+| Internal HTTP/gRPC clients | None; no `.proto` files or gRPC implementation |
+| Broker and events | No broker, producer or consumer implementation; three event records exist |
+| Database provisioning | Root Compose and init script configure seven service databases/roles |
+| Migrations | Seven domain services have V1 SQL; organization also has V2; auth has no migration files |
+| Migration startup | Configuration and dependencies exist in domain services; startup is not verified by the constructor tests |
+| Shared modules / root build | No root `pom.xml`, `ems-common`, or protobuf-contract module |
+| Containerization | All nine projects have Dockerfiles; root Compose includes seven services plus PostgreSQL |
+| Gateway / notification containers | Not included in root Compose |
+| Health endpoints | Organization includes actuator and readiness/liveness configuration; not implemented consistently elsewhere |
+| Error responses | Employee and organization implement handlers; auth has a limited duplicate-email handler; no uniform system-wide envelope |
+| Service discovery / config server | Not present |
+| CI/CD | No `.github` workflow directory found at repository or backend root |
+| Frontend integration | Mock data; no backend API client or login flow |
 
-| Service                    | Files | Substantive | Lines | Endpoints | Status                                                                                                                        |
-| -------------------------- | ----: | ----------: | ----: | --------: | ----------------------------------------------------------------------------------------------------------------------------- |
-| `ems-auth-service`         |    34 |          21 |   857 |         0 | 🟡 Account/role model, `UserDetails` layer and BCrypt exist. Login, JWT, and the security filter chain do not.                |
-| `ems-scheduling-service`   |    54 |          10 |   632 |         0 | ⬜ Two entities (`Shift`, `ShiftCategory`) and two enums have content; all controllers, services, and repositories are empty. |
-| `ems-employee-service`     |    25 |           8 |   483 |         0 | ⬜ `Employee` entity has fields; no repository file exists; service and controller empty.                                     |
-| `ems-attendance-service`   |    38 |           6 |   428 |         0 | ⬜ Only shared config has content. Every attendance class is empty.                                                           |
-| `ems-payroll-service`      |    38 |           1 |   162 |         0 | ⬜ Complete package skeleton, zero implementation.                                                                            |
-| `ems-notification-service` |    11 |           1 |    53 |         0 | ⬜ Event and listener class names exist; nothing is wired.                                                                    |
-| `ems-gateway-service`      |     1 |           1 |    13 |         0 | ❌ Bare Spring Initializr output. No Spring Cloud Gateway dependency, no routes, no filters.                                  |
-| `ems-leave-service`        |     1 |           1 |    13 |         0 | ❌ Bare Initializr output. The monolith's `pto` domain (28 files) was never migrated.                                         |
+### Latest test baseline
 
-_"Substantive" counts files with more than two lines of code excluding package,
-imports, comments, and closing braces — i.e. files that are not empty class bodies._
+Ran `./mvnw -B -q test` in every service on 2026-09-23.
 
-### Cross-cutting status
+| Service | Tests | Passed | Errors | Coverage represented |
+| --- | ---: | ---: | ---: | --- |
+| Auth | 20 | 19 | 1 | Authentication, controller and account unit tests; full context fails on unavailable PostgreSQL |
+| Employee | 9 | 9 | 0 | Existing service, controller, validation and entity tests |
+| Organization | 65 | 65 | 0 | Existing service, MVC API and entity tests |
+| Attendance | 1 | 1 | 0 | Entity constructor defaults |
+| Leave | 1 | 1 | 0 | Entity constructor defaults |
+| Scheduling | 1 | 1 | 0 | Entity constructor defaults |
+| Payroll | 1 | 1 | 0 | Entity constructor defaults |
+| Notification | 1 | 1 | 0 | Entity constructor defaults |
+| Gateway | 1 | 1 | 0 | Bare application context |
+| **Total** | **100** | **99** | **1** | **No end-to-end verification** |
 
-| Concern                                             | Status                                                           |
-| --------------------------------------------------- | ---------------------------------------------------------------- |
-| Service discovery (Eureka/Consul)                   | ❌ Absent — and [not recommended](#101-service-discovery)        |
-| Config server                                       | ❌ Absent                                                        |
-| API gateway routing                                 | ❌ Absent                                                        |
-| Inter-service communication (Feign / REST / broker) | ❌ Absent — zero matches repo-wide                               |
-| Database provisioning                               | ❌ Absent — no datasource configured in any module               |
-| Schema migrations (Flyway/Liquibase)                | ❌ Absent — no `.sql` files in the repository                    |
-| Shared library module                               | ❌ Absent — config classes are duplicated across five modules    |
-| Containerization                                    | ❌ No Dockerfiles; `docker-compose.yml` is empty                 |
-| CI/CD                                               | ❌ No `.github/`, no pipeline of any kind                        |
-| Tests                                               | ❌ 20 test files repo-wide, 19 of them empty or `contextLoads()` |
+Auth's `contextLoads` test attempts to connect to `localhost:5432`; the connection
+was refused, and Hibernate could not obtain JDBC metadata. This is an environment
+and test-isolation failure, not a compilation failure. It does not prove that
+startup will succeed once PostgreSQL is available; other wiring remains unverified.
 
----
+Organization also has `OrganizationPostgresIT` under an opt-in `integration`
+profile. It was not included in these 65 tests and was not run in this baseline.
+Maven logs identify Java 26.0.1 for the test runtime; this run does not establish
+runtime compatibility on Java 17.
 
 ## 3. Architecture
 
-**Target.** A standard edge-gateway topology: a single-page application talks to one
-public entry point, which authenticates the request and routes it to the service that
-owns the data.
+### Current deployment configuration
+
+Root Compose configures one PostgreSQL server and seven application containers.
+The diagram describes configured persistence dependencies, not observed running
+services. There are no implemented service-to-service calls.
 
 ```mermaid
 flowchart TB
-    subgraph client["Client"]
-        SPA["React 19 SPA<br/>Vite · MUI<br/><i>frontend/</i>"]
-    end
-
-    GW["<b>ems-gateway-service</b> :8080<br/>routing · JWT validation · CORS"]
-
-    subgraph services["Microservices"]
-        AUTH["<b>auth</b> :8081<br/>accounts · roles · tokens"]
-        EMP["<b>employee</b> :8082<br/>employees · departments"]
-        ATT["<b>attendance</b> :8083<br/>time entries · timesheets"]
-        LEAVE["<b>leave</b> :8084<br/>PTO requests · balances"]
-        SCHED["<b>scheduling</b> :8085<br/>shifts · assignments"]
-        PAY["<b>payroll</b> :8086<br/>pay periods · statements"]
-        NOTIF["<b>notification</b> :8087<br/>events · email"]
-    end
-
-    DB[("PostgreSQL<br/>one schema per service")]
-
-    SPA -->|HTTPS · Bearer token| GW
-    GW --> AUTH & EMP & ATT & LEAVE & SCHED & PAY
-    PAY -.->|approved hours| ATT
-    SCHED -.->|employee lookup| EMP
-    LEAVE -.->|employee lookup| EMP
-    LEAVE -.->|PtoReviewedEvent| NOTIF
-    SCHED -.->|SchedulePublishedEvent<br/>ShiftAssignedEvent| NOTIF
-    AUTH & EMP & ATT & LEAVE & SCHED & PAY & NOTIF --> DB
-
-    classDef missing stroke-dasharray: 5 5
-    class GW,NOTIF missing
+    AUTH["Auth :8081"] --> PG
+    EMP["Employee :8082"] --> PG
+    SCHED["Scheduling :8083"] --> PG
+    ATT["Attendance :8084"] --> PG
+    PAY["Payroll :8085"] --> PG
+    LEAVE["Leave :8086"] --> PG
+    ORG["Organization :8087"] --> PG
+    PG[("PostgreSQL 18 :5432<br/>Separate service databases")]
+    GW["Gateway project<br/>No routes or Compose entry"]
+    NOTIF["Notification project<br/>No Compose entry or provisioned database"]
+    SPA["React frontend<br/>Mock data; not connected"]
 ```
 
-Solid arrows are request paths; dashed arrows are inter-service calls and events.
-Dashed borders mark modules with no implementation at all.
+Application labels show host ports. Each configured application container listens
+on port 8080. PostgreSQL and application host bindings are restricted to
+`127.0.0.1`. Root Compose waits for PostgreSQL health before starting applications,
+but does not define readiness health checks for those application containers.
 
-### Bounded contexts
+### Service boundaries and identity
 
-Each service owns its data exclusively. No service reads another service's tables.
+A service owns its entities and tables. Cross-service references are scalar IDs;
+there are no cross-service entity imports or database foreign keys in the current
+models. Local relationships, such as department-to-location, do use JPA associations
+and database foreign keys inside the owning service.
 
-| Service                    | Owns                          | Key concepts                                                        |
-| -------------------------- | ----------------------------- | ------------------------------------------------------------------- |
-| `ems-auth-service`         | Credentials and authorization | `UserAccount`, `AccountRole`, JWT issuance                          |
-| `ems-employee-service`     | Workforce master data         | `Employee`, and (recommended) `Department`, `Location`              |
-| `ems-attendance-service`   | Recorded time                 | `TimeEntry`, `TimeEntryAdjustment`, timesheets, overtime            |
-| `ems-leave-service`        | Leave entitlement and usage   | `PtoRequest`, `PtoBalance`, `PtoLedgerEntry`, `PtoType`             |
-| `ems-scheduling-service`   | Planned time                  | `Shift`, `ShiftCategory`, `ShiftAssignment`, `EmployeeAvailability` |
-| `ems-payroll-service`      | Compensation                  | `PayPeriod`, `PayrollRecord`, `PayrollEarning`, `PayrollDeduction`  |
-| `ems-notification-service` | Outbound messaging            | `Notification`, domain event listeners                              |
+- `UserAccount.id` is a UUID owned by auth.
+- `Employee.id` is a Long owned by employee.
+- Employee stores a nullable, unique `userAccountId` to link the two identities.
+- Employee stores `departmentId`; scheduling stores `locationId` and `employeeId`.
+- Attendance, leave, payroll, and notification store `employeeId`.
 
-### The boundary rule
+An account need not have an employee record. No supervisor/report relationship is
+currently represented on Employee. Employee creation does not yet call auth or
+organization to verify the supplied account and department IDs.
 
-> **A service never holds a reference to another service's entity type. Cross-service
-> references are scalar IDs.**
+### Planned request topology
 
-Write `private Long employeeId;`, never `private Employee employee;`. An entity reference
-across a service boundary implies a shared database and a compile-time dependency — it
-defeats the split entirely.
+The earlier blueprint proposed a frontend calling a single gateway, with the
+gateway routing to owning services. That topology remains unimplemented.
+Synchronous internal gRPC, public REST, and asynchronous notification transport
+are under discussion; no transport choice has been approved or wired in.
 
-This rule is stated plainly because the current code violates it in the places where it
-was copied straight from the monolith: `ems-scheduling-service`'s `Shift` declares
-`Employee[] required_employees` and imports `com.emssystem.ems.employee.entity.Employee`;
-`ems-employee-service`'s `Employee` declares a `Department` field. Those types live in
-other modules and are not on the importing module's classpath.
+## 4. Repository and package hierarchy
 
-There is one deliberate exception: `Employee` is identified by a stable `employeeId` that
-every other service stores. The employee service is the source of truth for whether that
-ID is valid.
-
-### Identity across services
-
-Two identifiers coexist and should not be conflated:
-
-- **`UserAccount.id`** (UUID) — a login identity, owned by the auth service.
-- **`Employee.id`** (Long) — a person in the workforce, owned by the employee service.
-
-Not every account is an employee (a system admin may not be), and the mapping between
-them belongs in the employee service as a nullable `userAccountId` column.
-
----
-
-## 4. Repository & package hierarchy
-
-### Repository layout
-
-```
-ems-system/
-├── ems-services/              ← the backend (this document)
-│   ├── docker-compose.yml     ← currently empty
-│   ├── ems-gateway-service/
-│   ├── ems-auth-service/
-│   ├── ems-employee-service/
-│   ├── ems-attendance-service/
-│   ├── ems-leave-service/
-│   ├── ems-scheduling-service/
-│   ├── ems-payroll-service/
-│   └── ems-notification-service/
-├── ems-backend/               ← legacy monolith, superseded
-└── frontend/                  ← React SPA
+```text
+ems-services/
+├── DOCUMENTATION.md
+├── .env.example
+├── docker-compose.yml
+├── docker/postgres-server/init-databases.sh
+├── ems-auth-service/
+├── ems-employee-service/
+├── ems-organization-service/
+│   ├── README.md
+│   └── compose.yaml                 # standalone organization stack
+├── ems-attendance-service/
+├── ems-leave-service/
+├── ems-scheduling-service/
+├── ems-payroll-service/
+├── ems-notification-service/
+└── ems-gateway-service/
 ```
 
-Each service is an independent Maven project with its own `mvnw` wrapper (Maven 3.9.16)
-and `spring-boot-starter-parent:4.1.1` as its parent. See
-[§10.4](#104-add-a-parent-pom-and-a-shared-library) for why a parent pom should be added.
+Each service has its own `pom.xml`, Maven wrapper, sources, tests, and Dockerfile.
+There is no root Maven reactor. The frontend is the sibling `../frontend/` project.
 
-### Package convention
+Domain package roots follow `com.emssystem.ems<name>service`:
 
-Every service follows the same layering, rooted at
-`com.emssystem.ems<name>service`. This convention is the most valuable thing the
-monolith split produced — it is applied consistently across all seven services and should
-be preserved.
-
-```
-com.emssystem.ems<name>service
-├── Ems<Name>ServiceApplication.java
-├── <domain>/                        ← e.g. attendance, payroll, scheduling
-│   ├── controller/                  ← @RestController; HTTP only, no business logic
-│   ├── dto/
-│   │   ├── request/                 ← inbound; bean-validation annotated
-│   │   └── response/                ← outbound; never expose entities directly
-│   ├── entity/                      ← @Entity; owns persistence mapping
-│   ├── enums/                       ← domain enumerations
-│   ├── exception/                   ← domain-specific, extend RuntimeException
-│   ├── mapper/                      ← entity ↔ DTO conversion
-│   ├── repository/                  ← Spring Data interfaces
-│   ├── service/                     ← business rules and transactions
-│   ├── calculation/                 ← pure functions (attendance, payroll)
-│   └── validation/                  ← cross-field rules (scheduling, leave)
-└── shared/
-    ├── config/                      ← ClockConfig, JacksonConfig, JpaAuditingConfig, OpenApiConfig
-    ├── entity/AuditableEntity       ← @MappedSuperclass: created/updated audit columns
-    ├── exception/                   ← BusinessRuleException, ErrorCode, GlobalExceptionHandler
-    ├── response/                    ← ApiErrorResponse, PageResponse
-    ├── utils/DateTimeUtils
-    └── validation/ValidationError
+```text
+<domain>/
+├── controller/      # Concrete REST classes or unimplemented API interfaces
+├── dto/request/
+├── dto/response/
+├── entity/
+├── enums/
+├── exception/
+├── mapper/
+├── repository/
+├── service/
+├── calculation/     # Attendance and payroll interfaces
+└── validation/      # Domain validation contracts where applicable
+shared/              # Service-local configuration, errors and support types
 ```
 
-**Where to add a new endpoint.** Request DTO in `dto/request/`, response DTO in
-`dto/response/`, method on the service in `service/`, thin delegating method on the
-controller in `controller/`. Business rules belong in the service, never the controller.
+This is a convention, not an identical tree in every project. Auth uses `auth`,
+`user`, and `security` packages; notification has event/listener packages; gateway
+has only its application class. Employee's service implements `IEmployeeService`;
+organization uses `DefaultDepartmentService` and `DefaultLocationService` behind
+interfaces.
 
-### Conventions
+Current models use `java.time`, scalar cross-service IDs, and `BigDecimal` for
+monetary values. Most domain entities inherit audit timestamps and an optimistic
+locking version. Auth and notification have their own mappings. Several services
+have a UTC `Clock` bean, but auth still calls `Instant.now()` directly. Shared
+configuration and exception handling have not been consolidated or made uniform.
 
-| Concern           | Convention                                                                                                                          |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Module naming     | `ems-<domain>-service`                                                                                                              |
-| Package naming    | `com.emssystem.ems<domain>service` (no separators)                                                                                  |
-| Time handling     | `java.time` only. A `Clock` bean (`ClockConfig`) is injected so time is testable; never call `Instant.now()` directly in a service. |
-| Instants vs dates | Store points in time as `Instant` (UTC); store calendar dates as `LocalDate`; store times-of-day as `LocalTime`.                    |
-| JSON              | ISO-8601 dates, unknown properties ignored, nulls omitted (`JacksonConfig`)                                                         |
-| Auditing          | Entities extend `AuditableEntity` for created/updated stamps                                                                        |
-| Errors            | Domain exceptions extend `RuntimeException` and are translated to HTTP status by `GlobalExceptionHandler`                           |
-| Validation        | Bean Validation on request DTOs; requires `spring-boot-starter-validation`                                                          |
-
----
-
-## 5. API gateway
-
-**Target — not yet built.** `ems-gateway-service` currently contains one class: an empty
-`@SpringBootApplication`. It has no Spring Cloud Gateway dependency, no routes, no
-filters, and no CORS configuration. This section is the specification to build it from.
-
-### Responsibilities
-
-The gateway is the single public entry point. It should do exactly four things:
-
-1. **Route** `/api/**` to the owning service.
-2. **Authenticate** — validate the JWT signature and expiry once, at the edge.
-3. **Propagate identity** — inject trusted headers so downstream services don't re-parse tokens.
-4. **Handle CORS** — one place, not seven.
-
-It must **not** contain business logic, aggregate responses, or touch a database.
+## 5. HTTP APIs and gateway
 
 ### Port map
 
-| Service                    | Port |
-| -------------------------- | ---: |
-| `ems-gateway-service`      | 8080 |
-| `ems-auth-service`         | 8081 |
-| `ems-employee-service`     | 8082 |
-| `ems-attendance-service`   | 8083 |
-| `ems-leave-service`        | 8084 |
-| `ems-scheduling-service`   | 8085 |
-| `ems-payroll-service`      | 8086 |
-| `ems-notification-service` | 8087 |
+This table follows the actual root Compose file. It replaces the conflicting port
+assignments in the previous blueprint.
 
-No service currently declares `server.port`, so all eight would default to 8080 and
-collide. Assigning these is a prerequisite for running more than one service.
+| Component | Host port | Container port | Root Compose service name |
+| --- | ---: | ---: | --- |
+| PostgreSQL | 5432 | 5432 | `postgres` |
+| Auth | 8081 | 8080 | `auth-service` |
+| Employee | 8082 | 8080 | `employee-service` |
+| Scheduling | 8083 | 8080 | `scheduling-service` |
+| Attendance | 8084 | 8080 | `attendance-service` |
+| Payroll | 8085 | 8080 | `payroll-service` |
+| Leave | 8086 | 8080 | `leave-service` |
+| Organization | 8087 | 8080 | `organization-service` |
+| Gateway | Not mapped | Not configured as a gateway | Not present |
+| Notification | Not mapped | No Compose configuration | Not present |
 
-### Route table
+The old gateway 8080 and notification 8088 assignments were proposals, not current
+host mappings. Direct Maven runs need explicit `SERVER_PORT` values to avoid
+collisions; Compose's host mappings do not apply outside containers.
 
-| Path predicate                                                       | Target                     | Auth               |
-| -------------------------------------------------------------------- | -------------------------- | ------------------ |
-| `/api/auth/login`, `/api/auth/refresh`                               | `ems-auth-service`         | Public             |
-| `/api/auth/**`                                                       | `ems-auth-service`         | Authenticated      |
-| `/api/users/**`                                                      | `ems-auth-service`         | `ADMIN`            |
-| `/api/employees/**`, `/api/departments/**`                           | `ems-employee-service`     | Authenticated      |
-| `/api/time-entries/**`, `/api/timesheets/**`                         | `ems-attendance-service`   | Authenticated      |
-| `/api/pto/**`                                                        | `ems-leave-service`        | Authenticated      |
-| `/api/shifts/**`, `/api/shift-categories/**`, `/api/availability/**` | `ems-scheduling-service`   | Authenticated      |
-| `/api/payroll/**`, `/api/pay-periods/**`                             | `ems-payroll-service`      | `MANAGER`, `ADMIN` |
-| `/api/notifications/**`                                              | `ems-notification-service` | Authenticated      |
+### Implemented auth API
 
-`ems-notification-service` is primarily event-driven; it is routed only so users can read
-their own notification history.
+Source: `ems-auth-service/src/main/java/com/emssystem/emsauthservice/`.
 
-### Configuration sketch
+| Method | Path | Access / operation |
+| --- | --- | --- |
+| POST | `/api/v1/auth/login` | Public; credentials to access/refresh token pair |
+| POST | `/api/v1/auth/refresh` | Public; refresh token rotation |
+| GET | `/api/v1/accounts/me` | Authenticated account profile |
+| PATCH | `/api/v1/accounts/me/password` | Authenticated; verify current password and replace it |
+| PATCH | `/api/v1/accounts/me/profile` | Authenticated; update email |
+| POST | `/api/v1/admin/accounts` | ADMIN; create account |
+| GET | `/api/v1/admin/accounts/{accountId}` | ADMIN; retrieve account |
+| PATCH | `/api/v1/admin/accounts/{accountId}/role` | ADMIN; change role |
+| PATCH | `/api/v1/admin/accounts/{accountId}/status` | ADMIN; change account status |
 
-```yaml
-server:
-  port: 8080
+There is no logout endpoint, public registration endpoint, or account-list endpoint.
+Account creation requires an existing administrator; no application bootstrap or
+seed migration for the first administrator was found.
 
-spring:
-  application:
-    name: ems-gateway-service
-  cloud:
-    gateway:
-      routes:
-        - id: auth-service
-          uri: http://localhost:8081 # http://ems-auth-service:8081 under Docker
-          predicates:
-            - Path=/api/auth/**,/api/users/**
-        - id: employee-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/employees/**,/api/departments/**
-        # …one route per service
-      globalcors:
-        cors-configurations:
-          "[/**]":
-            allowedOrigins: "http://localhost:5173" # Vite dev server
-            allowedMethods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
-            allowedHeaders: "*"
-            allowCredentials: true
-```
+### Implemented employee API
 
-### JWT filter and the identity header contract
+| Method | Path | Operation |
+| --- | --- | --- |
+| POST | `/api/employees` | Create; 201 with Location header |
+| GET | `/api/employees/{id}` | Retrieve |
+| GET | `/api/employees/by-number/{employeeNumber}` | Lookup by normalized employee number |
+| GET | `/api/employees/by-account/{userAccountId}` | Lookup by account UUID |
+| GET | `/api/employees` | Page with optional `active` and `departmentId` filters |
+| PUT | `/api/employees/{id}` | Replace details |
+| POST | `/api/employees/{id}/activate` | Activate |
+| POST | `/api/employees/{id}/deactivate` | Deactivate |
+| GET | `/api/employees/summary` | Total, active, and inactive counts |
 
-A single `GlobalFilter` validates the token and converts it into headers that downstream
-services trust:
+Listing defaults to 20 records sorted by `lastName` and returns a Spring Data
+`Page<EmployeeResponse>`. Email is trimmed/lowercased; employee number is
+trimmed/uppercased. The service checks duplicate email, number, and account link.
+`jobTitle` is already part of the entity and response. Authentication, caller
+ownership checks, and remote reference validation are absent.
 
-| Header         | Content                                         |
-| -------------- | ----------------------------------------------- |
-| `X-User-Id`    | `UserAccount.id` (UUID) from the token subject  |
-| `X-User-Email` | Account email                                   |
-| `X-User-Role`  | `EMPLOYEE` · `SUPERVISOR` · `MANAGER` · `ADMIN` |
+### Implemented organization API
 
-The filter must:
+| Method | Path | Operation |
+| --- | --- | --- |
+| POST / GET | `/api/locations` | Create / list |
+| GET / PUT / DELETE | `/api/locations/{id}` | Retrieve / replace name / delete |
+| POST / GET | `/api/departments` | Create / list, optionally filtered by `locationId` |
+| GET / PUT / DELETE | `/api/departments/{id}` | Retrieve / replace / delete |
 
-- Skip the public routes (`/api/auth/login`, `/api/auth/refresh`) and preflight `OPTIONS`.
-- **Strip any inbound `X-User-*` headers before setting its own.** Without this, a client
-  can forge an identity by sending the header directly — the single most important detail
-  in this section.
-- Return `401` on a missing, malformed, or expired token, and never pass the raw
-  `Authorization` header downstream.
+Locations accept `{"name":"Calgary"}`. Departments accept
+`{"name":"Operations","locationId":1}`. Creation returns 201 with a Location
+header; deletion returns 204. Lists are ordered by ID. Department responses include
+location ID and name. See [organization README](ems-organization-service/README.md)
+and its [OpenAPI contract](ems-organization-service/src/main/resources/static/openapi.json)
+for details. Authentication and role authorization are absent.
 
-Because downstream services are reachable only on the internal network, they can trust
-these headers. If services are ever exposed directly, each must validate the JWT itself.
+### Declared APIs without implementations
 
-### Build notes
+These mappings exist on interfaces only. They do not register usable HTTP handlers
+without implementing controller beans.
 
-- Add the `spring-cloud-dependencies` BOM and a `spring-cloud.version` property. Neither
-  exists in any module today.
-- Spring Cloud Gateway is **reactive (WebFlux)**. It must not be combined with
-  `spring-boot-starter-web` in the same module — the servlet stack takes precedence and
-  routing silently stops working. This is the most common failure when adding a gateway.
-- Rate limiting via `RequestRateLimiter` needs Redis and a `KeyResolver` keyed on
-  `X-User-Id`. Worth adding on `/api/auth/login` to blunt credential stuffing; not urgent
-  elsewhere.
-- Expose `/actuator/health` on the gateway for container health checks.
+| Service | Declared paths and operations |
+| --- | --- |
+| Attendance | `/api/time-entries`: clock-in/out, get/list, approve/reject/adjust; `/api/timesheets/me`, `/api/timesheets/summary` |
+| Leave | `/api/pto/types`: create/get/list/replace/delete; `/api/pto/requests`: create/get/list/mine/decision/cancel; `/api/pto/balances`: mine/by-employee/adjust |
+| Scheduling | `/api/shifts`: create/get/list/replace/publish/cancel/summary/assign/respond; `/api/shift-assignments/{id}/cancel`; `/api/shift-categories`: CRUD-like operations and activation; `/api/availability`: create/mine/replace/delete |
+| Payroll | `/api/pay-periods`: create/get/list; `/api/payroll`: generate/finalize, record get/list, earnings/deductions, own statements and statement lookup |
+| Notification | No HTTP controller contract; service interface declares create, list, and mark-read operations |
 
----
+Several interface methods accept `X-User-Id`. No gateway currently strips, verifies,
+or supplies that header, and no downstream identity trust mechanism is implemented.
+
+### Gateway status
+
+`ems-gateway-service` has no Spring Cloud Gateway dependency, route table, filter,
+CORS configuration, JWT validation, or actuator dependency. Its context test only
+starts the bare application. No public gateway API is available.
+
+Future routing must send departments **and** locations to organization. Existing
+auth paths use `/api/v1`, while other APIs use `/api`. Standardizing those prefixes
+is a pending decision; this document does not redefine the current contracts.
 
 ## 6. Security model
 
-### Roles
+### Current auth implementation
 
-Four roles, defined in the `RoleType` enum that already exists in `ems-auth-service`:
+`RoleType` contains `EMPLOYEE`, `SUPERVISOR`, `MANAGER`, and `ADMIN`.
+`AccountStatus` contains `ACTIVE`, `SUSPENDED`, and `DISABLED`. UserAccount stores
+the role enum directly; it does not require the old proposed AccountRole model.
 
-| Role         | Scope                                                               |
-| ------------ | ------------------------------------------------------------------- |
-| `EMPLOYEE`   | Own time entries, own PTO requests, own schedule and pay statements |
-| `SUPERVISOR` | The above, plus approving time entries and PTO for their reports    |
-| `MANAGER`    | The above, plus creating shifts and running payroll                 |
-| `ADMIN`      | Full access, including account and role management                  |
+Auth has BCrypt password hashing, a stateless `SecurityFilterChain`, method-security
+annotations, a Nimbus JWT encoder/decoder, and resource-server support. Login and
+refresh paths are public; admin paths require ADMIN; account paths require
+authentication. The decoder checks HS256 signatures and issuer/timestamp validity.
+CORS defaults to `http://localhost:5173` and is configured in auth through
+`app.security.allowed-origins`.
 
-### Authentication flow
+The filter chain requires an injected `JwtAuthenticationConverter`; no application
+bean declaration for it was found. Full startup and mapping the `role` claim to
+Spring authorities remain to be verified/fixed. The baseline context test fails
+earlier while connecting to PostgreSQL.
 
-Passwords are hashed with BCrypt — `shared/config/PasswordConfig` already provides the
-`PasswordEncoder` bean, and `AccountUserDetailsService` already loads accounts by email
-and adapts them to Spring Security's `UserDetails` via the `AccountPrincipal` record.
+### Actual token contract
 
-What remains to be built in `ems-auth-service`:
+| Property | Access token | Refresh token |
+| --- | --- | --- |
+| Format | HS256 JWT | Opaque random token, not a JWT |
+| Configured/default lifetime | 15 minutes (`PT15M`) | 30 days (`P30D`) |
+| Contents | `sub`, `email`, `role`, `iat`, `exp`, `jti`, `iss`, `token_type=access` | 64 random bytes encoded with URL-safe Base64 |
+| Server-side storage | No access-token record | SHA-256 hash, account link, creation/expiry/revocation timestamps |
+| Usage | Bearer Authorization header | `refreshToken` in refresh request body |
+| Rotation | New access token on login/refresh | Old token revoked and replacement issued under a transaction and row lock |
 
-| Class                                                    | Purpose                                                                          |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `JwtProperties`                                          | `@ConfigurationProperties` binding for secret, issuer, and the two expiry values |
-| `JwtTokenService`                                        | Generate, parse, and validate access and refresh tokens                          |
-| `AuthenticationService`                                  | Authenticate credentials, issue the token pair, handle refresh                   |
-| `AuthController`                                         | `POST /api/auth/login`, `POST /api/auth/refresh`, `POST /api/auth/logout`        |
-| `LoginRequest` / `LoginResponse` / `RefreshTokenRequest` | The wire contract                                                                |
-| `SecurityConfig` → `SecurityFilterChain`                 | Stateless sessions, permit `/api/auth/login`, require auth elsewhere             |
+Login and refresh return `accessToken`, `refreshToken`, `tokenType` (`Bearer`), and
+`expiresAt`; responses set no-store/no-cache headers. Login checks the password and
+requires an active account. Refresh rejects unknown, revoked, and expired tokens;
+AuthenticationService also checks that the returned account is active.
 
-No JWT library is on the classpath yet; add one (`jjwt` or `nimbus-jose-jwt`) before
-starting.
+The JWT settings use the **`security.jwt.*`** prefix. The signing secret is Base64
+and must decode to at least 32 bytes. The previous document's `ems.jwt.*` prefix,
+7-day refresh lifetime, JWT refresh claims, and token response containing `role`
+do not describe the current implementation.
 
-### Token design
+### Limits and unfinished security work
 
-|                    | Access token                                        | Refresh token                            |
-| ------------------ | --------------------------------------------------- | ---------------------------------------- |
-| Lifetime           | 15 minutes                                          | 7 days                                   |
-| Claims             | `sub` (account UUID), `email`, `role`, `iat`, `exp` | `sub`, `jti`, `iat`, `exp`               |
-| Stored server-side | No                                                  | Yes — persist `jti` so it can be revoked |
-| Sent as            | `Authorization: Bearer …`                           | Request body on `/api/auth/refresh`      |
+- Auth properties contain literal development credentials and a JWT secret;
+  configuration cleanup is outstanding. Their values are not reproduced here.
+- Logout, session-wide refresh revocation, and an initial-admin bootstrap flow
+  are not implemented.
+- Login does not explicitly update `lastLoginAt`. The entity currently annotates
+  that field with `@LastModifiedDate`; it is not a verified login audit trail.
+- Employee and organization APIs have no authentication/authorization layer.
+- Ownership, supervisor/report checks, and role enforcement for the unimplemented
+  workflows have not been written.
+- The old trusted `X-User-*` gateway design is a proposal, not an active security
+  boundary. Gateway-only versus per-service JWT validation and internal caller
+  authentication still need decisions.
 
-A short access-token lifetime is what makes stateless edge validation acceptable: a
-revoked or demoted account loses access within one token period without the gateway
-needing to check a database on every request.
-
-### Authorization layers
-
-Authorization is enforced twice, deliberately:
-
-1. **Coarse, at the gateway** — route-level role checks (payroll requires `MANAGER`).
-2. **Fine, in the service** — `@PreAuthorize` on service methods.
-   `@EnableMethodSecurity` is already present on `SecurityConfig`, and
-   `UserAccountService` already carries `@PreAuthorize("hasRole('ADMIN')")` annotations.
-
-The second layer is where ownership rules live — rules the gateway cannot express, such
-as "an employee may read only their own timesheet" or "a supervisor may approve only
-their own reports' entries." Those checks compare the resource's `employeeId` against the
-caller's identity and belong in the service layer.
-
----
+The intended business role scopes remain employee self-service, supervisor review
+of reports, manager scheduling/payroll, and administrator account management.
+Only the auth account authorization rules are currently implemented; a general
+role hierarchy or reporting relationship must not be inferred from the enums.
 
 ## 7. System workflows
 
-**Target.** These are the flows the domain model implies. None are implemented; they
-define what to build.
+### 7.1 Login and refresh — implemented service logic
 
-### 7.1 Login and token refresh
+Login normalizes the email, loads the account, checks BCrypt and ACTIVE status,
+issues an access token, and stores a hash of a newly generated refresh token.
+Refresh hashes the presented token, locks the matching record, validates expiry
+and revocation, revokes it, and creates a replacement. These methods have unit
+tests; the complete database-backed login path has not been verified in this pass.
 
-```mermaid
-sequenceDiagram
-    actor U as User
-    participant SPA
-    participant GW as Gateway
-    participant AUTH as auth-service
-    participant DB as auth schema
+The caller currently reaches auth directly. The previous sequence diagram's
+gateway hop and explicit login timestamp update are not implemented.
 
-    U->>SPA: email + password
-    SPA->>GW: POST /api/auth/login
-    GW->>AUTH: forward (public route, no JWT filter)
-    AUTH->>DB: findByEmailIgnoreCase
-    DB-->>AUTH: UserAccount
-    AUTH->>AUTH: BCrypt.matches(password, hash)
-    alt credentials valid and account active
-        AUTH->>AUTH: issue access (15m) + refresh (7d)
-        AUTH->>DB: persist refresh jti, stamp lastLoginAt
-        AUTH-->>SPA: 200 { accessToken, refreshToken, role }
-    else invalid
-        AUTH-->>SPA: 401 Unauthorized
-    end
+### 7.2 Employee and organization management — implemented locally
 
-    Note over SPA,GW: Subsequent calls carry Authorization: Bearer <access>
+Employee requests validate DTOs and unique fields, persist employee data, and
+return DTOs. Organization requests validate names and local location references,
+persist locations/departments, and translate domain/database errors to HTTP.
+Neither flow contacts another service. A valid-looking scalar ID is not proof
+that the remote record exists.
 
-    SPA->>GW: POST /api/auth/refresh (access expired)
-    GW->>AUTH: forward
-    AUTH->>DB: verify jti not revoked
-    AUTH-->>SPA: 200 { accessToken, refreshToken }
-```
+### 7.3 Attendance — planned workflow
 
-### 7.2 Request path through the gateway
+The intended flow is active employee lookup, clock-in with one open entry,
+clock-out and worked/overtime calculation, then supervisor approval or adjustment.
+Timesheets and payroll would use the resulting approved time. Interfaces, fields,
+and error types exist; the workflow and state transitions do not.
 
-```mermaid
-sequenceDiagram
-    participant SPA
-    participant GW as Gateway
-    participant SVC as Downstream service
+`TimeEntryAdjustment` stores original clock values, actor, reason, and timestamp.
+How effective corrected values, reapproval, and payroll locks interact is still
+an implementation decision. Overtime, break, rounding, timezone, and overnight
+rules are not specified by the current calculator interfaces.
 
-    SPA->>GW: GET /api/timesheets/me + Bearer token
-    GW->>GW: strip inbound X-User-* headers
-    GW->>GW: validate signature + expiry
-    alt token invalid or expired
-        GW-->>SPA: 401
-    else valid
-        GW->>GW: check route role requirement
-        alt role insufficient
-            GW-->>SPA: 403
-        else permitted
-            GW->>SVC: forward + X-User-Id, X-User-Email, X-User-Role
-            SVC->>SVC: @PreAuthorize — ownership check
-            SVC-->>GW: 200 payload
-            GW-->>SPA: 200 payload
-        end
-    end
-```
+### 7.4 PTO — planned workflow
 
-### 7.3 Clock in/out through timesheet approval
+The blueprint calls for overlap and balance checks, balance reservation when a
+request is submitted, usage/ledger commitment on approval, reservation release
+on rejection, and a notification event after review. The data model supports
+these concepts but no reservation, review, cancellation, or accrual logic exists.
 
-```mermaid
-sequenceDiagram
-    actor E as Employee
-    actor S as Supervisor
-    participant ATT as attendance-service
-    participant EMP as employee-service
+The current request DTO includes explicit `hours` as well as type and dates.
+Accrual cadence, carryover timing, eligibility, cancellation/reversal rules, and
+paid/unpaid treatment remain unspecified.
 
-    E->>ATT: POST /api/time-entries/clock-in
-    ATT->>EMP: GET /api/employees/{id} (verify active)
-    EMP-->>ATT: 200
-    ATT->>ATT: reject if an OPEN entry exists
-    ATT->>ATT: create TimeEntry(status=OPEN, clockIn=now, source)
-    ATT-->>E: 201 TimeEntryResponse
+### 7.5 Scheduling — planned workflow
 
-    E->>ATT: POST /api/time-entries/clock-out
-    ATT->>ATT: WorkedTimeCalculator → worked minutes
-    ATT->>ATT: OvertimeCalculator → regular vs overtime split
-    ATT->>ATT: status = PENDING_APPROVAL
-    ATT-->>E: 200
+The intended flow is draft shift creation, employee/location validation,
+availability/conflict checks, assignment, publication, and employee acceptance
+or decline. Interfaces and status enums exist; none of those workflows is wired.
 
-    S->>ATT: GET /api/timesheets?period=…&status=PENDING_APPROVAL
-    ATT-->>S: entries awaiting review
-    alt approve
-        S->>ATT: POST /api/time-entries/{id}/approve
-        ATT->>ATT: status = APPROVED
-    else adjust
-        S->>ATT: POST /api/time-entries/{id}/adjust
-        ATT->>ATT: write TimeEntryAdjustment (audit trail), status = APPROVED
-    end
-    Note over ATT: Only APPROVED entries are visible to payroll
-```
+Notification timing needs a decision: the earlier blueprint described both an
+assignment event and notification only on publication. Maximum shift length,
+rest gaps, missing availability, staffing capacity, and PTO conflicts also need
+explicit rules.
 
-The `TimeEntryAdjustment` entity exists so that a supervisor's correction never
-overwrites what the employee recorded — the original stays, the delta is stored beside
-it. That matters for payroll disputes.
+### 7.6 Payroll — planned workflow
 
-### 7.4 PTO request through approval and notification
+Payroll is intended to retrieve employees/rates and approved attendance, reject
+periods with unapproved time, calculate regular and overtime earnings, apply
+additional earnings/deductions, and create draft records. Finalization is intended
+to close the period and make its records immutable, with later corrections in a
+subsequent period.
 
-```mermaid
-sequenceDiagram
-    actor E as Employee
-    actor S as Supervisor
-    participant LV as leave-service
-    participant NOTIF as notification-service
+None of generation, finalization, statement access, or calculation is implemented.
+An approved-time query alone does not establish a stable snapshot: coordination
+with attendance, pay-rate history, repeat generation, and concurrent corrections
+still require a design. Existing enum values do not enforce immutability.
 
-    E->>LV: POST /api/pto/requests { type, startDate, endDate }
-    LV->>LV: PtoConflictValidator — overlapping requests?
-    LV->>LV: PtoBalanceValidator — sufficient balance?
-    alt validation fails
-        LV-->>E: 400 with reason
-    else accepted
-        LV->>LV: PtoRequest(status=PENDING); reserve balance
-        LV-->>E: 201
-    end
+### 7.7 Notification delivery — planned workflow
 
-    S->>LV: POST /api/pto/requests/{id}/decision { APPROVED | REJECTED }
-    alt approved
-        LV->>LV: PtoLedgerEntry(-hours), commit reservation
-    else rejected
-        LV->>LV: release reservation
-    end
-    LV->>NOTIF: PtoReviewedEvent { employeeId, requestId, decision }
-    NOTIF->>NOTIF: persist Notification
-    NOTIF->>E: email
-```
-
-Balance is reserved at request time and committed at approval. Without the reservation,
-an employee can submit several requests that individually fit the balance but together
-exceed it.
-
-`PtoLedgerEntry` makes the balance an append-only ledger — accruals positive, usage
-negative — so the current balance is derivable and auditable rather than a mutable number.
-
-### 7.5 Shift creation, publishing, and assignment
-
-```mermaid
-sequenceDiagram
-    actor M as Manager
-    actor E as Employee
-    participant SCHED as scheduling-service
-    participant NOTIF as notification-service
-
-    M->>SCHED: POST /api/shifts { categoryId, startsAt, endsAt, locationId }
-    SCHED->>SCHED: ShiftTimeValidator — end after start, within limits
-    SCHED->>SCHED: Shift(status=DRAFT)
-    SCHED-->>M: 201
-
-    M->>SCHED: POST /api/shifts/{id}/assign { employeeId }
-    SCHED->>SCHED: check EmployeeAvailability
-    SCHED->>SCHED: ShiftConflictValidator — overlapping assignment?
-    alt conflict or unavailable
-        SCHED-->>M: 409 ShiftConflictResponse
-    else clear
-        SCHED->>SCHED: ShiftAssignment(status=ASSIGNED)
-        SCHED->>NOTIF: ShiftAssignedEvent
-    end
-
-    M->>SCHED: POST /api/shifts/publish { from, to }
-    SCHED->>SCHED: DRAFT → PUBLISHED
-    SCHED->>NOTIF: SchedulePublishedEvent
-    NOTIF->>E: email — schedule available
-
-    E->>SCHED: POST /api/shifts/{id}/respond { ACCEPTED | DECLINED }
-```
-
-`DRAFT` exists so a manager can build a week's schedule without notifying anyone at each
-step; `PUBLISHED` is the single moment the workforce is told.
-
-The three events above correspond to `PtoReviewedEvent`, `SchedulePublishedEvent`, and
-`ShiftAssignedEvent` — classes that already exist as empty stubs in
-`ems-notification-service/src/main/java/com/emssystem/emsnotificationservice/notification/event/`.
-They are the intended event contract.
-
-### 7.6 Payroll run
-
-```mermaid
-sequenceDiagram
-    actor M as Manager
-    participant PAY as payroll-service
-    participant ATT as attendance-service
-    participant EMP as employee-service
-
-    M->>PAY: POST /api/pay-periods { start, end }
-    PAY->>PAY: PayPeriod(status=OPEN)
-
-    M->>PAY: POST /api/payroll/generate { payPeriodId }
-    PAY->>EMP: GET /api/employees?active=true
-    EMP-->>PAY: employee list with pay rates
-    PAY->>ATT: GET /api/time-entries?period=…&status=APPROVED
-    ATT-->>PAY: approved hours per employee
-
-    alt unapproved entries remain in the period
-        PAY-->>M: 409 UnapprovedTimeEntriesException
-    else all approved
-        loop per employee
-            PAY->>PAY: RegularPayCalculator → regular hours × rate
-            PAY->>PAY: OvertimePayCalculator → OT hours × rate × multiplier
-            PAY->>PAY: GrossPayCalculator → sum + PayrollEarning entries
-            PAY->>PAY: NetPayCalculator → gross − PayrollDeduction entries
-            PAY->>PAY: PayrollRecord(status=DRAFT)
-        end
-        PAY-->>M: PayrollSummaryResponse
-    end
-
-    M->>PAY: POST /api/payroll/finalize { payPeriodId }
-    PAY->>PAY: records → FINALIZED, period → CLOSED
-    Note over PAY: A finalized period is immutable —<br/>PayrollAlreadyFinalizedException on further writes
-```
-
-Two rules are encoded in the exception classes that already exist as stubs:
-payroll cannot run over unapproved time (`UnapprovedTimeEntriesException`), and a
-finalized period cannot be modified (`PayrollAlreadyFinalizedException`). Corrections
-after finalization are made as adjustments in the _next_ period, never by editing a
-closed one.
-
----
+Three Java event records exist: `PtoReviewedEvent`, `ShiftAssignedEvent`, and
+`SchedulePublishedEvent`. All carry `eventId` and `occurredAt` plus domain IDs;
+schedule publication carries a list of employee IDs. Listener and email services
+are interfaces. There is no event publishing, durable delivery, SMTP adapter,
+retry handling, or consumer deduplication implementation.
 
 ## 8. Data model
 
-Entity and enum names below are taken from the class files that exist in each service.
-Field lists are given where the entity has fields today; elsewhere they are the target
-shape implied by the domain.
+The following describes existing entity fields and migrations. Except where
+noted, IDs are generated Long values, temporal fields use `java.time`, and domain
+entities inherit `createdAt`, `updatedAt`, and optimistic-lock `version` fields.
+Local entity relationships stay within a service's database.
 
-Throughout, `employeeId` is a **scalar reference** to the employee service — there is no
-foreign key and no join across services.
+### 8.1 Auth
 
-### 8.1 Auth — `ems-auth-service`
+| Entity | Existing fields / mapping |
+| --- | --- |
+| `UserAccount` | UUID `id`; unique `email`; `passwordHash`; `status` enum stored in column `active`; `role` enum; `createdAt`, `updatedAt`, `lastLoginAt` |
+| `RefreshToken` | UUID `id`; account relationship; unique 64-character `tokenHash`; `createdAt`, `expiresAt`, nullable `revokedAt` |
 
-`UserAccount` is the most complete entity in the repository.
+UserAccount has methods to change password, role, status, and email. Its audit
+mapping differs from the domain base entity and needs database-backed verification.
+Auth has no Flyway migrations. The `.properties` file requests Hibernate `update`,
+while YAML requests `validate`; see the configuration section below.
 
-| Field          | Type           | Notes                                           |
-| -------------- | -------------- | ----------------------------------------------- |
-| `id`           | `UUID`         | Generated                                       |
-| `email`        | `String(320)`  | Unique, not null                                |
-| `passwordHash` | `String`       | BCrypt                                          |
-| `active`       | `boolean`      | Defaults true                                   |
-| `role`         | role reference | Target: the `RoleType` enum, stored as a string |
-| `createdAt`    | `Instant`      |                                                 |
-| `lastLoginAt`  | `Instant`      | Stamped on successful login                     |
+### 8.2 Employee
 
-Behaviour already on the entity: `changePassword`, `changeRole`, `activate`,
-`deactivate`.
+| Fields | Details |
+| --- | --- |
+| `id`, `employeeNumber` | Generated ID; unique business number |
+| `firstName`, `lastName`, `email` | Required names; unique email |
+| `phoneNumber`, `address`, `birthDate`, `hireDate` | Phone stored as `contact_number`; hire date required |
+| `departmentId` | Required positive scalar organization reference |
+| `role`, `userAccountId` | EmployeeRole enum; nullable unique UUID account link |
+| `payRate`, `jobTitle`, `active` | Decimal pay rate, optional job title, boolean lifecycle status |
 
-`RoleType` — `EMPLOYEE`, `SUPERVISOR`, `MANAGER`, `ADMIN`. The enum exists but is not
-yet referenced; `AccountRole` is currently a separate entity. Collapsing the role to the
-enum is the simpler design and is assumed throughout this document.
+V1 creates `employees`, unique constraints, positive-department and nonnegative-rate
+checks, and department/active indexes. There is no supervisor ID, effective-dated
+pay history, or stored “On Leave” state.
 
-A `RefreshToken` entity (`jti`, `accountId`, `expiresAt`, `revoked`) is needed for
-[§6](#6-security-model) and does not exist yet.
+### 8.3 Organization
 
-### 8.2 Employee — `ems-employee-service`
+`Location` stores `id` and unique `name`. `Department` stores `id`, unique
+`departmentName` (column `department_name`), and a required local `Location`
+relationship. V1 creates both tables and audit/version fields; V2 adds unique
+indexes on lowercase names. There is no location entity in employee service.
 
-`Employee` has fields today. Target shape, incorporating the
-[`organization` recommendation](#9-unplaced-domains-organization-and-reporting):
+### 8.4 Attendance
 
-| Field                   | Type             | Notes                                                |
-| ----------------------- | ---------------- | ---------------------------------------------------- |
-| `id`                    | `Long`           | The `employeeId` every other service stores          |
-| `employeeNumber`        | `String`         | Unique business key                                  |
-| `firstName`, `lastName` | `String(50)`     |                                                      |
-| `email`                 | `String`         | Unique                                               |
-| `phoneNumber`           | `String`         | Column `contact_number`                              |
-| `address`               | `String`         |                                                      |
-| `birthDate`             | `LocalDate`      |                                                      |
-| `hireDate`              | `LocalDate`      |                                                      |
-| `departmentId`          | `Long`           | In-service relation once `organization` is folded in |
-| `role`                  | `EmployeeRole`   | Enum: `EMPLOYEE`, `SUPERVISOR`, `MANAGER`, `ADMIN`   |
-| `userAccountId`         | `UUID`, nullable | Links to the auth service                            |
-| `payRate`               | `BigDecimal`     | Required by payroll                                  |
-| `active`                | `boolean`        |                                                      |
+| Entity | Existing domain fields |
+| --- | --- |
+| `TimeEntry` | `employeeId`, `clockIn`, nullable `clockOut`, `source`, `status`, `workedMinutes`, `overtimeMinutes` |
+| `TimeEntryAdjustment` | Local time-entry relationship, `adjustedBy` UUID, original clock-in/out, `reason`, `adjustedAt` |
 
-```mermaid
-erDiagram
-    DEPARTMENT ||--o{ EMPLOYEE : "employs"
-    LOCATION   ||--o{ DEPARTMENT : "houses"
-    EMPLOYEE {
-        Long id PK
-        String employeeNumber UK
-        String firstName
-        String lastName
-        String email UK
-        LocalDate hireDate
-        Long departmentId FK
-        BigDecimal payRate
-        boolean active
-    }
-    DEPARTMENT {
-        Long id PK
-        String departmentName UK
-        Long locationId FK
-    }
-    LOCATION {
-        Long id PK
-        String name
-    }
+`TimeEntryStatus`: `OPEN`, `PENDING_APPROVAL`, `APPROVED`, `REJECTED`.
+`ClockSource`: `WEB`, `MOBILE`, `KIOSK`, `MANUAL`. Both are implemented enums.
+V1 creates both tables and lookup indexes; it does not enforce one open entry per
+employee. That concurrency invariant still needs implementation.
+
+### 8.5 Leave
+
+| Entity | Existing domain fields |
+| --- | --- |
+| `PtoType` | Unique `name`, `accrualRatePerPeriod`, `maxCarryover`, `paid` |
+| `PtoRequest` | `employeeId`, PTO type relationship, `startDate`, `endDate`, `hours`, `status`, `reviewedBy`, `reviewedAt` |
+| `PtoBalance` | Employee/type pair, `accruedHours`, `usedHours`, `reservedHours`; unique pair constraint |
+| `PtoLedgerEntry` | Employee/type, `hoursDelta`, `entryType`, optional source request, `occurredAt` |
+
+Request status: `PENDING`, `APPROVED`, `REJECTED`, `CANCELLED`.
+Ledger type: `ACCRUAL`, `USAGE`, `ADJUSTMENT`, `REVERSAL`.
+V1 creates all four tables. Balances and ledger entries exist structurally; no
+implemented workflow keeps them synchronized or prevents duplicate accrual runs.
+
+### 8.6 Scheduling
+
+| Entity | Existing domain fields |
+| --- | --- |
+| `ShiftCategory` | Unique `name`, `color`, default start/end times, `active` |
+| `Shift` | Category relationship, `startsAt`, `endsAt`, `status`, scalar `locationId`, integer `requiredEmployees` |
+| `ShiftAssignment` | Shift relationship, scalar `employeeId`, `status`, `respondedAt`; unique shift/employee pair |
+| `EmployeeAvailability` | `employeeId`, DayOfWeek enum, `startTime`, `endTime`, availability type |
+
+Shift status: `DRAFT`, `PUBLISHED`, `CANCELLED`.
+Assignment status: `ASSIGNED`, `ACCEPTED`, `DECLINED`, `CANCELLED`.
+Availability type: `AVAILABLE`, `UNAVAILABLE`, `PREFERRED`.
+V1 includes shift location/start and status/start indexes, assignment employee
+index, and availability employee/day index. Availability uses local recurring
+times; the timezone policy has not been defined.
+
+### 8.7 Payroll
+
+| Entity | Existing domain fields |
+| --- | --- |
+| `PayPeriod` | `startDate`, `endDate`, `payDate`, `status`; unique start/end pair |
+| `PayrollRecord` | Period relationship, `employeeId`, regular/overtime hours, gross/net pay, status; unique period/employee pair |
+| `PayrollEarning` | Record relationship, earning type, amount, description |
+| `PayrollDeduction` | Record relationship, deduction type, amount, description |
+
+Period status: `OPEN`, `PROCESSING`, `CLOSED`.
+Record status: `DRAFT`, `FINALIZED`, `PAID`.
+Earnings: `REGULAR`, `OVERTIME`, `BONUS`, `HOLIDAY`, `PTO`.
+Deductions: `TAX`, `INSURANCE`, `RETIREMENT`, `GARNISHMENT`, `OTHER`.
+V1 creates these tables. Monetary fields use `BigDecimal`/`NUMERIC(19,2)`;
+regular/overtime hours use `NUMERIC(10,2)`. No tax engine or payment integration
+is implemented or implied by these enums.
+
+### 8.8 Notification
+
+`Notification` contains `id`, `employeeId`, `type`, `title`, `body`, nullable
+`readAt`, and `createdAt`. Its V1 table has an employee/creation-time index and does
+not use the common domain audit/version columns.
+
+Notification types are implemented enums: `PTO_REVIEWED`, `SHIFT_ASSIGNED`,
+`SCHEDULE_PUBLISHED`, `TIMESHEET_APPROVED`, `PAYSTATEMENT_AVAILABLE`.
+The last two types have no corresponding event records yet. The table has no
+processed-event ID or delivery-attempt model.
+
+## 9. Organization and reporting
+
+### Organization behavior
+
+Organization owns `/api/departments` and `/api/locations`. Names are stripped of
+surrounding whitespace, must be nonblank and at most 100 characters, and are unique
+ignoring case. Database indexes protect against concurrent duplicate creates.
+V2 does not automatically rename or remove conflicting legacy rows.
+
+Departments require a valid local location and can move between locations.
+Deleting a location with departments returns a conflict. Deleting a department
+does **not** check employee references held in the employee service.
+
+The service implements strict JSON validation and structured responses for
+validation, missing resources, conflicts, unsupported methods/content types, and
+unexpected failures. Its standalone stack includes readiness checks and graceful
+shutdown. Details and commands are in its README.
+
+### Reporting status
+
+There is no reporting service, cross-domain read model, CSV export, or PDF export.
+Employee's summary endpoint is implemented. Attendance and scheduling summary
+methods are interfaces. Frontend dashboard content is not populated from backend
+summary APIs. The previous proposal to add reporting later remains a proposal;
+its inclusion in the completion scope is unresolved.
+
+## 10. Integration and outstanding decisions
+
+### Current database layout
+
+[Root Compose](docker-compose.yml) runs `postgres:18`.
+[The initialization script](docker/postgres-server/init-databases.sh) creates
+missing databases and login roles; it does not update existing role passwords.
+
+| Service | Database | Login role | Root Compose provisioning |
+| --- | --- | --- | --- |
+| Auth | `ems_auth_db` | `auth_user` | Yes |
+| Employee | `ems_employee_db` | `employee_user` | Yes |
+| Scheduling | `ems_schedule_db` | `schedule_user` | Yes |
+| Attendance | `ems_attendance_db` | `attendance_user` | Yes |
+| Payroll | `ems_payroll_db` | `payroll_user` | Yes |
+| Leave | `ems_leave_db` | `leave_user` | Yes |
+| Organization | `ems_organization_db` | `organization_user` | Yes |
+| Notification | `ems_notification_db` | `notification_user` | No; application configuration only |
+
+Each role owns its database. The script does not implement a comprehensive grants
+hardening policy. There is no configured schema-per-service layout. Service-local
+migrations create tables without cross-service foreign keys.
+
+The PostgreSQL data volume is mounted at `/var/lib/postgresql`. Initialization
+scripts run for a fresh data directory; changing the script or `.env` does not
+re-provision an existing volume. The corrected bind mount uses
+`docker/postgres-server/init-databases.sh`.
+
+### Potential internal dependencies — not implemented
+
+| Caller | Owner of required data | Purpose |
+| --- | --- | --- |
+| Employee | Organization / auth | Validate department and linked account |
+| Attendance | Employee | Resolve account to active employee and review scope |
+| Leave | Employee | Resolve employee identity, eligibility and review scope |
+| Scheduling | Employee / organization | Validate employee and location |
+| Scheduling | Leave | PTO conflicts, if selected as a business rule |
+| Payroll | Employee / attendance | Employee/rate inputs and approved time |
+| Payroll | Leave | Paid leave inputs, if included in payroll scope |
+| Notification | Employee | Resolve recipient contact details |
+
+The earlier OpenFeign-first and RabbitMQ proposals have not been implemented.
+The user has requested considering gRPC where needed. No protobuf contracts,
+channels, interceptors, deadlines, retries, service credentials, event exchange,
+or routing keys are configured. In particular, the previously suggested
+`ems.events` exchange is not an existing resource.
+
+### Decisions not yet made
+
+| Decision | What must be settled |
+| --- | --- |
+| Completion scope | Nine backend services, tests, Docker and docs; whether frontend and reporting are included |
+| Internal transport | gRPC boundaries and contracts; whether a broker handles notifications |
+| Database layout | Preserve separate databases or migrate to schemas; treatment of existing data |
+| API prefixes | Preserve existing paths or standardize `/api/v1` |
+| Shared build | Root Maven reactor, shared infrastructure, and protobuf modules versus independent builds |
+| Security | Gateway/per-service validation, internal caller authentication, trusted headers, first-admin provisioning |
+| Reporting hierarchy | Explicit supervisor assignment versus another approved model |
+| Attendance | Timezone, workweek, overtime, breaks, rounding, overnight work, corrections |
+| Leave | Accrual cadence, carryover, eligibility, requested hours, cancellation, unpaid leave |
+| Scheduling | Rest gaps, capacity, availability defaults, PTO conflicts, notification timing |
+| Payroll | Currency, rounding, multipliers, taxes/deductions, historical rates, snapshots and finalization coordination |
+| Notifications | In-app/email scope, provider, durable delivery, retries and deduplication |
+
+These items are not defaults. No decision is implied by an example, a DTO field,
+or an enum. Shared-library extraction, service discovery, and configuration-server
+changes are likewise not present in the repository.
+
+## 11. Local development and verification
+
+### Prerequisites and build configuration
+
+The POMs target Java 17 and use the bundled Maven wrappers. Docker/Compose is
+required for container workflows and organization's PostgreSQL integration tests.
+There is no root `mvn test` command because no root POM exists.
+
+Auth's POM overrides the web starter to `4.2.0-M1`, uses a dynamic `RELEASE`
+version for JetBrains annotations, and includes a web MVC test artifact outside
+test scope. These differ from the common parent baseline and need reconciliation.
+Organization explicitly uses the Boot Flyway starter and actuator. Other domain
+POMs contain Flyway core/PostgreSQL modules; migration files and `enabled: true`
+alone are not evidence that startup migration has been tested.
+
+### Root Compose
+
+From `ems-services/`, create `.env` from `.env.example` **only if `.env` does not
+already exist**, then fill in the eight required password variables:
+`POSTGRES_ADMIN_PASSWORD`, `AUTH_DB_PASSWORD`, `EMPLOYEE_DB_PASSWORD`,
+`SCHEDULE_DB_PASSWORD`, `ATTENDANCE_DB_PASSWORD`, `PAYROLL_DB_PASSWORD`,
+`LEAVE_DB_PASSWORD`, and `ORGANIZATION_DB_PASSWORD`.
+
+Validate configuration without printing resolved credentials:
+
+```sh
+docker compose config --quiet
 ```
 
-### 8.3 Attendance — `ems-attendance-service`
+To start the configured database:
 
-Classes exist; none have fields yet.
-
-| Entity                | Target fields                                                                                                                                                           |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TimeEntry`           | `id`, `employeeId`, `clockIn` (`Instant`), `clockOut` (`Instant`, nullable), `source` (`ClockSource`), `status` (`TimeEntryStatus`), `workedMinutes`, `overtimeMinutes` |
-| `TimeEntryAdjustment` | `id`, `timeEntryId`, `adjustedBy`, `originalClockIn`, `originalClockOut`, `reason`, `adjustedAt`                                                                        |
-
-| Enum              | Target values                                      |
-| ----------------- | -------------------------------------------------- |
-| `TimeEntryStatus` | `OPEN`, `PENDING_APPROVAL`, `APPROVED`, `REJECTED` |
-| `ClockSource`     | `WEB`, `MOBILE`, `KIOSK`, `MANUAL`                 |
-
-Both enums are currently declared as `class`, not `enum`, and have no constants.
-
-```mermaid
-erDiagram
-    TIME_ENTRY ||--o{ TIME_ENTRY_ADJUSTMENT : "corrected by"
-    TIME_ENTRY {
-        Long id PK
-        Long employeeId "→ employee-service"
-        Instant clockIn
-        Instant clockOut
-        String status
-        int workedMinutes
-        int overtimeMinutes
-    }
-    TIME_ENTRY_ADJUSTMENT {
-        Long id PK
-        Long timeEntryId FK
-        Instant originalClockIn
-        Instant originalClockOut
-        String reason
-    }
+```sh
+docker compose up -d postgres
 ```
 
-### 8.4 Leave — `ems-leave-service`
+To build and attempt startup of the currently configured application set:
 
-**Nothing exists.** The entire domain still lives in the monolith at
-`ems-backend/src/main/java/com/emssystem/ems/pto/` (28 files) and must be migrated.
-
-| Entity           | Target fields                                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------------------------ |
-| `PtoType`        | `id`, `name`, `accrualRatePerPeriod`, `maxCarryover`, `paid`                                           |
-| `PtoRequest`     | `id`, `employeeId`, `ptoTypeId`, `startDate`, `endDate`, `hours`, `status`, `reviewedBy`, `reviewedAt` |
-| `PtoBalance`     | `id`, `employeeId`, `ptoTypeId`, `accruedHours`, `usedHours`, `reservedHours`                          |
-| `PtoLedgerEntry` | `id`, `employeeId`, `ptoTypeId`, `hoursDelta`, `entryType`, `sourceRequestId`, `occurredAt`            |
-
-### 8.5 Scheduling — `ems-scheduling-service`
-
-`ShiftCategory` and `Shift` have fields; `ShiftAssignment` and `EmployeeAvailability` are
-empty.
-
-| Entity                 | Fields                                                                                                                        |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `ShiftCategory`        | `id`, `name` (unique), `color` (`#RRGGBB`), `defaultStartTime`, `defaultEndTime`, `active` — **implemented**                  |
-| `Shift`                | `id`, `shiftCategoryId`, `startsAt`, `endsAt`, `status`, `locationId`, `requiredEmployees` (a **count**, not an entity array) |
-| `ShiftAssignment`      | `id`, `shiftId`, `employeeId`, `status`, `respondedAt`                                                                        |
-| `EmployeeAvailability` | `id`, `employeeId`, `dayOfWeek`, `startTime`, `endTime`, `type`                                                               |
-
-| Enum               | Values                                                                       |
-| ------------------ | ---------------------------------------------------------------------------- |
-| `ShiftStatus`      | `DRAFT`, `PUBLISHED`, `CANCELLED` — **implemented**                          |
-| `AssignmentStatus` | `ASSIGNED`, `ACCEPTED`, `DECLINED`, `CANCELLED` — **implemented**            |
-| `AvailabilityType` | Target: `AVAILABLE`, `UNAVAILABLE`, `PREFERRED` — declared with no constants |
-
-`Shift` carries two indexes worth keeping: `idx_shift_location_start` on
-`(location_id, starts_at)` and `idx_shift_status_start` on `(status, starts_at)` — the
-two access patterns the schedule view needs.
-
-```mermaid
-erDiagram
-    SHIFT_CATEGORY ||--o{ SHIFT : "typed as"
-    SHIFT ||--o{ SHIFT_ASSIGNMENT : "filled by"
-    SHIFT {
-        Long id PK
-        Long shiftCategoryId FK
-        Instant startsAt
-        Instant endsAt
-        String status
-        Long locationId "→ employee-service"
-        int requiredEmployees
-    }
-    SHIFT_CATEGORY {
-        Long id PK
-        String name UK
-        String color
-        LocalTime defaultStartTime
-        LocalTime defaultEndTime
-    }
-    SHIFT_ASSIGNMENT {
-        Long id PK
-        Long shiftId FK
-        Long employeeId "→ employee-service"
-        String status
-    }
-    EMPLOYEE_AVAILABILITY {
-        Long id PK
-        Long employeeId "→ employee-service"
-        int dayOfWeek
-        LocalTime startTime
-        LocalTime endTime
-        String type
-    }
+```sh
+docker compose up --build -d
 ```
 
-### 8.6 Payroll — `ems-payroll-service`
-
-All classes are empty. Target:
-
-| Entity             | Target fields                                                                                                        |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `PayPeriod`        | `id`, `startDate`, `endDate`, `status` (`PayPeriodStatus`), `payDate`                                                |
-| `PayrollRecord`    | `id`, `payPeriodId`, `employeeId`, `regularHours`, `overtimeHours`, `grossPay`, `netPay`, `status` (`PayrollStatus`) |
-| `PayrollEarning`   | `id`, `payrollRecordId`, `type` (`EarningType`), `amount`, `description`                                             |
-| `PayrollDeduction` | `id`, `payrollRecordId`, `type` (`DeductionType`), `amount`, `description`                                           |
-
-| Enum              | Target values                                            |
-| ----------------- | -------------------------------------------------------- |
-| `PayPeriodStatus` | `OPEN`, `PROCESSING`, `CLOSED`                           |
-| `PayrollStatus`   | `DRAFT`, `FINALIZED`, `PAID`                             |
-| `EarningType`     | `REGULAR`, `OVERTIME`, `BONUS`, `HOLIDAY`, `PTO`         |
-| `DeductionType`   | `TAX`, `INSURANCE`, `RETIREMENT`, `GARNISHMENT`, `OTHER` |
-
-All monetary fields are `BigDecimal` with an explicit scale. Never `double`.
-
-```mermaid
-erDiagram
-    PAY_PERIOD ||--o{ PAYROLL_RECORD : "contains"
-    PAYROLL_RECORD ||--o{ PAYROLL_EARNING : "credits"
-    PAYROLL_RECORD ||--o{ PAYROLL_DEDUCTION : "debits"
-    PAY_PERIOD {
-        Long id PK
-        LocalDate startDate
-        LocalDate endDate
-        String status
-    }
-    PAYROLL_RECORD {
-        Long id PK
-        Long payPeriodId FK
-        Long employeeId "→ employee-service"
-        BigDecimal grossPay
-        BigDecimal netPay
-        String status
-    }
-    PAYROLL_EARNING {
-        Long id PK
-        Long payrollRecordId FK
-        String type
-        BigDecimal amount
-    }
-    PAYROLL_DEDUCTION {
-        Long id PK
-        Long payrollRecordId FK
-        String type
-        BigDecimal amount
-    }
-```
-
-### 8.7 Notification — `ems-notification-service`
-
-| Entity         | Target fields                                                                           |
-| -------------- | --------------------------------------------------------------------------------------- |
-| `Notification` | `id`, `employeeId`, `type` (`NotificationType`), `title`, `body`, `readAt`, `createdAt` |
-
-`NotificationType` target values: `PTO_REVIEWED`, `SHIFT_ASSIGNED`, `SCHEDULE_PUBLISHED`,
-`TIMESHEET_APPROVED`, `PAYSTATEMENT_AVAILABLE`. It is currently declared as `class` with
-no constants.
-
----
-
-## 9. Unplaced domains: `organization` and `reporting`
-
-The monolith has ten domain packages. Eight map onto a microservice. Two do not, and no
-target module was ever created for them.
-
-### 9.1 `organization` → fold into `ems-employee-service`
-
-`organization` holds `Department` and `Location` (17 files in the monolith, of which only
-`Department` has fields).
-
-**Recommendation: merge it into `ems-employee-service` as a second package —
-`employee/` and `organization/` side by side in one module.**
-
-Why not its own service:
-
-- It is **low-churn master data**. A company adds a department a few times a year. A
-  service that is deployed independently but never changes independently is pure overhead.
-- It is **almost never read alone**. Nearly every employee query wants the department
-  name, so a separate service would put a network call on the hot path of the most-used
-  endpoint in the system, and force the employee service to either join in memory or
-  denormalize.
-- The employee service is the **only writer** with a real interest in it.
-
-Keeping departments in the same database as employees also lets `Employee.departmentId`
-be a genuine foreign key with referential integrity — the one place in this architecture
-where that is both possible and desirable.
-
-`Location` is referenced by scheduling (`Shift.locationId`, and the
-`idx_shift_location_start` index). That stays a **scalar ID** across the boundary; if the
-schedule view needs location names, scheduling fetches them from the employee service or
-the frontend resolves them from a cached lookup list.
-
-### 9.2 `reporting` → defer; build later as a read model
-
-`reporting` covers attendance, payroll, PTO, and labour-cost reports with CSV and PDF
-export (12 files in the monolith, all stubs).
-
-**Recommendation: do not build a reporting service now.**
-
-Reports span every domain. A reporting service built today would have to fan out
-synchronously to six services that do not exist yet, and each report would be as slow and
-as fragile as the slowest service it calls. It is also the section of the system most
-likely to be redesigned once there is real data to look at.
-
-The sequence:
-
-1. **Now** — the frontend dashboard composes the two or three calls it needs directly.
-   `SupervisorDashboard.tsx` already exists and needs only a handful of summary endpoints.
-2. **Next** — each service exposes its own narrow summary endpoints
-   (`GET /api/timesheets/summary?period=…`). Every service already has an
-   `AttendanceSummaryResponse`-style DTO in its scaffold. This covers most reporting needs
-   at a fraction of the cost.
-3. **Later, only if needed** — introduce `ems-reporting-service` as a genuine **read
-   model**: it subscribes to domain events, maintains its own denormalized tables, and
-   answers cross-domain queries without calling anyone. That design requires the event
-   backbone from [§10.2](#102-inter-service-communication) to exist first, which is
-   another reason to defer it.
-
-CSV and PDF export belong to that later service. They are presentation concerns and
-should not be scattered across six services.
-
----
-
-## 10. Architecture recommendations
-
-### 10.1 Service discovery
-
-**Recommendation: do not add Eureka, Consul, or a config server. Use static gateway
-routes with Docker Compose DNS.**
-
-A service registry solves a problem this system does not have. Its value appears with
-many instances per service, dynamic scaling, and client-side load balancing. Here there
-are seven services with one instance each on one host.
-
-What it would cost: an additional Spring Boot application to run and keep healthy, a
-registration client in every service, a new startup-ordering failure mode, and a
-registry outage as a new way for the whole system to break.
-
-What to do instead:
-
-- **Local development** — routes point at `http://localhost:808x` using the
-  [port map](#port-map).
-- **Docker Compose** — routes point at `http://ems-auth-service:8081`. Compose provides
-  DNS by service name; this is service discovery, and it is free.
-- **Kubernetes, later** — Kubernetes Services provide DNS and load balancing natively.
-  Adding Eureka now would mean removing it then.
-
-Externalize the URIs as environment variables
-(`EMS_AUTH_URI`, `EMS_EMPLOYEE_URI`, …) so the same gateway image runs in every
-environment. That gets the real benefit of a config server without running one.
-
-Revisit only when running multiple instances per service with dynamic scaling.
-
-### 10.2 Inter-service communication
-
-**Recommendation: two phases. Synchronous REST first; add a broker only when there is a
-producer for it.**
-
-There are exactly three genuine cross-service reads in the design:
-
-| Caller     | Callee     | Why                                       |
-| ---------- | ---------- | ----------------------------------------- |
-| payroll    | attendance | Approved hours for a pay period           |
-| scheduling | employee   | Validate an employee exists and is active |
-| leave      | employee   | Same                                      |
-
-**Phase 1 — synchronous REST via OpenFeign.** Add `spring-cloud-starter-openfeign` and
-declare a typed client per dependency. Feign gives an interface that reads like a method
-call, integrates with Spring Cloud LoadBalancer if discovery is ever added, and is
-trivial to stub in tests.
-
-Rules for Phase 1:
-
-- Set connect and read timeouts explicitly. An unbounded call to a hung service exhausts
-  the caller's thread pool and turns one outage into two.
-- Wrap each client in a fallback that degrades rather than propagates — Resilience4j's
-  circuit breaker, or a plain try/catch returning a sensible default.
-- Never call a service inside a database transaction. Fetch first, then open the
-  transaction.
-- The payroll → attendance call is a **batch** call
-  (`GET /api/time-entries?period=…&status=APPROVED`), not one call per employee.
-
-**Phase 2 — a message broker for events.** The three notification flows
-(`PtoReviewedEvent`, `SchedulePublishedEvent`, `ShiftAssignedEvent`) are fire-and-forget
-fan-out. A leave approval must not fail because the mail server is down, and the leave
-service should not know the notification service exists.
-
-Use **RabbitMQ**, not Kafka. Kafka's strengths — partitioned ordered logs, replay,
-high-throughput streaming — are not needed here; its operational cost (broker plus
-coordination, partition and consumer-group tuning) is real. RabbitMQ handles a topic
-exchange with a handful of routing keys with far less to run and understand. If an event
-log for replay becomes a requirement — most likely when the reporting read model arrives
-— reconsider then.
-
-**Do not add the broker before Phase 2 has a producer.** An empty broker is
-infrastructure to operate with nothing flowing through it.
-
-Event conventions when you get there: exchange `ems.events`, routing keys
-`pto.reviewed`, `schedule.published`, `shift.assigned`; payloads carry IDs and an
-`occurredAt`, never entities; consumers must be **idempotent**, because at-least-once
-delivery means every listener will eventually see a duplicate.
-
-### 10.3 Database strategy
-
-**Recommendation: database-per-service, realized initially as one PostgreSQL instance
-with one schema per service.**
-
-| Option                               | Assessment                                                                                                                                                                                     |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shared schema                        | Rejected. Any service can read and write any table; boundaries erode silently and the split becomes decorative.                                                                                |
-| **Schema per service, one instance** | **Recommended now.** One container to run and back up. Each service gets its own credentials with grants only on its own schema — the boundary is enforced by the database, not by convention. |
-| Instance per service                 | The eventual target under real load. Premature today: seven containers, seven backup jobs, seven tuning exercises.                                                                             |
-
-The migration from schema-per-service to instance-per-service is a connection-string
-change, provided the boundary rule was respected — which is exactly why it must be
-enforced from the start.
-
-Concretely:
-
-- Schemas `auth`, `employee`, `attendance`, `leave`, `scheduling`, `payroll`,
-  `notification`.
-- One database role per service, granted on its own schema only.
-- **No cross-schema foreign keys, ever.** Referential integrity across services is
-  maintained by the owning service, not by the database. An employee ID in the payroll
-  schema is just a number.
-- **Flyway per service**, migrations in `src/main/resources/db/migration`
-  (`V1__create_employees.sql`, …). `ems-auth-service` already has an empty
-  `src/main/resources/db/` directory waiting for this.
-- Set `spring.jpa.hibernate.ddl-auto: validate`. Never `update` outside a scratch
-  database — it silently diverges environments and cannot be reviewed.
-
-On consistency: a cross-service operation cannot be atomic. The payroll run is the one
-place this bites, and the design already handles it — payroll refuses to run over
-unapproved time entries and locks the period on finalization, so it reads a stable
-snapshot rather than needing a distributed transaction.
-
-### 10.4 Add a parent pom and a shared library
-
-Two structural gaps are worth closing before writing feature code, because both get more
-expensive the longer they wait.
-
-**A parent aggregator `pom.xml` at `ems-services/`.** None exists, so the backend cannot
-be built or tested with one command, and every module manages its own dependency
-versions. A parent with a `<modules>` list and a `<dependencyManagement>` block gives
-`mvn clean install` at the root and one place to change the Spring Boot version.
-
-**An `ems-common` module.** `AuditableEntity`, `ClockConfig`, `JacksonConfig`,
-`JpaAuditingConfig`, `OpenApiConfig`, `ApiErrorResponse`, `PageResponse`, `ErrorCode`,
-and `GlobalExceptionHandler` are currently **byte-identical copies across five modules**.
-Every fix has to be applied five times, and they will drift. Extract them into a plain
-jar module that the services depend on.
-
-Keep `ems-common` strictly cross-cutting: configuration, error envelopes, base classes.
-**No domain types.** A shared library holding domain entities recreates the monolith with
-extra steps.
-
-While extracting: `OpenApiConfig` is 167 lines declaring **eleven** `OpenAPI` beans
-describing the entire system, copied into every service. springdoc consumes one. Each
-service should declare one bean describing its own API; use `GroupedOpenApi` if grouping
-is wanted within a service.
-
-**Dependency baseline for every service** (only `ems-auth-service` has any of this
-today): `spring-boot-starter-web`, `spring-boot-starter-data-jpa`,
-`spring-boot-starter-validation`, `postgresql` (runtime scope), `flyway-core`,
-`spring-boot-starter-actuator`, `springdoc-openapi-starter-webmvc-ui`, `lombok`.
-
-### 10.5 Smaller suggestions
-
-| Suggestion                                                                  | Why                                                                                                                                                                                                        |
-| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Add `spring-boot-starter-actuator` everywhere and expose `/actuator/health` | Container orchestrators need a health endpoint; it is one dependency                                                                                                                                       |
-| Add `.DS_Store` and `target/` to the root `.gitignore`                      | `.DS_Store` files are currently tracked and show as modified on every commit                                                                                                                               |
-| Delete `ems-backend/` once migration completes                              | Two copies of the same taxonomy invite editing the wrong one                                                                                                                                               |
-| Write tests alongside features, not after                                   | 19 of 20 test files are empty stubs; the calculators (`WorkedTimeCalculator`, `OvertimePayCalculator`, `NetPayCalculator`) are pure functions and are the cheapest, highest-value unit tests in the system |
-| Use Testcontainers for repository tests                                     | Tests against a real PostgreSQL catch the mapping problems H2 hides                                                                                                                                        |
-| Add a minimal CI workflow                                                   | There is no `.github/`; even `mvn verify` on push is worth having from the first green build                                                                                                               |
-
----
-
-## 11. Local development setup
-
-**Target.** These are the steps that will work once the modules are wired up. They do
-**not** work today — see [§2](#2-status-at-a-glance).
-
-### Prerequisites
-
-| Tool             | Version                                                           |
-| ---------------- | ----------------------------------------------------------------- |
-| JDK              | 17                                                                |
-| Maven            | Use the bundled `./mvnw` (Maven 3.9.16) — no local install needed |
-| Docker + Compose | For PostgreSQL                                                    |
-| Node.js          | 20+, for the frontend                                             |
-
-### Infrastructure
-
-`ems-services/docker-compose.yml` currently contains only the word `services:`. It needs
-at minimum a database:
-
-```yaml
-services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: ems-postgres
-    environment:
-      POSTGRES_DB: ems
-      POSTGRES_USER: ems
-      POSTGRES_PASSWORD: ems
-    ports:
-      - "5432:5432"
-    volumes:
-      - ems-pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ems"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  ems-pgdata:
-```
-
-Create one schema per service (see [§10.3](#103-database-strategy)) via an init script or
-the first Flyway migration.
-
-```bash
-cd ems-services
-docker compose up -d
-```
-
-### Per-service configuration
-
-Each service needs a real `application.yml`. Today each has a one-line
-`application.properties` with only `spring.application.name`. Template — substitute the
-service name, port, and schema:
-
-```yaml
-server:
-  port: 8082 # see the port map in §5
-
-spring:
-  application:
-    name: ems-employee-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/ems?currentSchema=employee
-    username: ${DB_USER:ems}
-    password: ${DB_PASSWORD:ems}
-  jpa:
-    hibernate:
-      ddl-auto: validate # never 'update' outside a scratch database
-    open-in-view: false # avoid lazy loading in the view layer
-    properties:
-      hibernate.jdbc.time_zone: UTC
-  flyway:
-    enabled: true
-    schemas: employee
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
-logging:
-  level:
-    com.emssystem: DEBUG
-```
-
-The auth service additionally needs:
-
-```yaml
-ems:
-  jwt:
-    secret: ${JWT_SECRET:change-me-in-production-min-256-bits}
-    issuer: ems-auth-service
-    access-token-ttl: PT15M
-    refresh-token-ttl: P7D
-```
-
-Never commit a real secret. Bind these through a `JwtProperties`
-`@ConfigurationProperties` class.
-
-### Running
-
-Each module has its own wrapper — there is no root build until a
-[parent pom](#104-add-a-parent-pom-and-a-shared-library) is added:
-
-```bash
-# one service
-cd ems-services/ems-employee-service
+The latter starts only the seven configured services, not gateway or notification.
+It is not a verified full-stack setup: several services have no workflows, and
+database/migration/startup issues remain. This documentation update did not run
+container builds or start database containers.
+
+### Configuration when running a service directly
+
+Employee, organization, attendance, leave, scheduling, payroll, and notification
+YAML files accept `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`, with local defaults.
+Those defaults are not automatically populated from root `.env` by Maven.
+Root Compose instead injects `SPRING_DATASOURCE_URL`,
+`SPRING_DATASOURCE_USERNAME`, and `SPRING_DATASOURCE_PASSWORD` for its containers.
+
+Set the appropriate datasource variables and a distinct `SERVER_PORT`, then run
+inside the selected service directory:
+
+```sh
 ./mvnw spring-boot:run
+```
 
-# tests
+Auth needs special attention: `application.properties` contains a localhost
+datasource and `ddl-auto=update`, while `application.yml` uses required `DB_*`
+placeholders and `ddl-auto=validate`. Same-location properties take precedence
+over YAML for overlapping keys. Explicit environment overrides are needed to
+avoid unintentionally using the properties-file datasource/DDL setting. Auth
+also declares Flyway/health settings without the corresponding Flyway/actuator
+starters. Those settings do not establish migrations or health endpoints.
+
+JWT properties are `security.jwt.secret`, `security.jwt.issuer`,
+`security.jwt.access-token-ttl`, and `security.jwt.refresh-token-ttl`.
+The existing literal secret and database credentials must be externalized as part
+of completing auth; do not copy their values into documentation or examples.
+
+### Standalone organization stack
+
+Organization has a separate Compose file with its own database volume and service
+readiness health check:
+
+```sh
+cd ems-organization-service
+docker compose up --build --wait
+```
+
+It uses `postgres:18-alpine`, defaults to host port 8087, and accepts
+`ORGANIZATION_PORT` and `DB_PASSWORD`. It does not depend on the root platform
+stack. Avoid using the same host port for both organization stacks simultaneously.
+See the [service README](ems-organization-service/README.md) for lifecycle details.
+
+### Tests
+
+Run existing unit/API tests from an individual service directory:
+
+```sh
 ./mvnw test
 ```
 
-Start order once services depend on each other: PostgreSQL → auth → the domain services
-→ gateway.
+Run organization's opt-in PostgreSQL tests from its directory:
 
-Frontend:
-
-```bash
-cd frontend
-npm install
-npm run dev          # http://localhost:5173
+```sh
+./mvnw -Pintegration verify
 ```
 
-The Vite dev origin must match `allowedOrigins` in the gateway's CORS configuration.
+That profile requires a running Docker daemon and uses an isolated PostgreSQL 18
+container. Its source covers migrations, startup, real HTTP CRUD/health checks,
+constraints, auditing, rollback, and concurrency. It fails rather than silently
+skipping when Docker is unavailable. Its execution is not part of the latest
+baseline reported in section 2.
 
-### API documentation
+Reports are under each module's `target/surefire-reports/`; integration-profile
+reports use `target/failsafe-reports/`. The audit's temporary console logs are in
+`/tmp/ems-<service>-baseline.log` and should not be treated as durable artifacts.
 
-With `springdoc-openapi-starter-webmvc-ui` on the classpath, each service publishes
-Swagger UI at `http://localhost:<port>/swagger-ui.html`. Fix `OpenApiConfig` first —
-see [§10.4](#104-add-a-parent-pom-and-a-shared-library).
+### API documentation and health
 
----
+Organization serves its static contract at `/openapi.json` and configures
+`/actuator/health`, `/actuator/health/liveness`, and
+`/actuator/health/readiness`; readiness includes the database. Auth declares a
+springdoc dependency, but authenticated startup and Swagger access were not
+verified. There is no system-wide Swagger aggregation or health API.
 
-## 12. Roadmap
+### Checks performed for the current baseline
 
-Ordered by dependency: each step unblocks the next. Steps 1–3 are foundational; nothing
-else can be tested end-to-end until they are done.
+- All nine Maven test suites were run; results and limitations are in section 2.
+- `docker compose config --quiet` passed after correcting the initialization path.
+- The PostgreSQL initialization script passed `bash -n` syntax checking.
+- Container builds, database integration tests, Java 17 runtime execution, and
+  complete business flows remain unverified.
 
-|      # | Step                                                                                                                                                                                                                                       | Why here                                                                                                     |
-| -----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-|  **1** | **Foundation** — parent `pom.xml`, `ems-common` module, real `docker-compose.yml`, per-service `application.yml`, dependency baseline in every pom                                                                                         | Nothing compiles or runs until this exists. Doing it now avoids repeating it seven times.                    |
-|  **2** | **Auth service** — fix the compile error, add a JWT library, implement `JwtTokenService`, `AuthenticationService`, `AuthController`, and the `SecurityFilterChain`; restore a `UserController` to expose the existing `UserAccountService` | Every other service authenticates through it, and `UserAccountService` is already written but unreachable.   |
-|  **3** | **Gateway** — Spring Cloud Gateway dependency and BOM, routes, JWT filter, CORS                                                                                                                                                            | Makes the system addressable from the frontend as one origin. First point at which anything is demonstrable. |
-|  **4** | **Employee service** — `Employee` entity cleanup, repository, service, controller; fold in `organization` (`Department`, `Location`)                                                                                                       | Every other domain references `employeeId`. Nothing downstream can be tested without real employees.         |
-|  **5** | **Attendance service** — `TimeEntry`, `TimeEntryAdjustment`, the two enums, clock in/out, timesheets, approval, `WorkedTimeCalculator`, `OvertimeCalculator`                                                                               | Payroll's input. The calculators are pure functions — start with their unit tests.                           |
-|  **6** | **Leave service** — migrate the whole `pto` domain from the monolith: requests, balances, ledger, accrual, approval, the two validators                                                                                                    | Entirely unbuilt, and the largest single piece of work. The frontend already routes `/pto`.                  |
-|  **7** | **Scheduling service** — finish `Shift`, add `ShiftAssignment` and `EmployeeAvailability`, conflict detection, publish flow                                                                                                                | Two entities and two enums already exist — the best-started domain after auth.                               |
-|  **8** | **Payroll service** — pay periods, generation from approved hours, the four calculators, finalization, pay statements                                                                                                                      | Depends on approved attendance data from step 5.                                                             |
-|  **9** | **Notification service + broker** — RabbitMQ, the three events, listeners, email                                                                                                                                                           | Needs real producers (steps 6 and 7) to exist first.                                                         |
-| **10** | **Reporting** — summary endpoints per service; a read-model service only if those prove insufficient                                                                                                                                       | See [§9.2](#92-reporting--defer-build-later-as-a-read-model).                                                |
+## 12. Remaining work
 
-Running through steps 1–4 produces the first genuinely demonstrable slice: log in through
-the gateway and manage employees end to end.
+The sequence below describes dependencies between unfinished work. It does not
+select the outstanding architecture or business-policy decisions.
 
----
+| Stage | Remaining work | Completion evidence needed |
+| --- | --- | --- |
+| Foundation | Resolve build/configuration drift, database migration startup, API conventions and internal contracts | Reproducible builds and database-backed startup |
+| Auth and gateway | Complete auth wiring/migrations/bootstrap/logout; implement gateway and agreed security model | Authenticated routing, role/ownership checks and negative security tests |
+| Employee and organization | Add authorization and cross-service reference rules | Authorized CRUD and invalid-reference/concurrency tests |
+| Attendance | Implement clock, approval, adjustment and time calculations | Policy tests, duplicate-clock protection and PostgreSQL workflow tests |
+| Leave | Implement reservations, review, accrual, cancellation and ledger updates | Balance invariants, concurrency and idempotent accrual tests |
+| Scheduling | Implement shifts, categories, availability, conflicts and publication | Assignment/publishing workflows and conflict/concurrency tests |
+| Payroll | Implement input retrieval, calculations, generation, statements and finalization | Stable inputs, repeated-run behavior and immutability tests |
+| Notifications | Implement chosen event transport, recipients, delivery and history APIs | Duplicate/retry handling and delivery-failure tests |
+| Full stack | Add missing Compose services, verify deployment, align docs and optional frontend scope | End-to-end flows across the agreed service boundaries |
+
+Reporting and exports remain unimplemented and outside any confirmed completion
+scope. Existing employee/organization APIs should be extended rather than described
+as empty scaffolds or rebuilt on that premise.
 
 ## 13. Frontend consumers
 
-The React SPA in `frontend/` is the only consumer of this backend. Understanding its
-current state clarifies what the backend needs to deliver first.
+The sibling frontend declares React 19, Vite 8, MUI 9, React Router 7 and TypeScript
+6. It uses mock employee rows and dashboard content. No `fetch`/axios API client,
+API base URL, token storage, login route, or refresh interceptor was found in its
+current source. Backend availability does not yet change the displayed data.
 
-|               |                                                             |
-| ------------- | ----------------------------------------------------------- |
-| Stack         | React 19, TypeScript, Vite, MUI, React Router 7             |
-| HTTP client   | **None** — no axios, no fetch wrapper, no query library     |
-| API base URL  | **None** — no constant, no `.env`, no Vite dev proxy        |
-| Auth handling | **None** — no login page, no token storage, no interceptors |
-| Data source   | Hard-coded mock arrays                                      |
+| Route | Page | Current integration |
+| --- | --- | --- |
+| `/dashboard` | `SupervisorDashboard` | UI exists; not connected to backend summaries |
+| `/employees` | `EmployeeManagementPage` | Mock employee array |
+| `/attendance` | `AttendancePage` | Placeholder |
+| `/schedule` | `SchedulePage` | Placeholder |
+| `/pto` | `PTOPage` | Placeholder |
+| `/payroll` | `PayrollPage` | Placeholder |
 
-`frontend/src/data/employees.ts` carries the comment:
+The frontend and backend employee shapes still differ:
 
-```ts
-/** Placeholder rows until the Spring Boot employee endpoint is wired up. */
-```
+| Frontend field | Current backend counterpart / missing integration |
+| --- | --- |
+| `name` | Combine `firstName` and `lastName` |
+| `department` string | Resolve `departmentId` through organization |
+| `position` | `jobTitle` now exists; mapping remains to be wired |
+| `phone` | `phoneNumber` |
+| `status`: Active / On Leave / Inactive | `active` boolean; leave-derived state not implemented |
+| `openRequests` | No employee response field; leave integration needed |
+| No corresponding mock fields | `employeeNumber`, address, birth date, pay rate, account link, role |
 
-That is the entire integration story so far. The frontend and backend have never been
-connected.
-
-### Routes and the services behind them
-
-The SPA's routes are the clearest statement of what the backend is expected to provide:
-
-| Route         | Page                     | Backing service          | Backend status                         |
-| ------------- | ------------------------ | ------------------------ | -------------------------------------- |
-| `/dashboard`  | `SupervisorDashboard`    | cross-domain summaries   | ⬜ Needs per-service summary endpoints |
-| `/employees`  | `EmployeeManagementPage` | `ems-employee-service`   | ⬜ Scaffold                            |
-| `/attendance` | `AttendancePage`         | `ems-attendance-service` | ⬜ Scaffold                            |
-| `/schedule`   | `SchedulePage`           | `ems-scheduling-service` | ⬜ Scaffold                            |
-| `/pto`        | `PTOPage`                | `ems-leave-service`      | ❌ Not started                         |
-| `/payroll`    | `PayrollPage`            | `ems-payroll-service`    | ⬜ Scaffold                            |
-
-Only `/employees` and `/dashboard` are fleshed out; the rest are placeholder pages. This
-matches the backend roadmap — employee service is step 4 for the same reason.
-
-### Contract to reconcile
-
-The frontend's mock `Employee` type does not match the backend entity:
-
-| Frontend                                       | Backend                                             |
-| ---------------------------------------------- | --------------------------------------------------- |
-| `name: string`                                 | `firstName` + `lastName`                            |
-| `department: string`                           | `departmentId` → `Department`                       |
-| `position: string`                             | no equivalent field                                 |
-| `status: "Active" \| "On Leave" \| "Inactive"` | `active: boolean`                                   |
-| —                                              | `employeeNumber`, `address`, `birthDate`, `payRate` |
-
-Two of these are real design questions, not mapping details: `position` has no backend
-home (add it to `Employee`, or model it as a job title reference), and the frontend's
-three-state `status` carries information the backend's boolean cannot — "On Leave" is
-derived from the leave service, not stored on the employee. Settle both before writing
-the employee API.
-
-### When wiring the frontend
-
-- Put the base URL in `VITE_API_BASE_URL` (`.env.local`), pointing at the gateway
-  (`http://localhost:8080`). One origin — that is the point of the gateway.
-- Add a single API client module with an interceptor that attaches the bearer token and
-  refreshes on `401`. Do not scatter `fetch` calls through components.
-- Generate TypeScript types from each service's OpenAPI schema rather than hand-writing
-  them. It is the cheapest way to keep the contract honest across a seven-service backend.
+Future integration needs an agreed public API base URL, authentication flow, API
+client, and response mapping. The old suggestion to point the frontend at a
+working gateway on port 8080 is not a runnable instruction today.
 
 ---
 
-_Generated 2026-09-17 from inspection of the `ems-services` source tree._
+Updated from the current working tree and the 2026-09-23 verification results.
+Planned behavior and unresolved decisions above are not implementation claims.
