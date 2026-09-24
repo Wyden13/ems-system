@@ -1,4 +1,0 @@
-package com.emssystem.ems.payroll.controller;
-
-public class PayPeriodController {
-}
