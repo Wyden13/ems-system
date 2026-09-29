@@ -1,0 +1,6 @@
+spring:
+  grpc:
+    server:
+      enabled: false
+    client:
+      enabled: false
