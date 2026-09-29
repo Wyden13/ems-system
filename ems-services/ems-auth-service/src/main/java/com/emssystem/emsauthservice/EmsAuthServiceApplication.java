@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EmsAuthServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EmsAuthServiceApplication.class, args);
+        var context = SpringApplication.run(EmsAuthServiceApplication.class, args);
+        if (context.getEnvironment().acceptsProfiles(org.springframework.core.env.Profiles.of("bootstrap"))) context.close();
     }
 
 }

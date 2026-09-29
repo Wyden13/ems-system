@@ -1,13 +1,3 @@
 package com.emssystem.emsnotificationservice;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class EmsNotificationServiceApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+import com.emssystem.emsnotificationservice.notification.entity.Notification; import com.emssystem.emsnotificationservice.notification.enums.NotificationType; import org.junit.jupiter.api.Test; import java.time.Instant; import static org.junit.jupiter.api.Assertions.*;
+class EmsNotificationServiceApplicationTests{@Test void initializesUnreadNotification(){Notification notification=new Notification(1L,NotificationType.SHIFT_ASSIGNED,"Shift","Assigned",Instant.EPOCH);assertNull(notification.getReadAt());assertEquals(NotificationType.SHIFT_ASSIGNED,notification.getType());}}

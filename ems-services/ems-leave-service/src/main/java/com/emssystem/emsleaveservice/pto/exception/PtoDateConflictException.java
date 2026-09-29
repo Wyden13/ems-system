@@ -1,0 +1,1 @@
+package com.emssystem.emsleaveservice.pto.exception; public class PtoDateConflictException extends RuntimeException{public PtoDateConflictException(Long employeeId){super("Conflicting PTO dates for employee: "+employeeId);}}

@@ -1,0 +1,30 @@
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.grpc.server.autoconfigure.security.GrpcServerOAuth2ResourceServerAutoConfiguration
+  grpc:
+    server:
+      port: 9090
+      reflection:
+        enabled: false
+      ssl:
+        bundle: service
+        client-auth: require
+    client:
+      channel:
+        auth:
+          target: ${AUTH_GRPC_TARGET:auth-service:9090}
+          ssl:
+            bundle: service
+        organization:
+          target: ${ORGANIZATION_GRPC_TARGET:organization-service:9090}
+          ssl:
+            bundle: service
+  ssl:
+    bundle:
+      pem:
+        service:
+          keystore:
+            certificate: ${TLS_CERT}
+            private-key: ${TLS_KEY}
+          truststore:
+            certificate: ${TLS_CA}

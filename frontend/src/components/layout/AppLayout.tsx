@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Box,
   Breadcrumbs,
@@ -22,19 +22,16 @@ type AppLayoutProps = {
  */
 export default function AppLayout({ children }: AppLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobilePath, setMobilePath] = useState<string | null>(null);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const { pathname } = useLocation();
   const current = getNavLabel(pathname);
 
-  // Navigating on mobile should dismiss the overlay.
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  const mobileOpen = mobilePath === pathname;
 
   const toggleSidebar = () => {
     if (isMobile) {
-      setMobileOpen((open) => !open);
+      setMobilePath(mobileOpen ? null : pathname);
     } else {
       setCollapsed((open) => !open);
     }
@@ -47,7 +44,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         collapsed={collapsed}
         isMobile={isMobile}
         mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
+        onClose={() => setMobilePath(null)}
       />
       <Box
         component="main"

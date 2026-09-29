@@ -1,4 +1,4 @@
 package com.emssystem.emsschedulingservice.scheduling.dto.request;
-
-public class PublishShiftRequest {
-}
+import jakarta.validation.constraints.NotNull;
+import java.time.Instant;
+public record PublishShiftRequest(@NotNull Instant from,@NotNull Instant to) {}

@@ -1,4 +1,2 @@
 package com.emssystem.emsschedulingservice.scheduling.enums;
-
-public enum AvailabilityType {
-}
+public enum AvailabilityType { AVAILABLE, UNAVAILABLE, PREFERRED }

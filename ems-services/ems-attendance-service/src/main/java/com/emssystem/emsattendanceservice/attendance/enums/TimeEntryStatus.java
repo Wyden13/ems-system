@@ -1,4 +1,2 @@
 package com.emssystem.emsattendanceservice.attendance.enums;
-
-public class TimeEntryStatus {
-}
+public enum TimeEntryStatus { OPEN, PENDING_APPROVAL, APPROVED, REJECTED }

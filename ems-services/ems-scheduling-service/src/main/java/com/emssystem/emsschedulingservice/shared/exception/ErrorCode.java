@@ -1,4 +1,1 @@
-package com.emssystem.emsschedulingservice.shared.exception;
-
-public class ErrorCode {
-}
+package com.emssystem.emsschedulingservice.shared.exception; public enum ErrorCode { VALIDATION_ERROR, RESOURCE_NOT_FOUND, BUSINESS_RULE_VIOLATION, CONFLICT }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ems.references.v1;
+option java_package = "com.emssystem.contracts.v1";
+option java_multiple_files = true;
+service AccountReferences { rpc GetAccount (AccountLookup) returns (AccountReference); }
+service DepartmentReferences { rpc GetDepartment (DepartmentLookup) returns (DepartmentReference); }
+message AccountLookup { string account_id = 1; }
+message AccountReference { string account_id = 1; }
+message DepartmentLookup { int64 department_id = 1; }
+message DepartmentReference { int64 department_id = 1; string name = 2; bool archived = 3; int64 location_id = 4; string location_name = 5; }
+
+service OrganizationDirectory { rpc ListDepartments(DirectoryLookup) returns (DepartmentDirectory); }
+message DirectoryLookup {}
+message DepartmentDirectory { repeated DepartmentReference departments = 1; }

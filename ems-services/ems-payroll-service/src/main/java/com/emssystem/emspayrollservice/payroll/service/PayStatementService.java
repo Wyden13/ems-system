@@ -1,4 +1,10 @@
 package com.emssystem.emspayrollservice.payroll.service;
 
-public class PayStatementService {
+import com.emssystem.emspayrollservice.payroll.dto.response.PayStatementResponse;
+import java.util.*;
+
+public interface PayStatementService {
+    List<PayStatementResponse> mine(UUID accountId);
+
+    PayStatementResponse get(UUID accountId, Long recordId);
 }

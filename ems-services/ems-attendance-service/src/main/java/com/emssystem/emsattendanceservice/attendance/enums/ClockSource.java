@@ -1,4 +1,2 @@
 package com.emssystem.emsattendanceservice.attendance.enums;
-
-public class ClockSource {
-}
+public enum ClockSource { WEB, MOBILE, KIOSK, MANUAL }

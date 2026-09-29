@@ -1,3 +1,11 @@
 *.vscode/
 *.idea/
 *.iml
+
+**/target/
+**/node_modules/
+**/dist/
+**/.env
+ems-services/.local/
+frontend/playwright-report/
+frontend/test-results/

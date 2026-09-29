@@ -1,0 +1,15 @@
+CREATE TABLE leave_lock(id INTEGER PRIMARY KEY);
+INSERT INTO leave_lock VALUES (1);
+ALTER TABLE pto_requests ADD COLUMN comment VARCHAR(500);
+ALTER TABLE pto_requests ADD COLUMN request_key UUID UNIQUE;
+ALTER TABLE pto_requests ADD COLUMN operation_error VARCHAR(500);
+ALTER TABLE pto_requests ADD CONSTRAINT ck_request_dates CHECK(end_date>=start_date);
+ALTER TABLE pto_requests ADD CONSTRAINT ck_request_hours CHECK(hours>0);
+ALTER TABLE pto_balances ADD CONSTRAINT ck_balance_nonnegative CHECK(used_hours>=0 AND reserved_hours>=0 AND accrued_hours>=used_hours+reserved_hours);
+ALTER TABLE pto_ledger_entries ADD COLUMN actor UUID;
+ALTER TABLE pto_ledger_entries ADD COLUMN reason VARCHAR(500);
+ALTER TABLE pto_ledger_entries ADD COLUMN request_key UUID UNIQUE;
+CREATE UNIQUE INDEX uk_request_ledger_action ON pto_ledger_entries(source_request_id,entry_type) WHERE source_request_id IS NOT NULL;
+CREATE UNIQUE INDEX uk_pto_type_normalized_name ON pto_types(lower(name));
+CREATE TABLE pto_audits(id BIGSERIAL PRIMARY KEY,request_id BIGINT NOT NULL REFERENCES pto_requests(id),action VARCHAR(30) NOT NULL,actor UUID,reason VARCHAR(500) NOT NULL,occurred_at TIMESTAMPTZ NOT NULL DEFAULT now());
+CREATE INDEX idx_pto_audit_request ON pto_audits(request_id,id);

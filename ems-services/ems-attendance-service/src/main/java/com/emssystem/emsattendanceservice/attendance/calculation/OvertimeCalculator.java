@@ -1,4 +1,5 @@
 package com.emssystem.emsattendanceservice.attendance.calculation;
 
-public class OvertimeCalculator {
+public interface OvertimeCalculator {
+    int calculateOvertimeMinutes(int workedMinutes, int regularMinuteLimit);
 }

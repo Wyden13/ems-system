@@ -1,0 +1,2 @@
+package com.emssystem.emsnotificationservice.notification.mapper; import com.emssystem.emsnotificationservice.notification.dto.NotificationResponse; import com.emssystem.emsnotificationservice.notification.entity.Notification;
+public final class NotificationMapper{private NotificationMapper(){}public static NotificationResponse toResponse(Notification n){return new NotificationResponse(n.getId(),n.getEmployeeId(),n.getType(),n.getTitle(),n.getBody(),n.getReadAt(),n.getCreatedAt());}}

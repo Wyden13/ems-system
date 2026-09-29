@@ -1,0 +1,19 @@
+syntax = "proto3";
+package ems.workforce.v1;
+option java_package = "com.emssystem.contracts.workforce.v1";
+option java_multiple_files = true;
+service WorkforceReferences {
+  rpc GetEmployee(EmployeeLookup) returns (EmployeeInfo);
+  rpc ListEmployees(EmployeeFilter) returns (Employees);
+}
+message EmployeeLookup { oneof key { int64 employee_id = 1; string account_id = 2; } }
+message EmployeeFilter { int64 department_id = 1; }
+message EmployeeInfo {
+  int64 employee_id = 1; string account_id = 2; int64 department_id = 3;
+  string name = 4; string employee_number = 5; bool active = 6; string hourly_rate = 7;
+}
+message Employees { repeated EmployeeInfo employees = 1; }
+service AttendanceRecords { rpc GetEntries(AttendanceLookup) returns (AttendanceEntries); }
+message AttendanceLookup { int64 employee_id = 1; int64 from_epoch_second = 2; int64 to_epoch_second = 3; }
+message AttendanceEntry { int64 id = 1; int64 clock_in = 2; optional int64 clock_out = 3; string status = 4; }
+message AttendanceEntries { repeated AttendanceEntry entries = 1; }

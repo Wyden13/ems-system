@@ -1,4 +1,5 @@
 package com.emssystem.emspayrollservice.payroll.enums;
 
-public class PayPeriodStatus {
+public enum PayPeriodStatus {
+    OPEN, PROCESSING, CLOSED
 }

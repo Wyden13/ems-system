@@ -24,9 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
+@org.springframework.context.annotation.Import({com.emssystem.emsauthservice.security.config.SecurityConfig.class,com.emssystem.emsauthservice.security.config.JwtConfig.class})
 //@AutoConfigureMockMvc(addFilters = false)
 public class AuthControllerTest {
 
+    @MockitoBean com.emssystem.emsauthservice.security.service.RefreshTokenService sessions;
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,7 +46,7 @@ public class AuthControllerTest {
 
         when(authenticationService.login(request)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login").with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -56,7 +58,7 @@ public class AuthControllerTest {
                 .andExpect(header().string(HttpHeaders.CACHE_CONTROL, "no-store"))
                 .andExpect(header().string(HttpHeaders.PRAGMA, "no-cache"))
                 .andExpect(jsonPath("$.accessToken").value("access-token"))
-                .andExpect(jsonPath("$.refreshToken").value("refresh-token"))
+                .andExpect(jsonPath("$.refreshToken").doesNotExist())
                 .andExpect(jsonPath("$.tokenType").value("Bearer"))
                 .andExpect(jsonPath("$.expiresAt").value("2026-09-20T01:00:00Z"));
 
@@ -65,7 +67,7 @@ public class AuthControllerTest {
 
     @Test
     void login_WithInvalidRequest_ReturnsBadRequestWithoutCallingService() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login").with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -89,7 +91,7 @@ public class AuthControllerTest {
 
         when(authenticationService.refresh(request)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/auth/refresh")
+        mockMvc.perform(post("/api/v1/auth/refresh").cookie(new jakarta.servlet.http.Cookie("ems_refresh", "valid-refresh-token")).with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -100,24 +102,19 @@ public class AuthControllerTest {
                 .andExpect(header().string(HttpHeaders.CACHE_CONTROL, "no-store"))
                 .andExpect(header().string(HttpHeaders.PRAGMA, "no-cache"))
                 .andExpect(jsonPath("$.accessToken").value("new-access-token"))
-                .andExpect(jsonPath("$.refreshToken").value("new-refresh-token"))
+                .andExpect(jsonPath("$.refreshToken").doesNotExist())
                 .andExpect(jsonPath("$.tokenType").value("Bearer"))
                 .andExpect(jsonPath("$.expiresAt").value("2026-09-20T02:00:00Z"));
 
         verify(authenticationService).refresh(request);
     }
 
-    @Test
-    void refresh_WithBlankToken_ReturnsBadRequestWithoutCallingService() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/refresh")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                  "refreshToken": ""
-                                }
-                                """))
-                .andExpect(status().isBadRequest());
-
+    @Test void refresh_WithoutCookie_ReturnsUnauthorized() throws Exception {
+        when(authenticationService.refresh(new RefreshTokenRequest(null))).thenThrow(new org.springframework.security.authentication.BadCredentialsException("Invalid token"));
+        mockMvc.perform(post("/api/v1/auth/refresh").with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf())).andExpect(status().isUnauthorized());
+    }
+    @Test void loginRequiresCsrf() throws Exception {
+        mockMvc.perform(post("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"a@b.com\",\"password\":\"Password123!\"}")).andExpect(status().isForbidden());
         verifyNoInteractions(authenticationService);
     }
 }

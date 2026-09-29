@@ -8,7 +8,8 @@ import javax.swing.text.html.Option;
 import java.util.UUID;
 import java.util.Optional;
 
-public interface UserAccountRepository extends JpaRepository<UserAccount, UUID> {
+public interface UserAccountRepository extends JpaRepository<UserAccount, UUID>, org.springframework.data.jpa.repository.JpaSpecificationExecutor<UserAccount> {
+    long countByRoleAndStatus(com.emssystem.emsauthservice.user.enums.RoleType role, com.emssystem.emsauthservice.user.enums.AccountStatus status);
     UserAccount findByEmailIgnoreCase(String email) throws  BadCredentialsException;
     boolean existsByEmailIgnoreCase(String email);
 }

@@ -1,4 +1,5 @@
 package com.emssystem.emspayrollservice.payroll.enums;
 
-public class PayrollStatus {
+public enum PayrollStatus {
+    DRAFT, FINALIZED, PAID
 }

@@ -1,4 +1,5 @@
 package com.emssystem.emspayrollservice.payroll.enums;
 
-public class DeductionType {
+public enum DeductionType {
+    TAX, INSURANCE, RETIREMENT, GARNISHMENT, OTHER
 }

@@ -1,94 +1,51 @@
 package com.emssystem.emsauthservice.security.config;
-
+import org.springframework.context.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.*;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.List;
-
-
+import org.springframework.web.cors.*;
+import java.util.*;
 @Configuration
+@org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 @EnableMethodSecurity
-@EnableWebSecurity
 public class SecurityConfig {
-    /**
-     * Configures this service as a stateless REST API.
-     *
-     * Access JWTs are validated by Spring Security's resource-server support.
-     */
-    @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            JwtAuthenticationConverter jwtAuthenticationConverter
-    ) throws Exception{
-        http.csrf(csrf-> csrf.disable())
-                .cors(cors->{})
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(form->form.disable())
-                .httpBasic(basic->basic.disable())
-                .logout(logout -> logout.disable())
-                .authorizeHttpRequests(authorize-> authorize
-                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers(
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/refresh",
-                                "/actuator/health",
-                                "/error"
-                        ).permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/accounts/**").authenticated()
-                        .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2->oauth2
-                        .jwt(jwt->jwt
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter)))
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(
-                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                        .accessDeniedHandler((request, response, exception) ->
-                                response.sendError(HttpStatus.FORBIDDEN.value(), "Forbidden")));
+    @Bean public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        var authorities = new JwtGrantedAuthoritiesConverter();
+        authorities.setAuthoritiesClaimName("role"); authorities.setAuthorityPrefix("ROLE_");
+        var converter = new JwtAuthenticationConverter(); converter.setJwtGrantedAuthoritiesConverter(authorities);
+        return converter;
+    }
+    @Bean public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationConverter converter,
+            @Value("${app.session.secure-cookie:true}") boolean secureCookie) throws Exception {
+        var csrfRepository = new org.springframework.security.web.csrf.CookieCsrfTokenRepository();
+        csrfRepository.setCookieCustomizer(cookie -> cookie.httpOnly(true).secure(secureCookie).sameSite("Lax").path("/"));
+        http.csrf(csrf -> csrf.csrfTokenRepository(csrfRepository)
+            .csrfTokenRequestHandler(new org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler())
+            .requireCsrfProtectionMatcher(request -> "POST".equals(request.getMethod())
+                && request.getRequestURI().startsWith("/api/v1/auth/")));
+        http.cors(cors -> {}).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .formLogin(form -> form.disable()).httpBasic(basic -> basic.disable()).logout(logout -> logout.disable())
+            .authorizeHttpRequests(requests -> requests
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/actuator/health", "/actuator/health/**", "/error").permitAll()
+                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/logout", "/api/v1/auth/csrf").permitAll()
+                .requestMatchers("/api/v1/accounts/**").authenticated()
+                .requestMatchers("/api/v1/admin/**", "/api/employees", "/api/employees/**", "/api/departments", "/api/departments/**", "/api/locations", "/api/locations/**").hasRole("ADMIN")
+                .anyRequest().denyAll())
+            .oauth2ResourceServer(server -> server.jwt(jwt -> jwt.jwtAuthenticationConverter(converter)))
+            .exceptionHandling(errors -> errors
+                .authenticationEntryPoint((req,res,ex) -> { res.setStatus(401); res.setContentType("application/json"); res.getWriter().write("{\"code\":\"UNAUTHORIZED\",\"message\":\"Authentication required\"}"); })
+                .accessDeniedHandler((req,res,ex) -> { res.setStatus(403); res.setContentType("application/json"); res.getWriter().write("{\"code\":\"FORBIDDEN\",\"message\":\"Access denied or invalid CSRF token\"}"); }));
         return http.build();
     }
-
-    /**
-     * Configure one or more comma-separated frontend origins with:
-     * app.security.allowed-origins=http://localhost:5173,https://example.com
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(
-            @Value("${app.security.allowed-origins:http://localhost:5173}")
-            String allowedOrigins
-    ) {
-        List<String> origins = Arrays.stream(allowedOrigins.split(","))
-                .map(String::trim)
-                .filter(origin -> !origin.isBlank())
-                .toList();
-
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(origins);
-        configuration.setAllowedMethods(
-                List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setExposedHeaders(List.of("Location"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    @Bean public CorsConfigurationSource corsConfigurationSource(@Value("${app.security.allowed-origins:http://localhost:5173}") String origins) {
+        var config = new CorsConfiguration(); config.setAllowedOrigins(Arrays.stream(origins.split(",")).map(String::trim).toList());
+        config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization","Content-Type","X-XSRF-TOKEN"));
+        config.setExposedHeaders(List.of("Location")); config.setAllowCredentials(true);
+        var source = new UrlBasedCorsConfigurationSource(); source.registerCorsConfiguration("/**",config); return source;
     }
 }

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package ems.scheduling.v1;
+option java_package = "com.emssystem.contracts.scheduling.v1";
+option java_multiple_files = true;
+// Scheduling serializes leave holds with assignments to prevent cross-service races.
+service LeaveReservations {
+ rpc Reserve(LeaveHold) returns (HoldResult);
+ rpc Release(HoldKey) returns (HoldResult);
+ rpc Conflicts(LeaveHold) returns (HoldResult);
+}
+message LeaveHold { int64 request_id = 1; int64 employee_id = 2; string start_date = 3; string end_date = 4; }
+message HoldKey { int64 request_id = 1; }
+message HoldResult { bool reserved = 1; repeated int64 conflicting_shift_ids = 2; }

@@ -10,6 +10,7 @@ PATCH /api/v1/accounts/me/profile
 PATCH /api/v1/accounts/me/password
 
 ## Security behavior:
+
 Administrative endpoints require ROLE_ADMIN.
 Self-service endpoints derive the account ID from the authenticated principal, preventing users from modifying another account.
 The future JWT authentication filter must set Authentication.getName() to the account UUID.

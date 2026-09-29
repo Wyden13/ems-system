@@ -35,13 +35,14 @@ public class UserAccount {
     @Column(name = "role", nullable = false, length=30)
     private RoleType role;
 
+    @CreatedDate
     @Column(name="created_at",nullable = false,updatable = false)
     private Instant createdAt;
 
+    @LastModifiedDate
     @Column(name="updated_at",nullable = false)
     private Instant updatedAt;
 
-    @LastModifiedDate
     @Column(name = "last_login_at")
     private Instant lastLoginAt;
 
@@ -84,6 +85,8 @@ public class UserAccount {
     public Instant getLastLoginAt() {
         return lastLoginAt;
     }
+
+    public void recordLogin(Instant now) { this.lastLoginAt = now; }
 
     public void changePassword(String passwordHash){
         this.passwordHash = passwordHash;

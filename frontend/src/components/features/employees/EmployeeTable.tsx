@@ -20,14 +20,12 @@ import {
   type EmployeeStatus,
 } from "../../../data/employees";
 
-const STATUS_COLOR: Record<
-  EmployeeStatus,
-  "success" | "warning" | "default"
-> = {
-  Active: "success",
-  "On Leave": "warning",
-  Inactive: "default",
-};
+const STATUS_COLOR: Record<EmployeeStatus, "success" | "warning" | "default"> =
+  {
+    Active: "success",
+    "On Leave": "warning",
+    Inactive: "default",
+  };
 
 type EmployeeTableProps = {
   employees: Employee[];
@@ -102,15 +100,19 @@ export default function EmployeeTable({ employees }: EmployeeTableProps) {
                   size="small"
                   label={employee.status}
                   color={STATUS_COLOR[employee.status]}
-                  variant={employee.status === "Inactive" ? "outlined" : "filled"}
+                  variant={
+                    employee.status === "Inactive" ? "outlined" : "filled"
+                  }
                   sx={{
                     ...(employee.status !== "Inactive" && {
                       bgcolor: (theme) =>
-                        theme.palette[STATUS_COLOR[employee.status] as "success"]
-                          .light,
+                        theme.palette[
+                          STATUS_COLOR[employee.status] as "success"
+                        ].light,
                       color: (theme) =>
-                        theme.palette[STATUS_COLOR[employee.status] as "success"]
-                          .main,
+                        theme.palette[
+                          STATUS_COLOR[employee.status] as "success"
+                        ].main,
                     }),
                   }}
                 />
@@ -132,9 +134,14 @@ export default function EmployeeTable({ employees }: EmployeeTableProps) {
                   </Typography>
                 )}
               </TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>{employee.hireDate}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>
+                {employee.hireDate}
+              </TableCell>
               <TableCell align="right">
-                <IconButton size="small" aria-label={`Actions for ${employee.name}`}>
+                <IconButton
+                  size="small"
+                  aria-label={`Actions for ${employee.name}`}
+                >
                   <MoreVertIcon fontSize="small" />
                 </IconButton>
               </TableCell>

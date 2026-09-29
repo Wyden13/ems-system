@@ -1,4 +1,2 @@
-package com.emssystem.emsnotificationservice.notification.service;
-
-public class NotificationService {
-}
+package com.emssystem.emsnotificationservice.notification.service; import com.emssystem.emsnotificationservice.notification.dto.NotificationResponse; import com.emssystem.emsnotificationservice.notification.enums.NotificationType; import java.util.List;
+public interface NotificationService{NotificationResponse create(Long employeeId,NotificationType type,String title,String body);List<NotificationResponse> list(Long employeeId);NotificationResponse markRead(Long employeeId,Long notificationId);}

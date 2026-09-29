@@ -1,4 +1,9 @@
 package com.emssystem.emsemployeeservice.shared.exception;
 
-public class ErrorCode {
+public enum ErrorCode {
+    VALIDATION_ERROR,
+    RESOURCE_NOT_FOUND,
+    BUSINESS_RULE_VIOLATION,
+    CONFLICT,
+    INTERNAL_ERROR
 }

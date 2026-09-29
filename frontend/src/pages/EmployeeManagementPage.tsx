@@ -1,150 +1,366 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  Box,
+  Alert,
   Button,
-  Divider,
-  InputAdornment,
   MenuItem,
   Paper,
   Stack,
-  Tab,
-  Tabs,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/SearchRounded";
-import AddIcon from "@mui/icons-material/AddRounded";
-import UploadIcon from "@mui/icons-material/FileUploadOutlined";
-import EmployeeTable from "../components/features/employees/EmployeeTable";
-import { EMPLOYEES, type EmployeeStatus } from "../data/employees";
-
-const STATUS_FILTERS: Array<EmployeeStatus | "All"> = [
-  "All",
-  "Active",
-  "On Leave",
-  "Inactive",
-];
-
+import { api, params, send } from "../api/client";
+import {
+  roles,
+  type Account,
+  type Department,
+  type Employee,
+  type Page,
+} from "../api/types";
+import FormDialog, { type Field } from "../components/management/FormDialog";
+import QueryState from "../components/management/QueryState";
+async function accountOptions(signal: AbortSignal) {
+  const accounts: Account[] = [];
+  for (let page = 0; ; page++) {
+    const result = await api<Page<Account>>(
+      `/api/v1/admin/accounts?page=${page}&size=100`,
+      { signal },
+    );
+    accounts.push(...result.content);
+    if (page + 1 >= result.totalPages) return accounts;
+  }
+}
 export default function EmployeeManagementPage() {
-  const [tab, setTab] = useState(0);
+  const cache = useQueryClient();
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<EmployeeStatus | "All">("All");
-
-  const employees = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return EMPLOYEES.filter((employee) => {
-      const matchesStatus = status === "All" || employee.status === status;
-      const matchesQuery =
-        !query ||
-        employee.name.toLowerCase().includes(query) ||
-        employee.email.toLowerCase().includes(query) ||
-        employee.department.toLowerCase().includes(query);
-      return matchesStatus && matchesQuery;
-    });
-  }, [search, status]);
-
+  const [active, setActive] = useState("");
+  const [department, setDepartment] = useState("");
+  const [page, setPage] = useState(0);
+  const [form, setForm] = useState<{
+    employee?: Employee;
+    readonly?: boolean;
+  } | null>(null);
+  const [activation, setActivation] = useState<Employee | null>(null);
+  const employees = useQuery({
+    queryKey: ["employees", search, active, department, page],
+    queryFn: ({ signal }) =>
+      api<Page<Employee>>(
+        `/api/employees?${params({ search, active, departmentId: department, page, size: 20 })}`,
+        { signal },
+      ),
+  });
+  const departments = useQuery({
+    queryKey: ["departments"],
+    queryFn: ({ signal }) => api<Department[]>("/api/departments", { signal }),
+  });
+  const accounts = useQuery({
+    queryKey: ["account-options"],
+    queryFn: ({ signal }) => accountOptions(signal),
+    enabled: form !== null,
+  });
+  const today = new Date().toLocaleDateString("en-CA");
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const fields: Field[] = [
+    {
+      name: "employeeNumber",
+      label: "Employee number",
+      disabled: true,
+      helper: form?.employee
+        ? undefined
+        : "Assigned in creation order when you save.",
+    },
+    { name: "firstName", label: "First name", required: true, maxLength: 50 },
+    { name: "lastName", label: "Last name", required: true, maxLength: 50 },
+    {
+      name: "email",
+      label: "Employee email",
+      type: "email",
+      required: true,
+      maxLength: 320,
+    },
+    {
+      name: "departmentId",
+      label: "Department",
+      required: true,
+      options: [
+        { value: "", label: "Choose a department" },
+        ...(departments.data ?? [])
+          .filter((d) => !d.archived || d.id === form?.employee?.departmentId)
+          .map((d) => ({
+            value: String(d.id),
+            label: `${d.name}${d.archived ? " (archived)" : ""}`,
+          })),
+      ],
+    },
+    { name: "jobTitle", label: "Job title", maxLength: 100 },
+    {
+      name: "role",
+      label: "Workforce role",
+      required: true,
+      options: roles.map((value) => ({ value, label: value })),
+      helper: "This does not change login permissions.",
+    },
+    {
+      name: "hireDate",
+      label: "Hire date",
+      type: "date",
+      required: true,
+      max: today,
+    },
+    {
+      name: "payRate",
+      label: "Pay rate",
+      type: "number",
+      min: "0",
+      step: "0.01",
+      required: true,
+    },
+    { name: "phoneNumber", label: "Phone number", maxLength: 40 },
+    { name: "address", label: "Address", maxLength: 500 },
+    {
+      name: "birthDate",
+      label: "Birth date",
+      type: "date",
+      max: yesterday.toLocaleDateString("en-CA"),
+    },
+    {
+      name: "userAccountId",
+      label: "Linked login account",
+      options: [
+        { value: "", label: "No linked account" },
+        ...(accounts.data ?? []).map((a) => ({
+          value: a.id,
+          label: `${a.email} (${a.role}, ${a.status})`,
+        })),
+      ],
+      helper:
+        "Required for personal attendance, scheduling and PTO access. Employee activation and account status are managed separately.",
+    },
+  ];
+  async function invalidate() {
+    await Promise.all([
+      cache.invalidateQueries({ queryKey: ["employees"] }),
+      cache.invalidateQueries({ queryKey: ["employee-summary"] }),
+    ]);
+  }
   return (
-    <Paper variant="outlined" sx={{ border: 1, borderColor: "divider" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 2,
-          px: 3,
-          pt: 2.5,
-        }}
-      >
-        <Typography
-          variant="subtitle2"
-          sx={{ letterSpacing: 0.6, textTransform: "uppercase" }}
-        >
-          Company Employees
-        </Typography>
-        <Tabs
-          value={tab}
-          onChange={(_, value) => setTab(value)}
-          sx={{
-            minHeight: 36,
-            "& .MuiTab-root": { minHeight: 36, fontSize: 13 },
-          }}
-        >
-          <Tab label="Employees" />
-          <Tab label="Live View" />
-          <Tab label="Org Chart" />
-        </Tabs>
-      </Box>
-      <Divider sx={{ mt: 1.5 }} />
-
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        spacing={1.5}
-        sx={{ px: 3, py: 2, alignItems: { md: "center" } }}
-      >
-        <TextField
-          size="small"
-          placeholder="Search employee"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          sx={{ width: { xs: "100%", md: 260 } }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon
-                    fontSize="small"
-                    sx={{ color: "text.secondary" }}
-                  />
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-        <TextField
-          size="small"
-          select
-          value={status}
-          onChange={(event) =>
-            setStatus(event.target.value as EmployeeStatus | "All")
-          }
-          sx={{ width: { xs: "100%", md: 160 } }}
-        >
-          {STATUS_FILTERS.map((option) => (
-            <MenuItem key={option} value={option} sx={{ fontSize: 13 }}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        <Box sx={{ flexGrow: 1 }} />
-
-        <Stack direction="row" spacing={1}>
-          <Button variant="outlined" startIcon={<AddIcon />}>
+    <Paper sx={{ p: 3 }}>
+      <Stack spacing={2}>
+        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h2">Employees</Typography>
+          <Button variant="contained" onClick={() => setForm({})}>
             Add Employee
           </Button>
-          <Button variant="outlined" startIcon={<UploadIcon />}>
-            Import
-          </Button>
         </Stack>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+          <TextField
+            size="small"
+            label="Search employees"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(0);
+            }}
+          />
+          <TextField
+            size="small"
+            select
+            label="Status"
+            value={active}
+            onChange={(e) => {
+              setActive(e.target.value);
+              setPage(0);
+            }}
+            sx={{ minWidth: 150 }}
+          >
+            <MenuItem value="">All statuses</MenuItem>
+            <MenuItem value="true">Active</MenuItem>
+            <MenuItem value="false">Inactive</MenuItem>
+          </TextField>
+          <TextField
+            size="small"
+            select
+            label="Department filter"
+            value={department}
+            onChange={(e) => {
+              setDepartment(e.target.value);
+              setPage(0);
+            }}
+            sx={{ minWidth: 180 }}
+          >
+            <MenuItem value="">All departments</MenuItem>
+            {departments.data?.map((d) => (
+              <MenuItem key={d.id} value={d.id}>
+                {d.name}
+                {d.archived ? " (archived)" : ""}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
+        <QueryState
+          loading={employees.isPending || departments.isPending}
+          error={employees.error || departments.error}
+          retry={() => {
+            void employees.refetch();
+            void departments.refetch();
+          }}
+        />
+        {!employees.isError && (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {[
+                    "Number",
+                    "Name",
+                    "Department",
+                    "Email",
+                    "Status",
+                    "Actions",
+                  ].map((label) => (
+                    <TableCell key={label}>{label}</TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {employees.data?.content.map((employee) => (
+                  <TableRow key={employee.id}>
+                    <TableCell>{employee.employeeNumber}</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => setForm({ employee, readonly: true })}
+                      >
+                        {employee.firstName} {employee.lastName}
+                      </Button>
+                      <Typography variant="caption" sx={{ display: "block" }}>
+                        {employee.jobTitle}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      {departments.data?.find(
+                        (d) => d.id === employee.departmentId,
+                      )?.name ?? `Department #${employee.departmentId}`}
+                    </TableCell>
+                    <TableCell>{employee.email}</TableCell>
+                    <TableCell>
+                      {employee.active ? "Active" : "Inactive"}
+                    </TableCell>
+                    <TableCell>
+                      <Button onClick={() => setForm({ employee })}>
+                        Edit
+                      </Button>
+                      <Button onClick={() => setActivation(employee)}>
+                        {employee.active ? "Deactivate" : "Activate"}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {employees.data?.content.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6}>
+                      No employees match your filters.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+        <TablePagination
+          component="div"
+          count={employees.data?.totalElements ?? 0}
+          page={page}
+          rowsPerPage={20}
+          rowsPerPageOptions={[20]}
+          onPageChange={(_, value) => setPage(value)}
+        />
       </Stack>
-
-      {tab === 0 ? (
-        <EmployeeTable employees={employees} />
-      ) : (
-        <Box sx={{ px: 3, py: 8, textAlign: "center" }}>
-          <Typography variant="body2" color="text.secondary">
-            {tab === 1 ? "Live view" : "Org chart"} is not built yet.
-          </Typography>
-        </Box>
+      {form &&
+        (accounts.isPending || departments.isPending ? (
+          <Alert severity="info">Loading form options…</Alert>
+        ) : accounts.error || departments.error ? (
+          <Alert
+            severity="error"
+            action={
+              <Button
+                onClick={() => {
+                  void accounts.refetch();
+                  void departments.refetch();
+                }}
+              >
+                Retry
+              </Button>
+            }
+          >
+            Could not load form options.{" "}
+            <Button onClick={() => setForm(null)}>Cancel</Button>
+          </Alert>
+        ) : (
+          <FormDialog
+            title={
+              form.readonly
+                ? "Employee details"
+                : form.employee
+                  ? "Edit employee"
+                  : "Add Employee"
+            }
+            fields={fields}
+            initial={
+              form.employee
+                ? Object.fromEntries(
+                    Object.entries(form.employee).map(([key, value]) => [
+                      key,
+                      value == null ? "" : String(value),
+                    ]),
+                  )
+                : { role: "EMPLOYEE", employeeNumber: "Assigned automatically" }
+            }
+            onClose={() => setForm(null)}
+            onSave={
+              form.readonly
+                ? undefined
+                : async (values) => {
+                    const payload: Record<string, string | number | null> =
+                      Object.fromEntries(
+                        fields
+                          .filter((f) => !f.disabled)
+                          .map((f) => [f.name, values[f.name] || null]),
+                      );
+                    payload.departmentId = Number(values.departmentId);
+                    await send(
+                      `/api/employees${form.employee ? `/${form.employee.id}` : ""}`,
+                      form.employee ? "PUT" : "POST",
+                      payload,
+                    );
+                    await invalidate();
+                  }
+            }
+          />
+        ))}
+      {activation && (
+        <FormDialog
+          title={`${activation.active ? "Deactivate" : "Activate"} employee`}
+          fields={[]}
+          initial={{}}
+          notice="This changes the employee record only. The linked login account status stays unchanged."
+          onClose={() => setActivation(null)}
+          onSave={async () => {
+            await send(
+              `/api/employees/${activation.id}/${activation.active ? "deactivate" : "activate"}`,
+              "POST",
+            );
+            await invalidate();
+          }}
+        />
       )}
-
-      <Divider />
-      <Box sx={{ px: 3, py: 1.5 }}>
-        <Typography variant="caption" color="text.secondary">
-          Showing {employees.length} of {EMPLOYEES.length} employees
-        </Typography>
-      </Box>
     </Paper>
   );
 }

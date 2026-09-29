@@ -1,4 +1,4 @@
 package com.emssystem.emsattendanceservice.attendance.dto.request;
-
-public class AdjustTimeEntryRequest {
-}
+import jakarta.validation.constraints.*;
+import java.time.Instant;
+public record AdjustTimeEntryRequest(@NotNull Long version,@NotNull Instant clockIn,@NotNull Instant clockOut,@NotBlank @Size(max=500) String reason) {}

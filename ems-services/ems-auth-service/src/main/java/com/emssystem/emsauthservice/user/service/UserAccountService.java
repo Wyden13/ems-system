@@ -22,6 +22,8 @@ import java.util.UUID;
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.emssystem.emsauthservice.security.service.IdentityLock identityLock;
+    private final com.emssystem.emsauthservice.security.service.RefreshTokenService sessions;
 
     /**
      * Class Constructor
@@ -30,10 +32,12 @@ public class UserAccountService {
      */
     public UserAccountService(
             UserAccountRepository userAccountRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            com.emssystem.emsauthservice.security.service.IdentityLock identityLock,
+            com.emssystem.emsauthservice.security.service.RefreshTokenService sessions
     ){
         this.userAccountRepository = userAccountRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder; this.identityLock=identityLock; this.sessions=sessions;
     }
 
     /**
@@ -43,6 +47,7 @@ public class UserAccountService {
      */
     @PreAuthorize("hasRole('ADMIN')")
     public UserAccountResponse createAccount(CreateAccountRequest request) {
+        identityLock.acquire();
         String normalizedEmail = normalizeEmail(request.email());
 
         if (userAccountRepository.existsByEmailIgnoreCase(normalizedEmail)) {
@@ -74,10 +79,13 @@ public class UserAccountService {
      */
     @PreAuthorize("hasRole('ADMIN')")
     public UserAccountResponse changeRole(UUID accountId, RoleType newRole){
+        identityLock.acquire();
         UserAccount account = findAccount(accountId);
         // JPA automatically detects changes to a managed entity inside a transaction.
         // methods such as changeRole() don't need explicit save() call:
+        guardAdministrator(account, newRole, account.getStatus());
         account.changeRole(newRole);
+        sessions.revokeAll(accountId);
         return UserAccountResponse.from(account);
     }
 
@@ -89,8 +97,11 @@ public class UserAccountService {
      */
     @PreAuthorize("hasRole('ADMIN')")
     public UserAccountResponse changeStatus(UUID accountId, AccountStatus status){
+        identityLock.acquire();
         UserAccount account = findAccount(accountId);
+        guardAdministrator(account, account.getRole(), status);
         account.changeStatus(status);
+        sessions.revokeAll(accountId);
         return UserAccountResponse.from(account);
     }
 
@@ -102,6 +113,7 @@ public class UserAccountService {
      */
     @PreAuthorize("isAuthenticated()")
     public void changePassword(UUID accountId, String currentPassword, String newPassword){
+        identityLock.acquire();
         UserAccount account = findAccount(accountId);
 
         // If password input does not match the password stored in the database
@@ -110,6 +122,7 @@ public class UserAccountService {
         }
         String newPasswordHash = passwordEncoder.encode(newPassword);
         account.changePassword(newPasswordHash);
+        sessions.revokeAll(accountId);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -117,6 +130,7 @@ public class UserAccountService {
             UUID accountId,
             String requestedEmail
     ) {
+        identityLock.acquire();
         UserAccount account = findAccount(accountId);
         String normalizedEmail = normalizeEmail(requestedEmail);
 
@@ -133,6 +147,26 @@ public class UserAccountService {
         return UserAccountResponse.from(account);
     }
 
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<UserAccountResponse> list(String search, RoleType role, AccountStatus status, org.springframework.data.domain.Pageable pageable) {
+        return userAccountRepository.findAll((root, query, cb) -> {
+            var predicates = new java.util.ArrayList<jakarta.persistence.criteria.Predicate>();
+            if (search != null && !search.isBlank()) predicates.add(cb.like(cb.lower(root.get("email")), "%" + search.trim().toLowerCase(Locale.ROOT).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%", '\\'));
+            if (role != null) predicates.add(cb.equal(root.get("role"),role));
+            if (status != null) predicates.add(cb.equal(root.get("status"),status));
+            return cb.and(predicates.toArray(jakarta.persistence.criteria.Predicate[]::new));
+        }, pageable).map(UserAccountResponse::from);
+    }
+    private void guardAdministrator(UserAccount account, RoleType role, AccountStatus status) {
+        boolean removesAdmin = account.getRole() == RoleType.ADMIN && account.getStatus() == AccountStatus.ACTIVE
+            && (role != RoleType.ADMIN || status != AccountStatus.ACTIVE);
+        if (!removesAdmin) return;
+        var actor = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (actor != null && account.getId().toString().equals(actor.getName()))
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.CONFLICT,"You cannot demote or disable your own administrator account");
+        if (userAccountRepository.countByRoleAndStatus(RoleType.ADMIN,AccountStatus.ACTIVE) <= 1)
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.CONFLICT,"At least one active administrator must remain");
+    }
     private UserAccount findAccount(UUID accountId){
         return userAccountRepository.findById(accountId).
                 orElseThrow(()-> new UserNotFoundException(

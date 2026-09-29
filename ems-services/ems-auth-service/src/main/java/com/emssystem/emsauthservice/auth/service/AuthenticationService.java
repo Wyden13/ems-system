@@ -21,8 +21,10 @@ import java.time.Instant;
 import java.util.Locale;
 
 @Service
+@org.springframework.transaction.annotation.Transactional
 public class AuthenticationService {
     private static final String INVALID_CREDENTIALS = "Invalid email or password";
+    private final com.emssystem.emsauthservice.security.service.IdentityLock identityLock;
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -32,15 +34,16 @@ public class AuthenticationService {
             UserAccountRepository userAccountRepository,
             PasswordEncoder passwordEncoder,
             JwtService jwtService,
-            RefreshTokenService refreshTokenService
+            RefreshTokenService refreshTokenService, com.emssystem.emsauthservice.security.service.IdentityLock identityLock
     ){
         this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
-        this.refreshTokenService = refreshTokenService;
+        this.refreshTokenService = refreshTokenService; this.identityLock=identityLock;
     }
 
     public LoginResponse login(LoginRequest request){
+        identityLock.acquire();
         String normalizedEmail = normalizeEmail(request.email());
 
         UserAccount account =
@@ -54,6 +57,7 @@ public class AuthenticationService {
 
         requireActive(account);
         Instant now = Instant.now();
+        account.recordLogin(now);
         JwtService.IssuedAccessToken accessToken = jwtService.issuedAccessToken(account, now);
         String refreshToken = refreshTokenService.issue(account,now);
         return new LoginResponse(
@@ -66,6 +70,7 @@ public class AuthenticationService {
      * Rotates a valid refresh token and returns a new access/refresh pair.
      */
     public LoginResponse refresh(RefreshTokenRequest request) {
+        identityLock.acquire();
         Instant now = Instant.now();
         RefreshTokenService.RotatedRefreshToken rotation =
                 refreshTokenService.rotate(request.refreshToken(), now);

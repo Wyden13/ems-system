@@ -41,6 +41,7 @@ public class AuthenticationServiceTest {
     @Mock
     private RefreshTokenService refreshTokenService;
 
+    @Mock com.emssystem.emsauthservice.security.service.IdentityLock identityLock;
     @InjectMocks
     private AuthenticationService authenticationService;
 

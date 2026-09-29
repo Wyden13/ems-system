@@ -1,13 +1,3 @@
 package com.emssystem.emsleaveservice;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class EmsLeaveServiceApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+import com.emssystem.emsleaveservice.pto.entity.*; import com.emssystem.emsleaveservice.pto.enums.PtoRequestStatus; import org.junit.jupiter.api.Test; import java.math.BigDecimal; import java.time.LocalDate; import static org.junit.jupiter.api.Assertions.*;
+class EmsLeaveServiceApplicationTests{@Test void initializesLeaveDefaults(){PtoType type=new PtoType("Vacation",new BigDecimal("3.0769"),new BigDecimal("40.00"),true);PtoBalance balance=new PtoBalance(1L,type);PtoRequest request=new PtoRequest(1L,type,LocalDate.now(),LocalDate.now(),new BigDecimal("8.00"));assertEquals(BigDecimal.ZERO,balance.getAccruedHours());assertEquals(PtoRequestStatus.PENDING,request.getStatus());}}

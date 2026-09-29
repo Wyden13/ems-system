@@ -1,0 +1,50 @@
+name: ems-organization
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ems_organization_db
+      POSTGRES_USER: organization_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-organization_password}
+    volumes:
+      - organization-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U organization_user -d ems_organization_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  organization-service:
+    build:
+      context: ..
+      dockerfile: ems-organization-service/Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
+      TLS_CERT: file:/certs/organization-service.crt
+      TLS_KEY: file:/certs/organization-service.key
+      TLS_CA: file:/certs/ca.crt
+      DB_URL: jdbc:postgresql://postgres:5432/ems_organization_db
+      DB_USERNAME: organization_user
+      DB_PASSWORD: ${DB_PASSWORD:-organization_password}
+    volumes:
+      - ../.local/certs/ca.crt:/certs/ca.crt:ro
+      - ../.local/certs/organization-service.crt:/certs/organization-service.crt:ro
+      - ../.local/certs/organization-service.key:/certs/organization-service.key:ro
+    ports:
+      - "127.0.0.1:${ORGANIZATION_PORT:-8087}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health/readiness"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+    stop_grace_period: 25s
+    restart: unless-stopped
+
+volumes:
+  organization-data:

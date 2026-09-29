@@ -1,4 +1,3 @@
 package com.emssystem.emsattendanceservice.attendance.dto.request;
-
-public class ClockOutRequest {
-}
+import jakarta.validation.constraints.*;
+public record ClockOutRequest(@NotNull @Positive Long entryId) {}

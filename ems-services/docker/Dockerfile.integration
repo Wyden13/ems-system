@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /workspace
+COPY . .
+RUN --mount=type=cache,id=ems-integration-maven,target=/root/.m2,sharing=locked mvn -B -q -Dmaven.test.skip=true package
+FROM eclipse-temurin:17-jre-jammy
+ARG SERVICE
+RUN groupadd --system spring && useradd --system --gid spring spring
+WORKDIR /app
+COPY --from=build --chown=spring:spring /workspace/${SERVICE}/target/${SERVICE}-0.0.1-SNAPSHOT.jar app.jar
+USER spring
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

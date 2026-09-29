@@ -58,7 +58,18 @@ public class JwtConfig {
         NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(secretKey)
                 .macAlgorithm(MacAlgorithm.HS256)
                 .build();
-        decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer));
+        decoder.setJwtValidator(new org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator<>(
+                JwtValidators.createDefaultWithIssuer(issuer), token -> {
+                    try {
+                        java.util.UUID.fromString(token.getSubject());
+                        if (!"access".equals(token.getClaimAsString("token_type")) || token.getExpiresAt() == null)
+                            throw new IllegalArgumentException();
+                        return org.springframework.security.oauth2.core.OAuth2TokenValidatorResult.success();
+                    } catch (RuntimeException ex) {
+                        return org.springframework.security.oauth2.core.OAuth2TokenValidatorResult.failure(
+                            new org.springframework.security.oauth2.core.OAuth2Error("invalid_token"));
+                    }
+                }));
         return decoder;
     }
 }

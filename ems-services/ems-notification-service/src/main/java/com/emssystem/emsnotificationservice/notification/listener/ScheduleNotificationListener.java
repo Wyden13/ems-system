@@ -1,4 +1,1 @@
-package com.emssystem.emsnotificationservice.notification.listener;
-
-public class ScheduleNotificationListener {
-}
+package com.emssystem.emsnotificationservice.notification.listener; import com.emssystem.emsnotificationservice.notification.event.*; public interface ScheduleNotificationListener{void onShiftAssigned(ShiftAssignedEvent event);void onSchedulePublished(SchedulePublishedEvent event);}

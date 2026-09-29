@@ -1,4 +1,4 @@
 package com.emssystem.emsschedulingservice.scheduling.dto.response;
-
-public class AvailabilityResponse {
-}
+import com.emssystem.emsschedulingservice.scheduling.enums.AvailabilityType;
+import java.time.*;
+public record AvailabilityResponse(Long id,Long employeeId,DayOfWeek dayOfWeek,LocalTime startTime,LocalTime endTime,AvailabilityType type) {}

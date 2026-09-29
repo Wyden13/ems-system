@@ -1,4 +1,7 @@
 package com.emssystem.emsemployeeservice.employee.dto.response;
 
-public class EmployeeSummaryResponse {
-}
+public record EmployeeSummaryResponse(
+        long total,
+        long active,
+        long inactive)
+{}

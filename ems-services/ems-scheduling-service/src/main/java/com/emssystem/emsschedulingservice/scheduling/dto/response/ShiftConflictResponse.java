@@ -1,4 +1,3 @@
 package com.emssystem.emsschedulingservice.scheduling.dto.response;
-
-public class ShiftConflictResponse {
-}
+import java.time.Instant;
+public record ShiftConflictResponse(Long shiftId,Long conflictingShiftId,Long employeeId,Instant startsAt,Instant endsAt,String reason) {}

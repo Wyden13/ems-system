@@ -25,14 +25,15 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final Duration refreshTokenTtl;
+    private final IdentityLock identityLock;
     private final SecureRandom secureRandom = new SecureRandom();
 
     public RefreshTokenService(
             RefreshTokenRepository refreshTokenRepository,
-            @Value("${security.jwt.refresh-token-ttl:P30D}") Duration refreshTokenTtl
+            @Value("${security.jwt.refresh-token-ttl:P30D}") Duration refreshTokenTtl, IdentityLock identityLock
     ) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.refreshTokenTtl = refreshTokenTtl;
+        this.refreshTokenTtl = refreshTokenTtl; this.identityLock=identityLock;
     }
 
     /**
@@ -74,6 +75,14 @@ public class RefreshTokenService {
         return new RotatedRefreshToken(account, replacementToken);
     }
 
+    public void revoke(String rawToken) {
+        identityLock.acquire();
+        refreshTokenRepository.findByTokenHashForUpdate(hash(rawToken)).ifPresent(token -> token.revoke(Instant.now()));
+    }
+    public void revokeAll(java.util.UUID accountId) {
+        identityLock.acquire();
+        refreshTokenRepository.findByAccountIdAndRevokedAtIsNull(accountId).forEach(token -> token.revoke(Instant.now()));
+    }
     private String generateToken() {
         byte[] bytes = new byte[TOKEN_BYTES];
         secureRandom.nextBytes(bytes);

@@ -1,0 +1,20 @@
+CREATE TABLE locations (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  version BIGINT NOT NULL DEFAULT 0,
+  CONSTRAINT uk_location_name UNIQUE (name)
+);
+
+CREATE TABLE departments (
+  id BIGSERIAL PRIMARY KEY,
+  department_name VARCHAR(100) NOT NULL,
+  location_id BIGINT NOT NULL REFERENCES locations(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  version BIGINT NOT NULL DEFAULT 0,
+  CONSTRAINT uk_department_name UNIQUE (department_name)
+);
+
+CREATE INDEX idx_department_location ON departments(location_id);

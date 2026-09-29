@@ -1,4 +1,4 @@
 package com.emssystem.emsschedulingservice.scheduling.dto.request;
-
-public class UpdateShiftRequest {
-}
+import jakarta.validation.constraints.*;
+import java.time.Instant;
+public record UpdateShiftRequest(@NotNull Long categoryId,@NotNull Instant startsAt,@NotNull Instant endsAt,@NotNull Long locationId,@Min(1) int requiredEmployees) {}

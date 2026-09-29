@@ -1,4 +1,6 @@
 package com.emssystem.emsschedulingservice.scheduling.validation;
-
-public class ShiftConflictValidator {
+import com.emssystem.emsschedulingservice.scheduling.dto.response.ShiftConflictResponse;
+import java.time.Instant; import java.util.List;
+public interface ShiftConflictValidator{
+    List<ShiftConflictResponse> findConflicts(Long employeeId,Instant startsAt,Instant endsAt);
 }

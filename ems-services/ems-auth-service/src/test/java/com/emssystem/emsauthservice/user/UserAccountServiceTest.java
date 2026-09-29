@@ -40,6 +40,8 @@ class UserAccountServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock com.emssystem.emsauthservice.security.service.IdentityLock identityLock;
+    @Mock com.emssystem.emsauthservice.security.service.RefreshTokenService sessions;
     @InjectMocks
     private UserAccountService userAccountService;
 

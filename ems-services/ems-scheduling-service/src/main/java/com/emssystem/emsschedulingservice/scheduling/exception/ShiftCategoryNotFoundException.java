@@ -1,4 +1,1 @@
-package com.emssystem.emsschedulingservice.scheduling.exception;
-
-public class ShiftCategoryNotFoundException {
-}
+package com.emssystem.emsschedulingservice.scheduling.exception; public class ShiftCategoryNotFoundException extends RuntimeException{public ShiftCategoryNotFoundException(Long id){super("Shift category not found: "+id);}}

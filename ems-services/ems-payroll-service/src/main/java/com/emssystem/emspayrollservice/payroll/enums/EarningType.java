@@ -1,4 +1,5 @@
 package com.emssystem.emspayrollservice.payroll.enums;
 
-public class EarningType {
+public enum EarningType {
+    REGULAR, OVERTIME, BONUS, HOLIDAY, PTO
 }

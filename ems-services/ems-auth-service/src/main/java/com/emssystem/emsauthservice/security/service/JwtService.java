@@ -22,7 +22,7 @@ public class JwtService {
     public JwtService(
             JwtEncoder jwtEncoder,
             @Value(("${security.jwt.issuer:ems-auth-service}")) String issuer,
-            @Value(("${security.jwt.access-token-ttl:PT15M")) Duration accessTokenTtl){
+            @Value(("${security.jwt.access-token-ttl:PT15M}")) Duration accessTokenTtl){
         this.jwtEncoder = jwtEncoder;
         this.issuer = issuer;
         this.accessTokenTtl = accessTokenTtl;

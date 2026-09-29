@@ -22,6 +22,15 @@ public class AdminAccountController {
     public AdminAccountController(UserAccountService userAccountService){
         this.userAccountService = userAccountService;
     }
+    @GetMapping("/accounts")
+    @PreAuthorize("hasRole('ADMIN')")
+    public org.springframework.data.domain.Page<UserAccountResponse> list(
+            @RequestParam(required=false) String search,
+            @RequestParam(required=false) com.emssystem.emsauthservice.user.enums.RoleType role,
+            @RequestParam(required=false) com.emssystem.emsauthservice.user.enums.AccountStatus status,
+            @org.springframework.data.web.PageableDefault(size=20,sort="email") org.springframework.data.domain.Pageable pageable) {
+        return userAccountService.list(search,role,status,pageable);
+    }
     @PostMapping("/accounts")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserAccountResponse> createAccount

@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID> {
+    java.util.List<RefreshToken> findByAccountIdAndRevokedAtIsNull(UUID accountId);
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""
         SELECT token 

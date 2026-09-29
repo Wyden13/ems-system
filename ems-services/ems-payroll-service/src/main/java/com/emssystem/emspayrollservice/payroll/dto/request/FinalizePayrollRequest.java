@@ -1,4 +1,6 @@
 package com.emssystem.emspayrollservice.payroll.dto.request;
 
-public class FinalizePayrollRequest {
+import jakarta.validation.constraints.NotNull;
+
+public record FinalizePayrollRequest(@NotNull Long payPeriodId) {
 }

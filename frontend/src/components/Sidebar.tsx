@@ -1,3 +1,4 @@
+import { useAuth } from "../auth/context";
 import {
   Avatar,
   Box,
@@ -52,6 +53,7 @@ export default function Sidebar({
   onClose,
 }: SidebarProps) {
   const { pathname } = useLocation();
+  const { account } = useAuth();
   // The overlay always shows full labels; only the docked rail collapses.
   const isRail = collapsed && !isMobile;
   const width = isRail ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH;
@@ -81,7 +83,7 @@ export default function Sidebar({
             bgcolor: "primary.light",
           }}
         >
-          EA
+          {account?.email.slice(0, 2).toUpperCase()}
         </Avatar>
         <Box
           sx={{
@@ -92,16 +94,18 @@ export default function Sidebar({
           }}
         >
           <Typography variant="subtitle2" noWrap>
-            Ethan Antonio
+            {account?.email}
           </Typography>
           <Typography variant="caption" color="text.secondary" noWrap>
-            Supervisor
+            {account?.role}
           </Typography>
         </Box>
       </Box>
 
       <Box component="nav" aria-label="Main navigation" sx={{ py: 1 }}>
-        {NAV_GROUPS.map((group) => (
+        {NAV_GROUPS.filter(
+          (group) => !group.admin || account?.role === "ADMIN",
+        ).map((group) => (
           <Box key={group.heading} sx={{ mb: 1 }}>
             {/* Fixed-height slot: the heading fades out and a rule fades in,
                 so items never move vertically between states. */}

@@ -1,13 +1,3 @@
 package com.emssystem.emspayrollservice;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class EmsPayrollServiceApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+import com.emssystem.emspayrollservice.payroll.entity.*; import com.emssystem.emspayrollservice.payroll.enums.*; import org.junit.jupiter.api.Test; import java.math.BigDecimal; import java.time.LocalDate; import static org.junit.jupiter.api.Assertions.*;
+class EmsPayrollServiceApplicationTests{@Test void initializesPayrollDefaults(){PayPeriod period=new PayPeriod(LocalDate.now(),LocalDate.now(),LocalDate.now());PayrollRecord record=new PayrollRecord(period,1L,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);assertEquals(PayPeriodStatus.OPEN,period.getStatus());assertEquals(PayrollStatus.DRAFT,record.getStatus());}}

@@ -1,0 +1,63 @@
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+spring:
+  application:
+    name: ems-gateway-service
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ems-auth-service
+    access-token-ttl: PT15M
+    refresh-token-ttl: P30D
+app:
+  security:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
+  session:
+    secure-cookie: ${SECURE_COOKIE:true}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+
+---
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: auth
+              uri: ${AUTH_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/auth/**,/api/v1/accounts/**,/api/v1/admin/**
+            - id: employees
+              uri: ${EMPLOYEE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/employees,/api/employees/**
+            - id: organization
+              uri: ${ORGANIZATION_URL:http://localhost:8087}
+              predicates:
+                - Path=/api/departments,/api/departments/**,/api/locations,/api/locations/**
+            - id: attendance
+              uri: ${ATTENDANCE_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/time-entries,/api/time-entries/**,/api/timesheets/**
+            - id: payroll
+              uri: ${PAYROLL_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/payroll/estimates
+            - id: scheduling
+              uri: ${SCHEDULING_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/shifts,/api/shifts/**,/api/shift-categories,/api/shift-categories/**,/api/shift-assignments/**,/api/availability,/api/availability/**
+            - id: leave
+              uri: ${LEAVE_URL:http://localhost:8086}
+              predicates:
+                - Path=/api/pto/**

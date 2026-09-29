@@ -1,0 +1,34 @@
+spring:
+  profiles:
+    include: grpc
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ems_payroll_db}
+    username: ${DB_USERNAME:payroll_user}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ems-auth-service
+app:
+  security:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
+  session:
+    secure-cookie: ${SECURE_COOKIE:true}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db

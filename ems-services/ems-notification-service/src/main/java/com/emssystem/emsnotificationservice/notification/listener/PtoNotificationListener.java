@@ -1,4 +1,1 @@
-package com.emssystem.emsnotificationservice.notification.listener;
-
-public class PtoNotificationListener {
-}
+package com.emssystem.emsnotificationservice.notification.listener; import com.emssystem.emsnotificationservice.notification.event.PtoReviewedEvent; public interface PtoNotificationListener{void onPtoReviewed(PtoReviewedEvent event);}

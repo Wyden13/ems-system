@@ -1,4 +1,3 @@
 package com.emssystem.emsschedulingservice.scheduling.dto.request;
-
-public class AssignEmployeeRequest {
-}
+import jakarta.validation.constraints.NotNull;
+public record AssignEmployeeRequest(@NotNull Long employeeId) {}

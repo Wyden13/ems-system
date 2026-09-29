@@ -1,0 +1,272 @@
+name: ems-integration-test
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: integration-test-only
+      POSTGRES_DB: postgres
+      AUTH_DB_PASSWORD: integration-test-only
+      EMPLOYEE_DB_PASSWORD: integration-test-only
+      ORGANIZATION_DB_PASSWORD: integration-test-only
+      SCHEDULE_DB_PASSWORD: integration-test-only
+      ATTENDANCE_DB_PASSWORD: integration-test-only
+      PAYROLL_DB_PASSWORD: integration-test-only
+      LEAVE_DB_PASSWORD: integration-test-only
+    volumes:
+      - integration-test-data:/var/lib/postgresql
+      - ./docker/postgres-server/init-databases.sh:/opt/ems/init-databases.sh:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  auth-service:
+    image: ems/auth-service:local
+    environment:
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      DB_URL: jdbc:postgresql://postgres:5432/ems_auth_db
+      DB_USERNAME: auth_user
+      DB_PASSWORD: integration-test-only
+      TLS_CERT: file:/certs/auth-service.crt
+      TLS_KEY: file:/certs/auth-service.key
+      TLS_CA: file:/certs/ca.crt
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/auth-service.crt:/certs/auth-service.crt:ro
+      - ./.local/certs/auth-service.key:/certs/auth-service.key:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:18081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+  employee-service:
+    image: ems/employee-service:local
+    environment:
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      DB_URL: jdbc:postgresql://postgres:5432/ems_employee_db
+      DB_USERNAME: employee_user
+      DB_PASSWORD: integration-test-only
+      TLS_CERT: file:/certs/employee-service.crt
+      TLS_KEY: file:/certs/employee-service.key
+      TLS_CA: file:/certs/ca.crt
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/employee-service.crt:/certs/employee-service.crt:ro
+      - ./.local/certs/employee-service.key:/certs/employee-service.key:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:18082:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+  organization-service:
+    image: ems/organization-service:local
+    environment:
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      DB_URL: jdbc:postgresql://postgres:5432/ems_organization_db
+      DB_USERNAME: organization_user
+      DB_PASSWORD: integration-test-only
+      TLS_CERT: file:/certs/organization-service.crt
+      TLS_KEY: file:/certs/organization-service.key
+      TLS_CA: file:/certs/ca.crt
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/organization-service.crt:/certs/organization-service.crt:ro
+      - ./.local/certs/organization-service.key:/certs/organization-service.key:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:18087:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+  attendance-service:
+    image: ems/attendance-service:local
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: "8080"
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      TLS_CERT: file:/certs/attendance-service.crt
+      TLS_KEY: file:/certs/attendance-service.key
+      TLS_CA: file:/certs/ca.crt
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ems_attendance_db
+      SPRING_DATASOURCE_USERNAME: attendance_user
+      SPRING_DATASOURCE_PASSWORD: integration-test-only
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/attendance-service.crt:/certs/attendance-service.crt:ro
+      - ./.local/certs/attendance-service.key:/certs/attendance-service.key:ro
+    ports:
+      - "127.0.0.1:18084:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      employee-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 30s
+
+  payroll-service:
+    image: ems/payroll-service:local
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: "8080"
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      TLS_CERT: file:/certs/payroll-service.crt
+      TLS_KEY: file:/certs/payroll-service.key
+      TLS_CA: file:/certs/ca.crt
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ems_payroll_db
+      SPRING_DATASOURCE_USERNAME: payroll_user
+      SPRING_DATASOURCE_PASSWORD: integration-test-only
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/payroll-service.crt:/certs/payroll-service.crt:ro
+      - ./.local/certs/payroll-service.key:/certs/payroll-service.key:ro
+    ports:
+      - "127.0.0.1:18085:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      employee-service:
+        condition: service_healthy
+      attendance-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 30s
+
+  scheduling-service:
+    image: ems/scheduling-service:local
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: "8080"
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      TLS_CERT: file:/certs/scheduling-service.crt
+      TLS_KEY: file:/certs/scheduling-service.key
+      TLS_CA: file:/certs/ca.crt
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ems_schedule_db
+      SPRING_DATASOURCE_USERNAME: schedule_user
+      SPRING_DATASOURCE_PASSWORD: integration-test-only
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/scheduling-service.crt:/certs/scheduling-service.crt:ro
+      - ./.local/certs/scheduling-service.key:/certs/scheduling-service.key:ro
+    ports:
+      - "127.0.0.1:18083:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      employee-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 30s
+
+  leave-service:
+    image: ems/leave-service:local
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: "8080"
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      TLS_CERT: file:/certs/leave-service.crt
+      TLS_KEY: file:/certs/leave-service.key
+      TLS_CA: file:/certs/ca.crt
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ems_leave_db
+      SPRING_DATASOURCE_USERNAME: leave_user
+      SPRING_DATASOURCE_PASSWORD: integration-test-only
+    volumes:
+      - ./.local/certs/ca.crt:/certs/ca.crt:ro
+      - ./.local/certs/leave-service.crt:/certs/leave-service.crt:ro
+      - ./.local/certs/leave-service.key:/certs/leave-service.key:ro
+    ports:
+      - "127.0.0.1:18086:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      employee-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 30s
+
+  gateway-service:
+    image: ems/gateway-service:local
+    environment:
+      JWT_SECRET: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      SECURE_COOKIE: "false"
+      ALLOWED_ORIGINS: http://localhost:15173
+      AUTH_URL: http://auth-service:8080
+      EMPLOYEE_URL: http://employee-service:8080
+      ORGANIZATION_URL: http://organization-service:8080
+      ATTENDANCE_URL: http://attendance-service:8080
+      PAYROLL_URL: http://payroll-service:8080
+      SCHEDULING_URL: http://scheduling-service:8080
+      LEAVE_URL: http://leave-service:8080
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      employee-service:
+        condition: service_healthy
+      organization-service:
+        condition: service_healthy
+      attendance-service:
+        condition: service_healthy
+      payroll-service:
+        condition: service_healthy
+      scheduling-service:
+        condition: service_healthy
+      leave-service:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:18080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health/readiness"]
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+volumes:
+  integration-test-data:
