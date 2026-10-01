@@ -139,7 +139,7 @@ test("employee job titles have a separate column and combine with paginated filt
   );
   await expect(page.getByText("Updating employees…")).toHaveCount(0);
   await page.screenshot({
-    path: `/private/tmp/ems-employees-${testInfo.project.name}.png`,
+    path: test.info().outputPath(`ems-employees-${testInfo.project.name}.png`),
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(
@@ -151,6 +151,6 @@ test("employee job titles have a separate column and combine with paginated filt
     ),
   ).toBe(true);
   await page.screenshot({
-    path: `/private/tmp/ems-employees-mobile-${testInfo.project.name}.png`,
+    path: test.info().outputPath(`ems-employees-mobile-${testInfo.project.name}.png`),
   });
 });

@@ -1,4 +1,3 @@
-import { mkdirSync } from "node:fs";
 import { test, expect, type Page } from "@playwright/test";
 import {
   addDays,
@@ -7,9 +6,6 @@ import {
   midnight,
 } from "../src/api/attendance";
 import type { Role } from "../src/api/types";
-
-const screenshotDirectory = "/private/tmp/ems-ui-refinement";
-mkdirSync(screenshotDirectory, { recursive: true });
 
 // Isolated API fixtures: these UI tests never write to the running EMS services.
 async function fixture(page: Page, role: Role) {
@@ -273,7 +269,7 @@ for (const role of ["EMPLOYEE", "SUPERVISOR", "MANAGER", "ADMIN"] as const) {
       ).toHaveCount(0);
     await expect(page.getByText(/requests? awaiting approval/)).toBeVisible();
     await page.screenshot({
-      path: `${screenshotDirectory}/dashboard-${role.toLowerCase()}.png`,
+      path: test.info().outputPath(`dashboard-${role.toLowerCase()}.png`),
       fullPage: true,
     });
     if (role === "ADMIN" || role === "MANAGER") {
@@ -355,7 +351,7 @@ test("mobile: filters, pay cards, drawer focus and page reflow", async ({
     ).toBe(true);
     if (width === 375)
       await page.screenshot({
-        path: `${screenshotDirectory}/payroll-mobile.png`,
+        path: test.info().outputPath(`payroll-mobile.png`),
         fullPage: true,
       });
   }
@@ -420,7 +416,7 @@ test("administrator: grouped setup, optional fields, searched account and contex
     .getByRole("option", { name: "alex@example.test (Employee, Active)" })
     .click();
   await page.screenshot({
-    path: `${screenshotDirectory}/employee-setup.png`,
+    path: test.info().outputPath(`employee-setup.png`),
     fullPage: true,
   });
   await dialog.getByRole("button", { name: "Create employee" }).click();

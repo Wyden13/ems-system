@@ -148,7 +148,7 @@ for (const role of ["MANAGER", "ADMIN", "SUPERVISOR"]) {
     ).toContainText("3:00");
     await expect(page.getByText("1 clocked in", { exact: true })).toBeVisible();
     await page.screenshot({
-      path: `/private/tmp/ems-current-employees-${role}-${testInfo.project.name}.png`,
+      path: test.info().outputPath(`ems-current-employees-${role}-${testInfo.project.name}.png`),
       animations: "disabled",
     });
     if (role === "SUPERVISOR")
@@ -221,14 +221,14 @@ test("schedule roster preview downloads CSV and a valid Excel workbook matching 
   ).toContainText("1 open");
   await expect(table).not.toContainText("Cancelled");
   await page.screenshot({
-    path: `/private/tmp/ems-schedule-preview-${testInfo.project.name}.png`,
+    path: test.info().outputPath(`ems-schedule-preview-${testInfo.project.name}.png`),
     animations: "disabled",
   });
   const csvPromise = page.waitForEvent("download");
   await dialog.getByRole("button", { name: "Export CSV", exact: true }).click();
   const csv = await csvPromise;
   expect(csv.suggestedFilename()).toBe("schedule-2026-09-26-to-2026-10-02.csv");
-  const csvPath = `/private/tmp/ems-schedule-preview-${testInfo.project.name}.csv`;
+  const csvPath = test.info().outputPath(`ems-schedule-preview-${testInfo.project.name}.csv`);
   await csv.saveAs(csvPath);
   const text = readFileSync(csvPath, "utf8");
   expect(text).toContain('"\'=SUM(1,1)"');
@@ -241,7 +241,7 @@ test("schedule roster preview downloads CSV and a valid Excel workbook matching 
   expect(excel.suggestedFilename()).toBe(
     "schedule-2026-09-26-to-2026-10-02.xlsx",
   );
-  const excelPath = `/private/tmp/ems-schedule-preview-${testInfo.project.name}.xlsx`;
+  const excelPath = test.info().outputPath(`ems-schedule-preview-${testInfo.project.name}.xlsx`);
   await excel.saveAs(excelPath);
   const parsed = JSON.parse(
     execFileSync(

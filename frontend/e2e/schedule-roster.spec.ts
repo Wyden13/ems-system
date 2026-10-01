@@ -313,7 +313,7 @@ test("right-click uses copy paste edit and details while preserving shift confir
     menu.getByRole("menuitem", { name: "Paste", exact: true }),
   ).toBeDisabled();
   await page.screenshot({
-    path: `/private/tmp/ems-right-click-${page.context().browser()!.browserType().name()}.png`,
+    path: test.info().outputPath(`ems-right-click-${page.context().browser()!.browserType().name()}.png`),
     animations: "disabled",
   });
   expect(requests).toHaveLength(0);
@@ -562,7 +562,7 @@ test("weekly roster shows partial coverage and overnight hours, filters and open
     page.getByRole("button", { name: "Create shift", exact: true }),
   ).toBeEnabled();
   await page.screenshot({
-    path: "/private/tmp/ems-schedule-desktop.png",
+    path: test.info().outputPath("ems-schedule-desktop.png"),
     fullPage: true,
     animations: "disabled",
   });
@@ -631,7 +631,7 @@ test("mobile agenda and filter drawer fit small screens and restore focus", asyn
     page.getByRole("button", { name: "Create shift", exact: true }),
   ).toBeEnabled();
   await page.screenshot({
-    path: "/private/tmp/ems-schedule-mobile.png",
+    path: test.info().outputPath("ems-schedule-mobile.png"),
     fullPage: true,
     animations: "disabled",
   });
@@ -756,7 +756,7 @@ test("availability hourly grid draws, moves, resizes and persists weekday-only b
     }),
   ).toBeVisible();
   await page.screenshot({
-    path: "/private/tmp/ems-availability-hourly.png",
+    path: test.info().outputPath("ems-availability-hourly.png"),
     fullPage: true,
     animations: "disabled",
   });
@@ -814,7 +814,7 @@ test("planner drops an employee onto a shift and an empty day, with warning and 
   await expect(shift).toContainText("Availability warning");
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
-    path: "/private/tmp/ems-schedule-drag-feedback.png",
+    path: test.info().outputPath("ems-schedule-drag-feedback.png"),
     fullPage: true,
     animations: "disabled",
   });
@@ -973,7 +973,7 @@ test("dragging from an employee roster row uses only one compact preview and cle
     .click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
-    path: `/private/tmp/ems-employee-drag-fixed-${page.context().browser()!.browserType().name()}.png`,
+    path: test.info().outputPath(`ems-employee-drag-fixed-${page.context().browser()!.browserType().name()}.png`),
     fullPage: true,
     animations: "disabled",
   });
@@ -1042,7 +1042,7 @@ test("employee rows replace the separate panel and empty day clicks prefill assi
   await page.getByRole("button", { name: "Filters", exact: true }).click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
-    path: `/private/tmp/ems-schedule-row-assignment-${page.context().browser()!.browserType().name()}.png`,
+    path: test.info().outputPath(`ems-schedule-row-assignment-${page.context().browser()!.browserType().name()}.png`),
     fullPage: true,
     animations: "disabled",
   });

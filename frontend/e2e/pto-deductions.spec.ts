@@ -141,7 +141,7 @@ for (const role of ["MANAGER", "ADMIN"] as const) {
     await dialog.getByLabel("Hours to deduct", { exact: false }).fill("4");
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({
-      path: `/private/tmp/ems-pto-deduction-${role}-${testInfo.project.name}.png`,
+      path: test.info().outputPath(`ems-pto-deduction-${role}-${testInfo.project.name}.png`),
     });
     await dialog
       .getByRole("button", { name: "Deduct PTO", exact: true })
