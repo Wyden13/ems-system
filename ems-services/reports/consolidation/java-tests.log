@@ -1,0 +1,1073 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] ems-contracts                                                      [jar]
+[INFO] ems-auth-service                                                   [jar]
+[INFO] ems-people-service                                                 [jar]
+[INFO] ems-workforce-service                                              [jar]
+[INFO] ems-gateway-service                                                [jar]
+[INFO] ems-integration                                                    [pom]
+[INFO] 
+[INFO] --------------------< com.emssystem:ems-contracts >---------------------
+[INFO] Building ems-contracts 0.0.1-SNAPSHOT                              [1/6]
+[INFO]   from ems-contracts/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Parameter 'binaryMavenPlugins' is unknown for plugin 'protobuf-maven-plugin:5.1.8:generate (generate)'
+[INFO] 
+[INFO] --- protobuf:5.1.8:generate (generate) @ ems-contracts ---
+[INFO] Registering "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/generated-sources/protobuf" as a Maven main source root for compiler plugins
+[INFO] Registering "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/generated-sources/protobuf" as a Maven main source root for compiler plugins
+[INFO] Found 3 proto source files and 0 descriptor files to compile, but all are up-to-date so none will be built this time
+[INFO] NOTHING TO DO: There is nothing to do. If this is unexpected, review the above logs for more details.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-contracts ---
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-contracts ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-contracts ---
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-contracts ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-contracts ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -------------------< com.emssystem:ems-auth-service >-------------------
+[INFO] Building ems-auth-service 0.0.1-SNAPSHOT                           [2/6]
+[INFO]   from ems-auth-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-auth-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-auth-service ---
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-auth-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-auth-service ---
+[INFO] Copying 2 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-auth-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-auth-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.emssystem.emsauthservice.AuthPostgresIT
+14:19:17.253 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.emssystem.emsauthservice.AuthPostgresIT]: AuthPostgresIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:19:17.402 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.emssystem.emsauthservice.EmsAuthServiceApplication for test class com.emssystem.emsauthservice.AuthPostgresIT
+14:19:17.509 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.emssystem.emsauthservice.AuthPostgresIT]: AuthPostgresIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:19:17.513 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.emssystem.emsauthservice.EmsAuthServiceApplication for test class com.emssystem.emsauthservice.AuthPostgresIT
+14:19:17.581 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+14:19:17.582 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:19:18.031-06:00  INFO 19721 --- [ems-auth-service] [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 2.0.5
+2026-09-30T14:19:18.411-06:00  INFO 19721 --- [ems-auth-service] [           main] o.t.d.DockerClientProviderStrategy       : Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2026-09-30T14:19:19.033-06:00  INFO 19721 --- [ems-auth-service] [           main] o.t.d.DockerClientProviderStrategy       : Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2026-09-30T14:19:19.034-06:00  INFO 19721 --- [ems-auth-service] [           main] org.testcontainers.DockerClientFactory   : Docker host IP address is localhost
+2026-09-30T14:19:19.070-06:00  INFO 19721 --- [ems-auth-service] [           main] org.testcontainers.DockerClientFactory   : Connected to docker: 
+  Server Version: 28.4.0
+  API Version: 1.51
+  Operating System: Docker Desktop
+  Total Memory: 7837 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/uyennguyen/Library/Containers/com.docker.docker/Data/docker-cli.sock
+2026-09-30T14:19:19.989-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.testcontainers/ryuk:0.14.0            : Creating container for image: testcontainers/ryuk:0.14.0
+2026-09-30T14:19:20.458-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.testcontainers/ryuk:0.14.0            : Container testcontainers/ryuk:0.14.0 is starting: 3ad31881c5ce99534a27064c6a255591474049dc13866ffae8a5df908b192652
+2026-09-30T14:19:21.847-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.testcontainers/ryuk:0.14.0            : Container testcontainers/ryuk:0.14.0 started in PT1.85748S
+2026-09-30T14:19:21.872-06:00  INFO 19721 --- [ems-auth-service] [           main] o.t.utility.RyukResourceReaper           : Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2026-09-30T14:19:21.873-06:00  INFO 19721 --- [ems-auth-service] [           main] org.testcontainers.DockerClientFactory   : Checking the system...
+2026-09-30T14:19:21.873-06:00  INFO 19721 --- [ems-auth-service] [           main] org.testcontainers.DockerClientFactory   : ✔︎ Docker server version should be at least 1.6.0
+2026-09-30T14:19:21.874-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.postgres:18-alpine                    : Creating container for image: postgres:18-alpine
+2026-09-30T14:19:22.342-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine is starting: f46e8b560bc51b6d0a5e301bd7af220f51646b3fbc0e6a259ae6eacf090f73fc
+2026-09-30T14:19:24.741-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine started in PT2.867262S
+2026-09-30T14:19:24.743-06:00  INFO 19721 --- [ems-auth-service] [           main] tc.postgres:18-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:55806/test?loggerLevel=OFF)
+2026-09-30T14:19:24.757-06:00  INFO 19721 --- [ems-auth-service] [           main] c.e.emsauthservice.AuthPostgresIT        : Starting AuthPostgresIT using Java 21.0.10 with PID 19721 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-auth-service)
+2026-09-30T14:19:24.758-06:00  INFO 19721 --- [ems-auth-service] [           main] c.e.emsauthservice.AuthPostgresIT        : The following 1 profile is active: "grpc"
+2026-09-30T14:19:25.597-06:00  INFO 19721 --- [ems-auth-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-30T14:19:25.641-06:00  INFO 19721 --- [ems-auth-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 35 ms. Found 2 JPA repository interfaces.
+2026-09-30T14:19:26.440-06:00  INFO 19721 --- [ems-auth-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-30T14:19:26.608-06:00  INFO 19721 --- [ems-auth-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1390a415
+2026-09-30T14:19:26.608-06:00  INFO 19721 --- [ems-auth-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-30T14:19:26.628-06:00  INFO 19721 --- [ems-auth-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:55806/test?loggerLevel=OFF (PostgreSQL 18.6)
+2026-09-30T14:19:26.678-06:00  INFO 19721 --- [ems-auth-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-09-30T14:19:26.683-06:00  INFO 19721 --- [ems-auth-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.018s)
+2026-09-30T14:19:26.720-06:00  INFO 19721 --- [ems-auth-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-09-30T14:19:26.803-06:00  INFO 19721 --- [ems-auth-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-09-30T14:19:26.818-06:00  INFO 19721 --- [ems-auth-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - accounts and sessions"
+2026-09-30T14:19:26.913-06:00  INFO 19721 --- [ems-auth-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v1 (execution time 00:00.033s)
+2026-09-30T14:19:27.014-06:00  INFO 19721 --- [ems-auth-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-30T14:19:27.071-06:00  INFO 19721 --- [ems-auth-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-09-30T14:19:27.402-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-30T14:19:27.553-06:00  INFO 19721 --- [ems-auth-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:55806/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.6
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-30T14:19:28.407-06:00  INFO 19721 --- [ems-auth-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-30T14:19:28.459-06:00  INFO 19721 --- [ems-auth-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-30T14:19:28.599-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-30T14:19:29.821-06:00  INFO 19721 --- [ems-auth-service] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name accountUserDetailsService
+2026-09-30T14:19:30.777-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:30.777-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:30.785-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:19:30.791-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 14 ms
+2026-09-30T14:19:30.951-06:00  INFO 19721 --- [ems-auth-service] [           main] c.e.emsauthservice.AuthPostgresIT        : Started AuthPostgresIT in 13.296 seconds (process running for 15.373)
+2026-09-30T14:19:31.173-06:00  WARN 19721 --- [ems-auth-service] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-09-30T14:19:31.174-06:00  WARN 19721 --- [ems-auth-service] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2026-09-30T14:19:33.038-06:00  WARN 19721 --- [ems-auth-service] [           main] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.56 s -- in com.emssystem.emsauthservice.AuthPostgresIT
+[INFO] Running com.emssystem.emsauthservice.auth.AuthenticationServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.662 s -- in com.emssystem.emsauthservice.auth.AuthenticationServiceTest
+[INFO] Running com.emssystem.emsauthservice.auth.AuthControllerTest
+2026-09-30T14:19:36.283-06:00  INFO 19721 --- [ems-auth-service] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.emssystem.emsauthservice.auth.AuthControllerTest]: AuthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-30T14:19:36.311-06:00  INFO 19721 --- [ems-auth-service] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.emssystem.emsauthservice.EmsAuthServiceApplication for test class com.emssystem.emsauthservice.auth.AuthControllerTest
+2026-09-30T14:19:36.313-06:00  INFO 19721 --- [ems-auth-service] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.emssystem.emsauthservice.auth.AuthControllerTest]: AuthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-30T14:19:36.320-06:00  INFO 19721 --- [ems-auth-service] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.emssystem.emsauthservice.EmsAuthServiceApplication for test class com.emssystem.emsauthservice.auth.AuthControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:19:36.381-06:00  INFO 19721 --- [ems-auth-service] [           main] c.e.e.auth.AuthControllerTest            : Starting AuthControllerTest using Java 21.0.10 with PID 19721 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-auth-service)
+2026-09-30T14:19:36.382-06:00  INFO 19721 --- [ems-auth-service] [           main] c.e.e.auth.AuthControllerTest            : The following 1 profile is active: "grpc"
+2026-09-30T14:19:36.953-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:36.955-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:36.956-06:00  INFO 19721 --- [ems-auth-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:37.010-06:00  INFO 19721 --- [ems-auth-service] [           main] c.e.e.auth.AuthControllerTest            : Started AuthControllerTest in 0.683 seconds (process running for 21.432)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.931 s -- in com.emssystem.emsauthservice.auth.AuthControllerTest
+[INFO] Running com.emssystem.emsauthservice.ServiceIdentityTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.504 s -- in com.emssystem.emsauthservice.ServiceIdentityTest
+[INFO] Running com.emssystem.emsauthservice.user.UserAccountServiceTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in com.emssystem.emsauthservice.user.UserAccountServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 28, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ------------------< com.emssystem:ems-people-service >------------------
+[INFO] Building ems-people-service 0.0.1-SNAPSHOT                         [3/6]
+[INFO]   from ems-people-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-people-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-people-service ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 6 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-people-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-people-service ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-people-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-people-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.emssystem.emsemployeeservice.ServiceIdentityTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.481 s -- in com.emssystem.emsemployeeservice.ServiceIdentityTest
+[INFO] Running com.emssystem.emsemployeeservice.shared.grpc.ReferenceValidatorTest
+14:19:39.893 [main] WARN com.emssystem.emsemployeeservice.shared.grpc.ReferenceValidator -- Reference lookup failed for userAccountId: Status{code=UNAVAILABLE, description=null, cause=null}
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.183 s -- in com.emssystem.emsemployeeservice.shared.grpc.ReferenceValidatorTest
+[INFO] Running com.emssystem.emsemployeeservice.employee.EmployeeControllerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.045 s -- in com.emssystem.emsemployeeservice.employee.EmployeeControllerTest
+[INFO] Running com.emssystem.emsemployeeservice.employee.EmployeeValidationTest
+14:19:40.014 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.249 s -- in com.emssystem.emsemployeeservice.employee.EmployeeValidationTest
+[INFO] Running com.emssystem.emsemployeeservice.employee.EmployeeServiceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.102 s -- in com.emssystem.emsemployeeservice.employee.EmployeeServiceTest
+[INFO] Running com.emssystem.emsemployeeservice.employee.EmployeeNumberPostgresTest
+14:19:40.340 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+14:19:40.341 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+14:19:40.346 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.5
+14:19:40.576 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+14:19:41.116 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+14:19:41.118 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+14:19:41.143 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 28.4.0
+  API Version: 1.51
+  Operating System: Docker Desktop
+  Total Memory: 7837 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/uyennguyen/Library/Containers/com.docker.docker/Data/docker-cli.sock
+14:19:41.549 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Creating container for image: testcontainers/ryuk:0.14.0
+14:19:41.840 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Container testcontainers/ryuk:0.14.0 is starting: 12f0e84ed03583fbbd2549d877f42df9c4b484ad76bd67ea537a93c52bf9d0fd
+14:19:42.382 [main] INFO tc.testcontainers/ryuk:0.14.0 -- Container testcontainers/ryuk:0.14.0 started in PT0.833356S
+14:19:42.391 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+14:19:42.391 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+14:19:42.391 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+14:19:42.392 [main] INFO tc.postgres:18-alpine -- Creating container for image: postgres:18-alpine
+14:19:42.565 [main] INFO tc.postgres:18-alpine -- Container postgres:18-alpine is starting: 2194efa48bc1630bb8f2d53b67d0181af6f9ca1626e264b30e68ca293d579853
+14:19:44.020 [main] INFO tc.postgres:18-alpine -- Container postgres:18-alpine started in PT1.628857S
+14:19:44.021 [main] INFO tc.postgres:18-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:55831/test?loggerLevel=OFF)
+14:19:44.368 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:55831/test?loggerLevel=OFF (PostgreSQL 18.6)
+14:19:44.417 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "public"."flyway_schema_history" does not exist yet
+14:19:44.420 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 6 migrations (execution time 00:00.018s)
+14:19:44.445 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "public"."flyway_schema_history" ...
+14:19:44.536 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": << Empty Schema >>
+14:19:44.550 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "1 - employee employee schema"
+14:19:44.601 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "2 - employee automatic employee numbers"
+14:19:44.633 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "3 - organization organization schema"
+14:19:44.660 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "4 - organization case insensitive names"
+14:19:44.675 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "5 - organization archive departments"
+14:19:44.688 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "6 - people department integrity"
+14:19:44.702 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.074s)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.135 s -- in com.emssystem.emsemployeeservice.employee.EmployeeNumberPostgresTest
+[INFO] Running com.emssystem.emsemployeeservice.EmsEmployeeServiceApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in com.emssystem.emsemployeeservice.EmsEmployeeServiceApplicationTests
+[INFO] Running com.emssystem.emsorganizationservice.organization.OrganizationPostgresIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:19:46.083-06:00  INFO 19791 --- [ems-people-service] [           main] tc.postgres:18-alpine                    : Creating container for image: postgres:18-alpine
+2026-09-30T14:19:46.376-06:00  INFO 19791 --- [ems-people-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine is starting: 65ebf3a068993d979c1c93ffbce3e739be5454b0042bcceb524570800e45efae
+2026-09-30T14:19:48.211-06:00  INFO 19791 --- [ems-people-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine started in PT2.128076S
+2026-09-30T14:19:48.211-06:00  INFO 19791 --- [ems-people-service] [           main] tc.postgres:18-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:55858/test?loggerLevel=OFF)
+2026-09-30T14:19:48.225-06:00  INFO 19791 --- [ems-people-service] [           main] c.e.e.o.OrganizationPostgresIT           : Starting OrganizationPostgresIT using Java 21.0.10 with PID 19791 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service)
+2026-09-30T14:19:48.226-06:00  INFO 19791 --- [ems-people-service] [           main] c.e.e.o.OrganizationPostgresIT           : The following 1 profile is active: "grpc"
+2026-09-30T14:19:48.959-06:00  INFO 19791 --- [ems-people-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-30T14:19:49.071-06:00  INFO 19791 --- [ems-people-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 102 ms. Found 3 JPA repository interfaces.
+2026-09-30T14:19:49.680-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-09-30T14:19:49.692-06:00  INFO 19791 --- [ems-people-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-30T14:19:49.692-06:00  INFO 19791 --- [ems-people-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-09-30T14:19:49.737-06:00  INFO 19791 --- [ems-people-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1500 ms
+2026-09-30T14:19:49.940-06:00  INFO 19791 --- [ems-people-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-30T14:19:49.970-06:00  INFO 19791 --- [ems-people-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4d652bc6
+2026-09-30T14:19:49.972-06:00  INFO 19791 --- [ems-people-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-30T14:19:49.980-06:00  INFO 19791 --- [ems-people-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:55858/test?loggerLevel=OFF (PostgreSQL 18.6)
+2026-09-30T14:19:50.020-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-09-30T14:19:50.022-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 6 migrations (execution time 00:00.005s)
+2026-09-30T14:19:50.034-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-09-30T14:19:50.065-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-09-30T14:19:50.069-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - employee employee schema"
+2026-09-30T14:19:50.101-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - employee automatic employee numbers"
+2026-09-30T14:19:50.127-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - organization organization schema"
+2026-09-30T14:19:50.162-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - organization case insensitive names"
+2026-09-30T14:19:50.178-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - organization archive departments"
+2026-09-30T14:19:50.191-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - people department integrity"
+2026-09-30T14:19:50.200-06:00  INFO 19791 --- [ems-people-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.060s)
+2026-09-30T14:19:50.274-06:00  INFO 19791 --- [ems-people-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-30T14:19:50.320-06:00  INFO 19791 --- [ems-people-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-09-30T14:19:50.535-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-30T14:19:50.638-06:00  INFO 19791 --- [ems-people-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:55858/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.6
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-30T14:19:51.643-06:00  INFO 19791 --- [ems-people-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-30T14:19:51.690-06:00  INFO 19791 --- [ems-people-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-30T14:19:51.806-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-30T14:19:52.329-06:00  WARN 19791 --- [ems-people-service] [           main] o.s.aop.framework.CglibAopProxy          : Unable to proxy interface-implementing method [public final io.grpc.ServerServiceDefinition com.emssystem.contracts.v1.OrganizationDirectoryGrpc$OrganizationDirectoryImplBase.bindService()] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-09-30T14:19:53.062-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:53.062-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:53.078-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:19:53.091-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 29 ms
+2026-09-30T14:19:53.162-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 55870 (http) with context path '/'
+2026-09-30T14:19:53.168-06:00  INFO 19791 --- [ems-people-service] [           main] c.e.e.o.OrganizationPostgresIT           : Started OrganizationPostgresIT in 7.426 seconds (process running for 14.789)
+2026-09-30T14:19:53.279-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:53.279-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:53.281-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-09-30T14:19:54.150-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:54.151-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:54.152-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:54.212-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:54.212-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:54.212-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:54.619-06:00  INFO 19791 --- [ems-people-service] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-30T14:19:54.619-06:00  INFO 19791 --- [ems-people-service] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-30T14:19:54.623-06:00  INFO 19791 --- [ems-people-service] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-09-30T14:19:54.738-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:54.738-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:54.740-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-09-30T14:19:54.850-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:54.850-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:54.850-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:54.996-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:54.996-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:54.997-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:55.524-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:55.525-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:55.526-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:56.008-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:56.009-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:56.010-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:56.199-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:56.199-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:56.201-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-09-30T14:19:56.322-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:56.322-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:56.324-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:56.351-06:00  WARN 19791 --- [ems-people-service] [pool-5-thread-1] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 0, SQLState: 23505
+2026-09-30T14:19:56.354-06:00  WARN 19791 --- [ems-people-service] [pool-5-thread-1] org.hibernate.orm.jdbc.error             : ERROR: duplicate key value violates unique constraint "uk_location_name_ignore_case"
+  Detail: Key (lower(name::text))=(calgary) already exists.
+2026-09-30T14:19:56.404-06:00  INFO 19791 --- [ems-people-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:56.404-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:56.405-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.56 s -- in com.emssystem.emsorganizationservice.organization.OrganizationPostgresIT
+[INFO] Running com.emssystem.emsorganizationservice.organization.DepartmentServiceTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in com.emssystem.emsorganizationservice.organization.DepartmentServiceTest
+[INFO] Running com.emssystem.emsorganizationservice.organization.OrganizationApiTest
+2026-09-30T14:19:57.092-06:00  INFO 19791 --- [ems-people-service] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.emssystem.emsorganizationservice.organization.OrganizationApiTest]: OrganizationApiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-30T14:19:57.149-06:00  INFO 19791 --- [ems-people-service] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.emssystem.EmsPeopleServiceApplication for test class com.emssystem.emsorganizationservice.organization.OrganizationApiTest
+2026-09-30T14:19:57.151-06:00  INFO 19791 --- [ems-people-service] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.emssystem.emsorganizationservice.organization.OrganizationApiTest]: OrganizationApiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-30T14:19:57.156-06:00  INFO 19791 --- [ems-people-service] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.emssystem.EmsPeopleServiceApplication for test class com.emssystem.emsorganizationservice.organization.OrganizationApiTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:19:57.222-06:00  INFO 19791 --- [ems-people-service] [           main] c.e.e.organization.OrganizationApiTest   : Starting OrganizationApiTest using Java 21.0.10 with PID 19791 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service)
+2026-09-30T14:19:57.223-06:00  INFO 19791 --- [ems-people-service] [           main] c.e.e.organization.OrganizationApiTest   : The following 1 profile is active: "grpc"
+2026-09-30T14:19:57.759-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:57.759-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:57.759-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:57.763-06:00  INFO 19791 --- [ems-people-service] [           main] c.e.e.organization.OrganizationApiTest   : Started OrganizationApiTest in 0.592 seconds (process running for 19.384)
+2026-09-30T14:19:57.766-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:57.766-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:57.766-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:57.846-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:57.846-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:57.852-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 6 ms
+2026-09-30T14:19:58.001-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.001-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.001-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.012-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.012-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.013-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.016-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.016-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.016-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.023-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.023-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.024-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.032-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.032-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.032-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.037-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.037-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.038-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.044-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.044-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.046-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.051-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.051-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.051-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.054-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.054-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.054-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.091-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.091-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.092-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.107-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.107-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.108-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.112-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.112-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.112-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.120-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.121-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.123-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-09-30T14:19:58.136-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.136-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.137-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.156-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.156-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.158-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-09-30T14:19:58.167-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.167-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.167-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.170-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.170-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.171-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.184-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.184-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.184-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.190-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.190-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.190-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.206-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.206-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.207-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.212-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.212-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.212-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.215-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.215-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.216-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.221-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.222-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.222-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.225-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.225-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.226-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.230-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.230-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.230-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.231-06:00 ERROR 19791 --- [ems-people-service] [           main] c.e.e.s.e.GlobalExceptionHandler         : Organization request failed
+
+java.lang.IllegalStateException: private database connection details
+	at com.emssystem.emsorganizationservice.organization.controller.LocationController.list(LocationController.java:37) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:892) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622) ~[tomcat-embed-core-11.0.24.jar:6.1]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.9.jar:7.0.9]
+	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72) ~[spring-test-7.0.9.jar:7.0.9]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.24.jar:6.1]
+	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:160) ~[spring-test-7.0.9.jar:7.0.9]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:127) ~[spring-test-7.0.9.jar:7.0.9]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$2(FilterChainProxy.java:235) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:376) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:132) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:86) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:181) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:174) ~[spring-security-oauth2-resource-server-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.oauth2.server.resource.web.OAuth2ProtectedResourceMetadataFilter.doFilterInternal(OAuth2ProtectedResourceMetadataFilter.java:98) ~[spring-security-oauth2-resource-server-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:237) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:195) ~[spring-security-web-7.1.1.jar:7.1.1]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-7.0.9.jar:7.0.9]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:317) ~[spring-security-config-7.1.1.jar:7.1.1]
+	at org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurer$DelegateFilter.doFilter(SecurityMockMvcConfigurer.java:137) ~[spring-security-test-7.1.1.jar:7.1.1]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:127) ~[spring-test-7.0.9.jar:7.0.9]
+	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:199) ~[spring-test-7.0.9.jar:7.0.9]
+	at com.emssystem.emsorganizationservice.organization.OrganizationApiTest.unexpectedErrorsDoNotExposeImplementationDetails(OrganizationApiTest.java:267) ~[test-classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125) ~[surefire-api-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.5.6.jar:3.5.6]
+
+2026-09-30T14:19:58.238-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.238-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.238-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.244-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.244-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.244-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.261-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.261-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.261-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.269-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.269-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.269-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.282-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.282-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.282-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.300-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.300-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.301-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.313-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.313-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.314-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.324-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.324-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.325-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.328-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.328-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.329-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.331-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.331-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.331-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.343-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.343-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.344-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.355-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.355-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.355-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.374-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.374-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.374-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.388-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.388-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.388-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.401-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.401-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.401-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:19:58.407-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.408-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.409-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.414-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.414-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.415-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.418-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.418-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.419-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-30T14:19:58.419-06:00  WARN 19791 --- [ems-people-service] [           main] o.s.web.servlet.PageNotFound             : Request method 'PATCH' is not supported
+2026-09-30T14:19:58.421-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:19:58.421-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:19:58.421-06:00  INFO 19791 --- [ems-people-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.339 s -- in com.emssystem.emsorganizationservice.organization.OrganizationApiTest
+[INFO] Running com.emssystem.emsorganizationservice.organization.LocationServiceTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.emssystem.emsorganizationservice.organization.LocationServiceTest
+[INFO] Running com.emssystem.emsorganizationservice.EmsOrganizationServiceApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in com.emssystem.emsorganizationservice.EmsOrganizationServiceApplicationTests
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] ----------------< com.emssystem:ems-workforce-service >-----------------
+[INFO] Building ems-workforce-service 0.0.1-SNAPSHOT                      [4/6]
+[INFO]   from ems-workforce-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-workforce-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-workforce-service ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 8 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-workforce-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-workforce-service ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-workforce-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-workforce-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.emssystem.emsattendanceservice.AttendancePostgresTest
+14:20:00.666 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+14:20:00.670 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:20:01.411-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 2.0.5
+2026-09-30T14:20:02.093-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.t.d.DockerClientProviderStrategy       : Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2026-09-30T14:20:02.672-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.t.d.DockerClientProviderStrategy       : Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2026-09-30T14:20:02.675-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.testcontainers.DockerClientFactory   : Docker host IP address is localhost
+2026-09-30T14:20:02.693-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.testcontainers.DockerClientFactory   : Connected to docker: 
+  Server Version: 28.4.0
+  API Version: 1.51
+  Operating System: Docker Desktop
+  Total Memory: 7837 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/uyennguyen/Library/Containers/com.docker.docker/Data/docker-cli.sock
+2026-09-30T14:20:02.974-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.testcontainers/ryuk:0.14.0            : Creating container for image: testcontainers/ryuk:0.14.0
+2026-09-30T14:20:03.442-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.testcontainers/ryuk:0.14.0            : Container testcontainers/ryuk:0.14.0 is starting: 096c940eed6189dcebccf12314d7e3c1b717ed73f82e4825a2cf2e48c887f26d
+2026-09-30T14:20:03.935-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.testcontainers/ryuk:0.14.0            : Container testcontainers/ryuk:0.14.0 started in PT0.960132S
+2026-09-30T14:20:03.947-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.t.utility.RyukResourceReaper           : Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2026-09-30T14:20:03.948-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.testcontainers.DockerClientFactory   : Checking the system...
+2026-09-30T14:20:03.948-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.testcontainers.DockerClientFactory   : ✔︎ Docker server version should be at least 1.6.0
+2026-09-30T14:20:03.949-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Creating container for image: postgres:18-alpine
+2026-09-30T14:20:04.080-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine is starting: 166e6f06e014c86d176227320b610ac8e68c8a0183b8289fa09845bd4a85b45c
+2026-09-30T14:20:05.686-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine started in PT1.736748S
+2026-09-30T14:20:05.687-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:55883/test?loggerLevel=OFF)
+2026-09-30T14:20:05.700-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.e.AttendancePostgresTest             : Starting AttendancePostgresTest using Java 21.0.10 with PID 19880 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service)
+2026-09-30T14:20:05.701-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.e.AttendancePostgresTest             : The following 1 profile is active: "grpc"
+2026-09-30T14:20:06.653-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-30T14:20:06.797-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 127 ms. Found 2 JPA repository interfaces.
+2026-09-30T14:20:08.091-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-30T14:20:08.234-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@736eb2a2
+2026-09-30T14:20:08.235-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-30T14:20:08.252-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:55883/test?loggerLevel=OFF (PostgreSQL 18.6)
+2026-09-30T14:20:08.306-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-09-30T14:20:08.310-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.021s)
+2026-09-30T14:20:08.325-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-09-30T14:20:08.376-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-09-30T14:20:08.390-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - scheduling scheduling schema"
+2026-09-30T14:20:08.438-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - scheduling workflow integrity"
+2026-09-30T14:20:08.471-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - leave leave schema"
+2026-09-30T14:20:08.520-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - leave workflow integrity"
+2026-09-30T14:20:08.596-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - attendance attendance schema"
+2026-09-30T14:20:08.662-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - attendance attendance integrity and audit"
+2026-09-30T14:20:08.696-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - payroll payroll schema"
+2026-09-30T14:20:08.747-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - workforce consistency"
+2026-09-30T14:20:08.812-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "public", now at version v8 (execution time 00:00.255s)
+2026-09-30T14:20:08.900-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-30T14:20:08.973-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-09-30T14:20:09.321-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-30T14:20:09.392-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:55883/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.6
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-30T14:20:10.193-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-30T14:20:10.240-06:00  INFO 19880 --- [ems-workforce-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-30T14:20:10.689-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-30T14:20:12.507-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:20:12.508-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:20:12.522-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:20:12.557-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 49 ms
+2026-09-30T14:20:12.660-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.e.AttendancePostgresTest             : Started AttendancePostgresTest in 11.9 seconds (process running for 13.474)
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.54 s -- in com.emssystem.emsattendanceservice.AttendancePostgresTest
+[INFO] Running com.emssystem.emsattendanceservice.EmsAttendanceServiceApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in com.emssystem.emsattendanceservice.EmsAttendanceServiceApplicationTests
+[INFO] Running com.emssystem.emsleaveservice.LeavePostgresTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:20:13.819-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Creating container for image: postgres:18-alpine
+2026-09-30T14:20:14.058-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine is starting: b6321eac7e925558665cc4752768270d104bc914bfd222953646bf4decfe968c
+2026-09-30T14:20:15.822-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine started in PT2.002694S
+2026-09-30T14:20:15.823-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:55898/test?loggerLevel=OFF)
+2026-09-30T14:20:15.825-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.emsleaveservice.LeavePostgresTest    : Starting LeavePostgresTest using Java 21.0.10 with PID 19880 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service)
+2026-09-30T14:20:15.826-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.emsleaveservice.LeavePostgresTest    : The following 1 profile is active: "grpc"
+2026-09-30T14:20:16.159-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-30T14:20:16.305-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 138 ms. Found 2 JPA repository interfaces.
+2026-09-30T14:20:16.403-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-09-30T14:20:16.442-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@208ac9b8
+2026-09-30T14:20:16.442-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-09-30T14:20:16.444-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:55898/test?loggerLevel=OFF (PostgreSQL 18.6)
+2026-09-30T14:20:16.479-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-09-30T14:20:16.484-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.012s)
+2026-09-30T14:20:16.556-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-09-30T14:20:16.786-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-09-30T14:20:16.858-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - scheduling scheduling schema"
+2026-09-30T14:20:17.023-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - scheduling workflow integrity"
+2026-09-30T14:20:17.082-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - leave leave schema"
+2026-09-30T14:20:17.158-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - leave workflow integrity"
+2026-09-30T14:20:17.252-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - attendance attendance schema"
+2026-09-30T14:20:17.309-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - attendance attendance integrity and audit"
+2026-09-30T14:20:17.395-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - payroll payroll schema"
+2026-09-30T14:20:17.459-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - workforce consistency"
+2026-09-30T14:20:17.527-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "public", now at version v8 (execution time 00:00.432s)
+2026-09-30T14:20:17.568-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-30T14:20:17.595-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-30T14:20:17.617-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:55898/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.6
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-30T14:20:17.653-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-30T14:20:17.690-06:00  INFO 19880 --- [ems-workforce-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-30T14:20:18.081-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:20:18.081-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:20:18.086-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:20:18.099-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 18 ms
+2026-09-30T14:20:18.139-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.emsleaveservice.LeavePostgresTest    : Started LeavePostgresTest in 4.347 seconds (process running for 18.952)
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.917 s -- in com.emssystem.emsleaveservice.LeavePostgresTest
+[INFO] Running com.emssystem.emsschedulingservice.SchedulingPostgresTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:20:19.780-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Creating container for image: postgres:18-alpine
+2026-09-30T14:20:20.174-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine is starting: 056c3e9386fac14c8e896eac291f8feb74818ca6a4a92273011826f2959a7546
+2026-09-30T14:20:23.916-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine started in PT4.135034S
+2026-09-30T14:20:23.920-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:55912/test?loggerLevel=OFF)
+2026-09-30T14:20:23.935-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.e.SchedulingPostgresTest             : Starting SchedulingPostgresTest using Java 21.0.10 with PID 19880 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service)
+2026-09-30T14:20:23.936-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.e.SchedulingPostgresTest             : The following 1 profile is active: "grpc"
+2026-09-30T14:20:24.156-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-30T14:20:24.236-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 2 JPA repository interfaces.
+2026-09-30T14:20:24.327-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-09-30T14:20:24.346-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection org.postgresql.jdbc.PgConnection@4ddc78ec
+2026-09-30T14:20:24.375-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-09-30T14:20:24.379-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:55912/test?loggerLevel=OFF (PostgreSQL 18.6)
+2026-09-30T14:20:24.399-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-09-30T14:20:24.399-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.005s)
+2026-09-30T14:20:24.410-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-09-30T14:20:24.439-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-09-30T14:20:24.444-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - scheduling scheduling schema"
+2026-09-30T14:20:24.490-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - scheduling workflow integrity"
+2026-09-30T14:20:24.536-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - leave leave schema"
+2026-09-30T14:20:24.566-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - leave workflow integrity"
+2026-09-30T14:20:24.609-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - attendance attendance schema"
+2026-09-30T14:20:24.656-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - attendance attendance integrity and audit"
+2026-09-30T14:20:24.708-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - payroll payroll schema"
+2026-09-30T14:20:24.746-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - workforce consistency"
+2026-09-30T14:20:24.769-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "public", now at version v8 (execution time 00:00.202s)
+2026-09-30T14:20:24.790-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-30T14:20:24.808-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-30T14:20:24.821-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:55912/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.6
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-30T14:20:24.874-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-30T14:20:24.893-06:00  INFO 19880 --- [ems-workforce-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-30T14:20:25.182-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:20:25.183-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:20:25.185-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:20:25.192-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 9 ms
+2026-09-30T14:20:25.207-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.e.SchedulingPostgresTest             : Started SchedulingPostgresTest in 5.474 seconds (process running for 26.02)
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.682 s -- in com.emssystem.emsschedulingservice.SchedulingPostgresTest
+[INFO] Running com.emssystem.emspayrollservice.PayrollEstimateServiceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.emssystem.emspayrollservice.PayrollEstimateServiceTest
+[INFO] Running com.emssystem.emspayrollservice.AttendancePayCalculatorTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.emssystem.emspayrollservice.AttendancePayCalculatorTest
+[INFO] Running com.emssystem.WorkforceConsolidationPostgresTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:20:26.430-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Creating container for image: postgres:18-alpine
+2026-09-30T14:20:26.930-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine is starting: f0b14a2002c7d1ed5a7838e513359808969f6aea1888fc7a181d7f643e3c6e87
+2026-09-30T14:20:28.819-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container postgres:18-alpine started in PT2.389209S
+2026-09-30T14:20:28.819-06:00  INFO 19880 --- [ems-workforce-service] [           main] tc.postgres:18-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:55928/test?loggerLevel=OFF)
+2026-09-30T14:20:28.841-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.WorkforceConsolidationPostgresTest   : Starting WorkforceConsolidationPostgresTest using Java 21.0.10 with PID 19880 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service)
+2026-09-30T14:20:28.843-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.WorkforceConsolidationPostgresTest   : The following 1 profile is active: "grpc"
+2026-09-30T14:20:29.174-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-30T14:20:29.248-06:00  INFO 19880 --- [ems-workforce-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 2 JPA repository interfaces.
+2026-09-30T14:20:29.316-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-09-30T14:20:29.336-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection org.postgresql.jdbc.PgConnection@2626020c
+2026-09-30T14:20:29.337-06:00  INFO 19880 --- [ems-workforce-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-09-30T14:20:29.339-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:55928/test?loggerLevel=OFF (PostgreSQL 18.6)
+2026-09-30T14:20:29.357-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-09-30T14:20:29.357-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.006s)
+2026-09-30T14:20:29.368-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-09-30T14:20:29.402-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-09-30T14:20:29.406-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - scheduling scheduling schema"
+2026-09-30T14:20:29.441-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - scheduling workflow integrity"
+2026-09-30T14:20:29.474-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - leave leave schema"
+2026-09-30T14:20:29.506-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - leave workflow integrity"
+2026-09-30T14:20:29.543-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - attendance attendance schema"
+2026-09-30T14:20:29.567-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - attendance attendance integrity and audit"
+2026-09-30T14:20:29.598-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - payroll payroll schema"
+2026-09-30T14:20:29.624-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - workforce consistency"
+2026-09-30T14:20:29.640-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "public", now at version v8 (execution time 00:00.157s)
+2026-09-30T14:20:29.756-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-30T14:20:29.836-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-30T14:20:29.864-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:55928/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.6
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-09-30T14:20:30.008-06:00  INFO 19880 --- [ems-workforce-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-30T14:20:30.031-06:00  INFO 19880 --- [ems-workforce-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-30T14:20:30.354-06:00  INFO 19880 --- [ems-workforce-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:20:30.375-06:00  INFO 19880 --- [ems-workforce-service] [           main] c.e.WorkforceConsolidationPostgresTest   : Started WorkforceConsolidationPostgresTest in 3.962 seconds (process running for 31.189)
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.625 s -- in com.emssystem.WorkforceConsolidationPostgresTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 47, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -----------------< com.emssystem:ems-gateway-service >------------------
+[INFO] Building ems-gateway-service 0.0.1-SNAPSHOT                        [5/6]
+[INFO]   from ems-gateway-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-gateway-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-gateway-service ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-gateway-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-gateway-service ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-gateway-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-gateway-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.emssystem.emsgatewayservice.EmsGatewayServiceApplicationTests
+14:20:33.730 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.emssystem.emsgatewayservice.EmsGatewayServiceApplicationTests]: EmsGatewayServiceApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:20:33.855 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.emssystem.emsgatewayservice.EmsGatewayServiceApplication for test class com.emssystem.emsgatewayservice.EmsGatewayServiceApplicationTests
+14:20:33.963 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.emssystem.emsgatewayservice.EmsGatewayServiceApplicationTests]: EmsGatewayServiceApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:20:33.964 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.emssystem.emsgatewayservice.EmsGatewayServiceApplication for test class com.emssystem.emsgatewayservice.EmsGatewayServiceApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:20:34.596-06:00  INFO 20049 --- [ems-gateway-service] [           main] c.e.e.EmsGatewayServiceApplicationTests  : Starting EmsGatewayServiceApplicationTests using Java 21.0.10 with PID 20049 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-gateway-service)
+2026-09-30T14:20:34.598-06:00  INFO 20049 --- [ems-gateway-service] [           main] c.e.e.EmsGatewayServiceApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2026-09-30T14:20:36.072-06:00  INFO 20049 --- [ems-gateway-service] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5f920471-4bdc-31cd-8cbb-7d0359c19a7d
+2026-09-30T14:20:38.135-06:00  INFO 20049 --- [ems-gateway-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-09-30T14:20:38.206-06:00  INFO 20049 --- [ems-gateway-service] [           main] c.e.e.EmsGatewayServiceApplicationTests  : Started EmsGatewayServiceApplicationTests in 3.97 seconds (process running for 5.888)
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.536 s -- in com.emssystem.emsgatewayservice.EmsGatewayServiceApplicationTests
+[INFO] Running com.emssystem.emsgatewayservice.GatewayAccessTest
+2026-09-30T14:20:39.064-06:00  INFO 20049 --- [ems-gateway-service] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.emssystem.emsgatewayservice.GatewayAccessTest]: GatewayAccessTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-30T14:20:39.172-06:00  INFO 20049 --- [ems-gateway-service] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.emssystem.emsgatewayservice.EmsGatewayServiceApplication for test class com.emssystem.emsgatewayservice.GatewayAccessTest
+2026-09-30T14:20:39.174-06:00  INFO 20049 --- [ems-gateway-service] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.emssystem.emsgatewayservice.GatewayAccessTest]: GatewayAccessTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-30T14:20:39.182-06:00  INFO 20049 --- [ems-gateway-service] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.emssystem.emsgatewayservice.EmsGatewayServiceApplication for test class com.emssystem.emsgatewayservice.GatewayAccessTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-09-30T14:20:39.277-06:00  INFO 20049 --- [ems-gateway-service] [           main] c.e.emsgatewayservice.GatewayAccessTest  : Starting GatewayAccessTest using Java 21.0.10 with PID 20049 (started by uyennguyen in /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-gateway-service)
+2026-09-30T14:20:39.277-06:00  INFO 20049 --- [ems-gateway-service] [           main] c.e.emsgatewayservice.GatewayAccessTest  : No active profile set, falling back to 1 default profile: "default"
+2026-09-30T14:20:39.616-06:00  INFO 20049 --- [ems-gateway-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-30T14:20:39.617-06:00  INFO 20049 --- [ems-gateway-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-30T14:20:39.617-06:00  INFO 20049 --- [ems-gateway-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-30T14:20:39.631-06:00  INFO 20049 --- [ems-gateway-service] [           main] c.e.emsgatewayservice.GatewayAccessTest  : Started GatewayAccessTest in 0.427 seconds (process running for 7.313)
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.672 s -- in com.emssystem.emsgatewayservice.GatewayAccessTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] -------------------< com.emssystem:ems-integration >--------------------
+[INFO] Building ems-integration 0.0.1-SNAPSHOT                            [6/6]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for ems-integration 0.0.1-SNAPSHOT:
+[INFO] 
+[INFO] ems-contracts ...................................... SUCCESS [  1.636 s]
+[INFO] ems-auth-service ................................... SUCCESS [ 24.312 s]
+[INFO] ems-people-service ................................. SUCCESS [ 21.132 s]
+[INFO] ems-workforce-service .............................. SUCCESS [ 33.198 s]
+[INFO] ems-gateway-service ................................ SUCCESS [  7.999 s]
+[INFO] ems-integration .................................... SUCCESS [  0.001 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:28 min
+[INFO] Finished at: 2026-09-30T14:20:40-06:00
+[INFO] ------------------------------------------------------------------------

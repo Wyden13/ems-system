@@ -4,7 +4,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import java.security.cert.X509Certificate;
 import org.springframework.stereotype.Component;
 import org.springframework.grpc.server.GlobalServerInterceptor;
-/** Only the employee service certificate may call these internal lookup APIs. */
+/** Only the People service certificate may call these internal lookup APIs. */
 @Component @GlobalServerInterceptor
 public class ServiceIdentityInterceptor implements ServerInterceptor {
     @Override public <ReqT,RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT,RespT> call, Metadata headers, ServerCallHandler<ReqT,RespT> next) {
@@ -13,11 +13,11 @@ public class ServiceIdentityInterceptor implements ServerInterceptor {
             if (session != null) {
                 var cert=(X509Certificate)session.getPeerCertificates()[0];
                 var names=cert.getSubjectAlternativeNames();
-                if (names != null && names.stream().anyMatch(name -> Integer.valueOf(2).equals(name.get(0)) && "employee-service".equals(name.get(1))))
+                if (names != null && names.stream().anyMatch(name -> Integer.valueOf(2).equals(name.get(0)) && "people-service".equals(name.get(1))))
                     return next.startCall(call,headers);
             }
         } catch (SSLPeerUnverifiedException | java.security.cert.CertificateParsingException ex) { /* fail closed */ }
-        call.close(Status.PERMISSION_DENIED.withDescription("Employee service identity required"),new Metadata());
+        call.close(Status.PERMISSION_DENIED.withDescription("People service identity required"),new Metadata());
         return new ServerCall.Listener<>() {};
     }
 }

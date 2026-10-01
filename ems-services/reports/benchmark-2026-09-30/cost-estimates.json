@@ -1,0 +1,76 @@
+{
+  "assumptions": {
+    "region": "us-east-1",
+    "currency": "USD",
+    "hours": 730,
+    "pricing_checked": "2026-09-30",
+    "source": "https://aws.amazon.com/fargate/pricing/",
+    "excludes": "RDS, ALB, networking, logging, secrets, images, DNS, backups, frontend, tax, sidecars"
+  },
+  "rates": {
+    "arm": {
+      "cpu": 0.03237984,
+      "memory": 0.00356004
+    },
+    "x86": {
+      "cpu": 0.0404784,
+      "memory": 0.004446
+    }
+  },
+  "scenarios": {
+    "eight_minimum_025cpu_05gib": {
+      "tasks": 8,
+      "vcpu": 2.0,
+      "gib": 4.0,
+      "arm_one_replica": 57.67,
+      "arm_two_replicas": 115.34,
+      "x86_one_replica": 72.08,
+      "x86_two_replicas": 144.16
+    },
+    "eight_05cpu_1gib": {
+      "tasks": 8,
+      "vcpu": 4.0,
+      "gib": 8,
+      "arm_one_replica": 115.34,
+      "arm_two_replicas": 230.68,
+      "x86_one_replica": 144.16,
+      "x86_two_replicas": 288.32
+    },
+    "eight_05cpu_1gib_except_attendance_1cpu_2gib": {
+      "tasks": 8,
+      "vcpu": 4.5,
+      "gib": 9,
+      "arm_one_replica": 129.76,
+      "arm_two_replicas": 259.51,
+      "x86_one_replica": 162.18,
+      "x86_two_replicas": 324.36
+    },
+    "eight_1cpu_2gib": {
+      "tasks": 8,
+      "vcpu": 8,
+      "gib": 16,
+      "arm_one_replica": 230.68,
+      "arm_two_replicas": 461.36,
+      "x86_one_replica": 288.32,
+      "x86_two_replicas": 576.65
+    },
+    "four_merged_planning": {
+      "tasks": 4,
+      "vcpu": 3.5,
+      "gib": 7,
+      "arm_one_replica": 100.92,
+      "arm_two_replicas": 201.84,
+      "x86_one_replica": 126.14,
+      "x86_two_replicas": 252.28
+    },
+    "six_pairwise_merges_planning": {
+      "tasks": 6,
+      "vcpu": 3.25,
+      "gib": 6.5,
+      "arm_one_replica": 93.71,
+      "arm_two_replicas": 187.43,
+      "x86_one_replica": 117.13,
+      "x86_two_replicas": 234.26
+    }
+  }
+}

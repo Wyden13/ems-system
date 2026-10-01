@@ -12,11 +12,11 @@ for attempt in {1..60}; do
   sleep 1
 done
 docker exec "$check_container" pg_isready -h 127.0.0.1 -U postgres >/dev/null
-for database in auth employee organization attendance payroll schedule leave; do
+for database in auth people workforce; do
   archive="$backup_dir/ems_${database}_db.dump"
   test -s "$archive"
   docker exec "$check_container" createdb -h 127.0.0.1 -U postgres "ems_${database}_db"
   docker exec -i "$check_container" pg_restore -h 127.0.0.1 -U postgres --no-owner --no-privileges --exit-on-error -d "ems_${database}_db" < "$archive"
   docker exec "$check_container" psql -h 127.0.0.1 -U postgres -d "ems_${database}_db" -v ON_ERROR_STOP=1 -Atc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'"
 done
-printf 'All seven databases restored successfully into a disposable container.\n'
+printf 'All three databases restored successfully into a disposable container.\n'

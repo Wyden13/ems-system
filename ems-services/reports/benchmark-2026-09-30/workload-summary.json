@@ -1,0 +1,260 @@
+[
+  {
+    "phase": "warmup",
+    "seconds": 30.010952749988064,
+    "target_rps": 10,
+    "completed": 300,
+    "achieved_rps": 9.996350415770099,
+    "statuses": {
+      "200": 300
+    },
+    "p50_ms": 50.5544159677811,
+    "p95_ms": 1124.0335420006886,
+    "p99_ms": 2872.717625054065,
+    "endpoints": {
+      "/api/employees": {
+        "requests": 34,
+        "statuses": {
+          "200": 34
+        },
+        "p95_ms": 751.467666006647
+      },
+      "/api/departments": {
+        "requests": 34,
+        "statuses": {
+          "200": 34
+        },
+        "p95_ms": 641.8600830365904
+      },
+      "/api/locations": {
+        "requests": 34,
+        "statuses": {
+          "200": 34
+        },
+        "p95_ms": 552.7311670011841
+      },
+      "/api/shifts?from=2026-10-01T00:00:00Z&to=2026-11-01T00:00:00Z": {
+        "requests": 33,
+        "statuses": {
+          "200": 33
+        },
+        "p95_ms": 894.5490000187419
+      },
+      "/api/pto/types": {
+        "requests": 33,
+        "statuses": {
+          "200": 33
+        },
+        "p95_ms": 517.4959159921855
+      },
+      "/api/pto/requests": {
+        "requests": 33,
+        "statuses": {
+          "200": 33
+        },
+        "p95_ms": 1124.0335420006886
+      },
+      "/api/time-entries?employeeId=1&from=2026-09-25T00:00:00Z&to=2026-10-09T00:00:00Z": {
+        "requests": 33,
+        "statuses": {
+          "200": 33
+        },
+        "p95_ms": 984.9327499978244
+      },
+      "/api/payroll/estimates?periodStart=2026-09-25": {
+        "requests": 33,
+        "statuses": {
+          "200": 33
+        },
+        "p95_ms": 3701.453124987893
+      },
+      "/api/v1/auth/csrf": {
+        "requests": 33,
+        "statuses": {
+          "200": 33
+        },
+        "p95_ms": 504.1319169686176
+      }
+    }
+  },
+  {
+    "phase": "idle",
+    "seconds": 60.00021274999017,
+    "target_rps": 0,
+    "completed": 0,
+    "achieved_rps": 0.0,
+    "statuses": {},
+    "p50_ms": 0,
+    "p95_ms": 0,
+    "p99_ms": 0,
+    "endpoints": {}
+  },
+  {
+    "phase": "load20",
+    "seconds": 59.97021133301314,
+    "target_rps": 20,
+    "completed": 1200,
+    "achieved_rps": 20.009934487914823,
+    "statuses": {
+      "200": 1200
+    },
+    "p50_ms": 73.003834055271,
+    "p95_ms": 1713.3076669997536,
+    "p99_ms": 12126.820749952458,
+    "endpoints": {
+      "/api/employees": {
+        "requests": 134,
+        "statuses": {
+          "200": 134
+        },
+        "p95_ms": 1276.2688329676166
+      },
+      "/api/departments": {
+        "requests": 134,
+        "statuses": {
+          "200": 134
+        },
+        "p95_ms": 1124.5361670153216
+      },
+      "/api/locations": {
+        "requests": 134,
+        "statuses": {
+          "200": 134
+        },
+        "p95_ms": 1180.2066250238568
+      },
+      "/api/shifts?from=2026-10-01T00:00:00Z&to=2026-11-01T00:00:00Z": {
+        "requests": 133,
+        "statuses": {
+          "200": 133
+        },
+        "p95_ms": 1212.8574589733034
+      },
+      "/api/pto/types": {
+        "requests": 133,
+        "statuses": {
+          "200": 133
+        },
+        "p95_ms": 766.5159159805626
+      },
+      "/api/pto/requests": {
+        "requests": 133,
+        "statuses": {
+          "200": 133
+        },
+        "p95_ms": 1658.5169169702567
+      },
+      "/api/time-entries?employeeId=1&from=2026-09-25T00:00:00Z&to=2026-10-09T00:00:00Z": {
+        "requests": 133,
+        "statuses": {
+          "200": 133
+        },
+        "p95_ms": 1047.8450420196168
+      },
+      "/api/payroll/estimates?periodStart=2026-09-25": {
+        "requests": 133,
+        "statuses": {
+          "200": 133
+        },
+        "p95_ms": 12444.487166998442
+      },
+      "/api/v1/auth/csrf": {
+        "requests": 133,
+        "statuses": {
+          "200": 133
+        },
+        "p95_ms": 1120.3035830403678
+      }
+    }
+  },
+  {
+    "phase": "load50",
+    "seconds": 63.16062708297977,
+    "target_rps": 50,
+    "completed": 3000,
+    "achieved_rps": 47.49794513690675,
+    "statuses": {
+      "200": 3000
+    },
+    "p50_ms": 91.01979102706537,
+    "p95_ms": 2432.5901250122115,
+    "p99_ms": 5035.7076250365935,
+    "endpoints": {
+      "/api/employees": {
+        "requests": 334,
+        "statuses": {
+          "200": 334
+        },
+        "p95_ms": 730.0474580260925
+      },
+      "/api/departments": {
+        "requests": 334,
+        "statuses": {
+          "200": 334
+        },
+        "p95_ms": 662.289125029929
+      },
+      "/api/locations": {
+        "requests": 334,
+        "statuses": {
+          "200": 334
+        },
+        "p95_ms": 480.5931249866262
+      },
+      "/api/shifts?from=2026-10-01T00:00:00Z&to=2026-11-01T00:00:00Z": {
+        "requests": 333,
+        "statuses": {
+          "200": 333
+        },
+        "p95_ms": 652.0594580215402
+      },
+      "/api/pto/types": {
+        "requests": 333,
+        "statuses": {
+          "200": 333
+        },
+        "p95_ms": 530.2710419637151
+      },
+      "/api/pto/requests": {
+        "requests": 333,
+        "statuses": {
+          "200": 333
+        },
+        "p95_ms": 1064.6290000295267
+      },
+      "/api/time-entries?employeeId=1&from=2026-09-25T00:00:00Z&to=2026-10-09T00:00:00Z": {
+        "requests": 333,
+        "statuses": {
+          "200": 333
+        },
+        "p95_ms": 737.6936249784194
+      },
+      "/api/payroll/estimates?periodStart=2026-09-25": {
+        "requests": 333,
+        "statuses": {
+          "200": 333
+        },
+        "p95_ms": 5238.207082962617
+      },
+      "/api/v1/auth/csrf": {
+        "requests": 333,
+        "statuses": {
+          "200": 333
+        },
+        "p95_ms": 443.34941694978625
+      }
+    }
+  },
+  {
+    "phase": "recovery",
+    "seconds": 30.00039270904381,
+    "target_rps": 0,
+    "completed": 0,
+    "achieved_rps": 0.0,
+    "statuses": {},
+    "p50_ms": 0,
+    "p95_ms": 0,
+    "p99_ms": 0,
+    "endpoints": {}
+  }
+]

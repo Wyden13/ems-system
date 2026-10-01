@@ -1,7 +1,0 @@
-# Persistence/HTTP tests use no network gRPC listener or runtime certificate files.
-spring:
-  grpc:
-    server:
-      enabled: false
-    client:
-      enabled: false

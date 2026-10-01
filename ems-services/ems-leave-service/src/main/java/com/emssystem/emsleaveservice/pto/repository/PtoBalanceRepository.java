@@ -1,2 +1,0 @@
-package com.emssystem.emsleaveservice.pto.repository; import com.emssystem.emsleaveservice.pto.entity.PtoBalance; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*;
-public interface PtoBalanceRepository extends JpaRepository<PtoBalance,Long>{List<PtoBalance> findByEmployeeId(Long employeeId);Optional<PtoBalance> findByEmployeeIdAndPtoTypeId(Long employeeId,Long typeId);}

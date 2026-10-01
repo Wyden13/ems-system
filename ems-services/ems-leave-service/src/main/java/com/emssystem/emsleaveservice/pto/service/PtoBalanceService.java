@@ -1,2 +1,0 @@
-package com.emssystem.emsleaveservice.pto.service; import com.emssystem.emsleaveservice.pto.dto.request.AdjustPtoBalanceRequest; import com.emssystem.emsleaveservice.pto.dto.response.PtoBalanceResponse; import java.util.*;
-public interface PtoBalanceService{List<PtoBalanceResponse> mine(UUID accountId);List<PtoBalanceResponse> getForEmployee(Long employeeId);PtoBalanceResponse adjust(UUID actor,AdjustPtoBalanceRequest request);}

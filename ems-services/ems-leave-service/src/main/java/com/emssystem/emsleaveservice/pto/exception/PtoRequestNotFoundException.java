@@ -1,1 +1,0 @@
-package com.emssystem.emsleaveservice.pto.exception; public class PtoRequestNotFoundException extends RuntimeException{public PtoRequestNotFoundException(Long id){super("PTO request not found: "+id);}}

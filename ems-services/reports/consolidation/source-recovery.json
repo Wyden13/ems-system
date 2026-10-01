@@ -1,0 +1,20 @@
+[
+  {
+    "file": "ems-auth-service/src/main/java/com/emssystem/emsauthservice/user/controller/UserAccountController.java",
+    "source": "Git HEAD 063d4430ac65dbf6862f7fc21eaf3c4930d61bc0",
+    "bytes": 3000,
+    "original_placeholder": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/offloaded-originals/ems-auth-service/src/main/java/com/emssystem/emsauthservice/user/controller/UserAccountController.java"
+  },
+  {
+    "file": "ems-auth-service/src/main/java/com/emssystem/emsauthservice/security/repository/RefreshTokenRepository.java",
+    "source": "Git HEAD 063d4430ac65dbf6862f7fc21eaf3c4930d61bc0",
+    "bytes": 916,
+    "original_placeholder": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/offloaded-originals/ems-auth-service/src/main/java/com/emssystem/emsauthservice/security/repository/RefreshTokenRepository.java"
+  },
+  {
+    "file": "ems-auth-service/src/main/java/com/emssystem/emsauthservice/security/entity/RefreshToken.java",
+    "source": "Git HEAD 063d4430ac65dbf6862f7fc21eaf3c4930d61bc0",
+    "bytes": 1855,
+    "original_placeholder": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/offloaded-originals/ems-auth-service/src/main/java/com/emssystem/emsauthservice/security/entity/RefreshToken.java"
+  }
+]

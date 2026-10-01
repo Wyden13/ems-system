@@ -1,0 +1,812 @@
+[
+  {
+    "service": "attendance-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 3.5,
+    "cpu_max_percent_of_one_core": 11.05,
+    "memory_mean_mib": 369.1,
+    "memory_max_mib": 369.2,
+    "pids_max": 76
+  },
+  {
+    "service": "attendance-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 49.74,
+    "cpu_max_percent_of_one_core": 61.35,
+    "memory_mean_mib": 362.0,
+    "memory_max_mib": 379.3,
+    "pids_max": 77
+  },
+  {
+    "service": "attendance-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 3.78,
+    "cpu_max_percent_of_one_core": 9.65,
+    "memory_mean_mib": 340.8,
+    "memory_max_mib": 341.0,
+    "pids_max": 65
+  },
+  {
+    "service": "attendance-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 40.31,
+    "cpu_max_percent_of_one_core": 58.65,
+    "memory_mean_mib": 322.2,
+    "memory_max_mib": 339.8,
+    "pids_max": 65
+  },
+  {
+    "service": "attendance-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 2.1,
+    "cpu_max_percent_of_one_core": 8.07,
+    "memory_mean_mib": 433.6,
+    "memory_max_mib": 433.9,
+    "pids_max": 66
+  },
+  {
+    "service": "attendance-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 69.95,
+    "cpu_max_percent_of_one_core": 187.75,
+    "memory_mean_mib": 449.9,
+    "memory_max_mib": 464.2,
+    "pids_max": 89
+  },
+  {
+    "service": "attendance-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 104.17,
+    "cpu_max_percent_of_one_core": 142.79,
+    "memory_mean_mib": 508.1,
+    "memory_max_mib": 552.3,
+    "pids_max": 96
+  },
+  {
+    "service": "attendance-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.21,
+    "cpu_max_percent_of_one_core": 6.63,
+    "memory_mean_mib": 540.7,
+    "memory_max_mib": 551.0,
+    "pids_max": 91
+  },
+  {
+    "service": "attendance-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 91.55,
+    "cpu_max_percent_of_one_core": 237.39,
+    "memory_mean_mib": 430.9,
+    "memory_max_mib": 442.0,
+    "pids_max": 67
+  },
+  {
+    "service": "auth-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 28.29,
+    "cpu_max_percent_of_one_core": 45.83,
+    "memory_mean_mib": 328.4,
+    "memory_max_mib": 329.3,
+    "pids_max": 35
+  },
+  {
+    "service": "auth-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 9.5,
+    "cpu_max_percent_of_one_core": 15.67,
+    "memory_mean_mib": 325.5,
+    "memory_max_mib": 327.9,
+    "pids_max": 36
+  },
+  {
+    "service": "auth-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 4.7,
+    "cpu_max_percent_of_one_core": 12.39,
+    "memory_mean_mib": 321.9,
+    "memory_max_mib": 323.1,
+    "pids_max": 36
+  },
+  {
+    "service": "auth-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 9.24,
+    "cpu_max_percent_of_one_core": 30.91,
+    "memory_mean_mib": 320.8,
+    "memory_max_mib": 321.4,
+    "pids_max": 35
+  },
+  {
+    "service": "auth-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 2.97,
+    "cpu_max_percent_of_one_core": 9.61,
+    "memory_mean_mib": 378.4,
+    "memory_max_mib": 378.6,
+    "pids_max": 50
+  },
+  {
+    "service": "auth-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 21.68,
+    "cpu_max_percent_of_one_core": 99.75,
+    "memory_mean_mib": 380.2,
+    "memory_max_mib": 381.2,
+    "pids_max": 56
+  },
+  {
+    "service": "auth-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 27.81,
+    "cpu_max_percent_of_one_core": 96.39,
+    "memory_mean_mib": 384.6,
+    "memory_max_mib": 394.2,
+    "pids_max": 56
+  },
+  {
+    "service": "auth-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.98,
+    "cpu_max_percent_of_one_core": 6.23,
+    "memory_mean_mib": 394.8,
+    "memory_max_mib": 395.3,
+    "pids_max": 50
+  },
+  {
+    "service": "auth-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 11.95,
+    "cpu_max_percent_of_one_core": 30.97,
+    "memory_mean_mib": 376.7,
+    "memory_max_mib": 378.1,
+    "pids_max": 50
+  },
+  {
+    "service": "employee-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.02,
+    "cpu_max_percent_of_one_core": 4.45,
+    "memory_mean_mib": 342.9,
+    "memory_max_mib": 342.9,
+    "pids_max": 39
+  },
+  {
+    "service": "employee-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 27.11,
+    "cpu_max_percent_of_one_core": 60.39,
+    "memory_mean_mib": 337.8,
+    "memory_max_mib": 346.0,
+    "pids_max": 68
+  },
+  {
+    "service": "employee-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 3.83,
+    "cpu_max_percent_of_one_core": 7.83,
+    "memory_mean_mib": 319.6,
+    "memory_max_mib": 319.8,
+    "pids_max": 68
+  },
+  {
+    "service": "employee-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 35.26,
+    "cpu_max_percent_of_one_core": 58.7,
+    "memory_mean_mib": 308.6,
+    "memory_max_mib": 322.0,
+    "pids_max": 69
+  },
+  {
+    "service": "employee-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 1.76,
+    "cpu_max_percent_of_one_core": 10.04,
+    "memory_mean_mib": 500.6,
+    "memory_max_mib": 505.4,
+    "pids_max": 63
+  },
+  {
+    "service": "employee-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 48.66,
+    "cpu_max_percent_of_one_core": 140.95,
+    "memory_mean_mib": 506.4,
+    "memory_max_mib": 511.7,
+    "pids_max": 66
+  },
+  {
+    "service": "employee-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 57.74,
+    "cpu_max_percent_of_one_core": 125.21,
+    "memory_mean_mib": 527.5,
+    "memory_max_mib": 565.2,
+    "pids_max": 67
+  },
+  {
+    "service": "employee-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.93,
+    "cpu_max_percent_of_one_core": 7.89,
+    "memory_mean_mib": 565.3,
+    "memory_max_mib": 565.3,
+    "pids_max": 73
+  },
+  {
+    "service": "employee-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 22.24,
+    "cpu_max_percent_of_one_core": 40.11,
+    "memory_mean_mib": 498.0,
+    "memory_max_mib": 502.3,
+    "pids_max": 64
+  },
+  {
+    "service": "gateway-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 7.37,
+    "cpu_max_percent_of_one_core": 24.76,
+    "memory_mean_mib": 249.8,
+    "memory_max_mib": 255.1,
+    "pids_max": 78
+  },
+  {
+    "service": "gateway-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 37.81,
+    "cpu_max_percent_of_one_core": 57.95,
+    "memory_mean_mib": 240.0,
+    "memory_max_mib": 245.8,
+    "pids_max": 85
+  },
+  {
+    "service": "gateway-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.57,
+    "cpu_max_percent_of_one_core": 4.61,
+    "memory_mean_mib": 226.6,
+    "memory_max_mib": 226.7,
+    "pids_max": 72
+  },
+  {
+    "service": "gateway-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 25.02,
+    "cpu_max_percent_of_one_core": 57.64,
+    "memory_mean_mib": 217.3,
+    "memory_max_mib": 226.4,
+    "pids_max": 74
+  },
+  {
+    "service": "gateway-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 3.06,
+    "cpu_max_percent_of_one_core": 22.13,
+    "memory_mean_mib": 239.1,
+    "memory_max_mib": 240.8,
+    "pids_max": 63
+  },
+  {
+    "service": "gateway-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 54.29,
+    "cpu_max_percent_of_one_core": 108.81,
+    "memory_mean_mib": 248.6,
+    "memory_max_mib": 255.4,
+    "pids_max": 95
+  },
+  {
+    "service": "gateway-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 85.11,
+    "cpu_max_percent_of_one_core": 160.22,
+    "memory_mean_mib": 270.1,
+    "memory_max_mib": 286.7,
+    "pids_max": 99
+  },
+  {
+    "service": "gateway-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.25,
+    "cpu_max_percent_of_one_core": 4.82,
+    "memory_mean_mib": 288.4,
+    "memory_max_mib": 288.9,
+    "pids_max": 99
+  },
+  {
+    "service": "gateway-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 32.76,
+    "cpu_max_percent_of_one_core": 57.48,
+    "memory_mean_mib": 236.4,
+    "memory_max_mib": 240.0,
+    "pids_max": 62
+  },
+  {
+    "service": "leave-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 0.61,
+    "cpu_max_percent_of_one_core": 2.35,
+    "memory_mean_mib": 318.7,
+    "memory_max_mib": 318.7,
+    "pids_max": 41
+  },
+  {
+    "service": "leave-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 18.38,
+    "cpu_max_percent_of_one_core": 61.95,
+    "memory_mean_mib": 312.4,
+    "memory_max_mib": 318.7,
+    "pids_max": 42
+  },
+  {
+    "service": "leave-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.81,
+    "cpu_max_percent_of_one_core": 6.44,
+    "memory_mean_mib": 301.6,
+    "memory_max_mib": 301.9,
+    "pids_max": 42
+  },
+  {
+    "service": "leave-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 22.39,
+    "cpu_max_percent_of_one_core": 58.61,
+    "memory_mean_mib": 294.1,
+    "memory_max_mib": 301.2,
+    "pids_max": 43
+  },
+  {
+    "service": "leave-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 2.37,
+    "cpu_max_percent_of_one_core": 11.3,
+    "memory_mean_mib": 415.1,
+    "memory_max_mib": 416.7,
+    "pids_max": 58
+  },
+  {
+    "service": "leave-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 29.95,
+    "cpu_max_percent_of_one_core": 83.08,
+    "memory_mean_mib": 421.2,
+    "memory_max_mib": 423.9,
+    "pids_max": 59
+  },
+  {
+    "service": "leave-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 43.31,
+    "cpu_max_percent_of_one_core": 88.5,
+    "memory_mean_mib": 426.6,
+    "memory_max_mib": 430.3,
+    "pids_max": 63
+  },
+  {
+    "service": "leave-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.19,
+    "cpu_max_percent_of_one_core": 6.92,
+    "memory_mean_mib": 428.9,
+    "memory_max_mib": 428.9,
+    "pids_max": 57
+  },
+  {
+    "service": "leave-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 20.14,
+    "cpu_max_percent_of_one_core": 53.94,
+    "memory_mean_mib": 411.1,
+    "memory_max_mib": 415.4,
+    "pids_max": 58
+  },
+  {
+    "service": "organization-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.08,
+    "cpu_max_percent_of_one_core": 4.8,
+    "memory_mean_mib": 308.0,
+    "memory_max_mib": 308.0,
+    "pids_max": 40
+  },
+  {
+    "service": "organization-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 18.16,
+    "cpu_max_percent_of_one_core": 44.48,
+    "memory_mean_mib": 306.2,
+    "memory_max_mib": 312.3,
+    "pids_max": 41
+  },
+  {
+    "service": "organization-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 4.1,
+    "cpu_max_percent_of_one_core": 12.2,
+    "memory_mean_mib": 299.9,
+    "memory_max_mib": 300.2,
+    "pids_max": 40
+  },
+  {
+    "service": "organization-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 26.02,
+    "cpu_max_percent_of_one_core": 58.28,
+    "memory_mean_mib": 295.6,
+    "memory_max_mib": 299.7,
+    "pids_max": 41
+  },
+  {
+    "service": "organization-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 3.28,
+    "cpu_max_percent_of_one_core": 28.98,
+    "memory_mean_mib": 386.6,
+    "memory_max_mib": 394.4,
+    "pids_max": 52
+  },
+  {
+    "service": "organization-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 40.51,
+    "cpu_max_percent_of_one_core": 113.89,
+    "memory_mean_mib": 393.4,
+    "memory_max_mib": 398.0,
+    "pids_max": 53
+  },
+  {
+    "service": "organization-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 50.67,
+    "cpu_max_percent_of_one_core": 113.67,
+    "memory_mean_mib": 400.1,
+    "memory_max_mib": 404.8,
+    "pids_max": 53
+  },
+  {
+    "service": "organization-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.63,
+    "cpu_max_percent_of_one_core": 9.45,
+    "memory_mean_mib": 402.5,
+    "memory_max_mib": 402.6,
+    "pids_max": 52
+  },
+  {
+    "service": "organization-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 17.73,
+    "cpu_max_percent_of_one_core": 52.92,
+    "memory_mean_mib": 378.3,
+    "memory_max_mib": 385.1,
+    "pids_max": 52
+  },
+  {
+    "service": "payroll-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.4,
+    "cpu_max_percent_of_one_core": 6.37,
+    "memory_mean_mib": 325.4,
+    "memory_max_mib": 326.8,
+    "pids_max": 56
+  },
+  {
+    "service": "payroll-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 28.78,
+    "cpu_max_percent_of_one_core": 55.47,
+    "memory_mean_mib": 321.1,
+    "memory_max_mib": 325.2,
+    "pids_max": 56
+  },
+  {
+    "service": "payroll-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 3.83,
+    "cpu_max_percent_of_one_core": 8.38,
+    "memory_mean_mib": 308.5,
+    "memory_max_mib": 310.3,
+    "pids_max": 52
+  },
+  {
+    "service": "payroll-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 34.71,
+    "cpu_max_percent_of_one_core": 56.76,
+    "memory_mean_mib": 291.2,
+    "memory_max_mib": 305.1,
+    "pids_max": 52
+  },
+  {
+    "service": "payroll-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 2.01,
+    "cpu_max_percent_of_one_core": 14.38,
+    "memory_mean_mib": 388.5,
+    "memory_max_mib": 388.6,
+    "pids_max": 57
+  },
+  {
+    "service": "payroll-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 54.16,
+    "cpu_max_percent_of_one_core": 129.31,
+    "memory_mean_mib": 401.5,
+    "memory_max_mib": 437.2,
+    "pids_max": 74
+  },
+  {
+    "service": "payroll-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 64.47,
+    "cpu_max_percent_of_one_core": 96.04,
+    "memory_mean_mib": 440.3,
+    "memory_max_mib": 446.3,
+    "pids_max": 76
+  },
+  {
+    "service": "payroll-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.33,
+    "cpu_max_percent_of_one_core": 8.24,
+    "memory_mean_mib": 443.6,
+    "memory_max_mib": 444.9,
+    "pids_max": 75
+  },
+  {
+    "service": "payroll-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 53.26,
+    "cpu_max_percent_of_one_core": 160.19,
+    "memory_mean_mib": 384.1,
+    "memory_max_mib": 388.3,
+    "pids_max": 57
+  },
+  {
+    "service": "postgres",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 3.31,
+    "cpu_max_percent_of_one_core": 12.86,
+    "memory_mean_mib": 244.4,
+    "memory_max_mib": 244.4,
+    "pids_max": 79
+  },
+  {
+    "service": "postgres",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 16.23,
+    "cpu_max_percent_of_one_core": 63.01,
+    "memory_mean_mib": 244.4,
+    "memory_max_mib": 248.3,
+    "pids_max": 85
+  },
+  {
+    "service": "postgres",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 3.16,
+    "cpu_max_percent_of_one_core": 13.66,
+    "memory_mean_mib": 243.4,
+    "memory_max_mib": 243.4,
+    "pids_max": 79
+  },
+  {
+    "service": "postgres",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 13.97,
+    "cpu_max_percent_of_one_core": 57.49,
+    "memory_mean_mib": 237.4,
+    "memory_max_mib": 243.9,
+    "pids_max": 80
+  },
+  {
+    "service": "postgres",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 4.29,
+    "cpu_max_percent_of_one_core": 21.32,
+    "memory_mean_mib": 239.7,
+    "memory_max_mib": 241.2,
+    "pids_max": 80
+  },
+  {
+    "service": "postgres",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 22.71,
+    "cpu_max_percent_of_one_core": 55.1,
+    "memory_mean_mib": 241.3,
+    "memory_max_mib": 245.5,
+    "pids_max": 80
+  },
+  {
+    "service": "postgres",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 41.28,
+    "cpu_max_percent_of_one_core": 104.42,
+    "memory_mean_mib": 245.5,
+    "memory_max_mib": 247.7,
+    "pids_max": 80
+  },
+  {
+    "service": "postgres",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.27,
+    "cpu_max_percent_of_one_core": 5.71,
+    "memory_mean_mib": 247.1,
+    "memory_max_mib": 247.1,
+    "pids_max": 79
+  },
+  {
+    "service": "postgres",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 11.71,
+    "cpu_max_percent_of_one_core": 26.31,
+    "memory_mean_mib": 239.0,
+    "memory_max_mib": 242.2,
+    "pids_max": 80
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "auth2",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 4.03,
+    "cpu_max_percent_of_one_core": 8.59,
+    "memory_mean_mib": 298.2,
+    "memory_max_mib": 298.3,
+    "pids_max": 35
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "capped50",
+    "samples": 22,
+    "cpu_mean_percent_of_one_core": 12.88,
+    "cpu_max_percent_of_one_core": 40.16,
+    "memory_mean_mib": 293.5,
+    "memory_max_mib": 299.5,
+    "pids_max": 36
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "cappedidle",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.71,
+    "cpu_max_percent_of_one_core": 19.1,
+    "memory_mean_mib": 289.4,
+    "memory_max_mib": 289.6,
+    "pids_max": 35
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "cappedwarmup",
+    "samples": 11,
+    "cpu_mean_percent_of_one_core": 17.37,
+    "cpu_max_percent_of_one_core": 58.24,
+    "memory_mean_mib": 285.6,
+    "memory_max_mib": 288.8,
+    "pids_max": 35
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 2.13,
+    "cpu_max_percent_of_one_core": 17.53,
+    "memory_mean_mib": 394.6,
+    "memory_max_mib": 394.8,
+    "pids_max": 60
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "load20",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 22.05,
+    "cpu_max_percent_of_one_core": 53.86,
+    "memory_mean_mib": 396.3,
+    "memory_max_mib": 397.9,
+    "pids_max": 66
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "load50",
+    "samples": 16,
+    "cpu_mean_percent_of_one_core": 38.47,
+    "cpu_max_percent_of_one_core": 113.02,
+    "memory_mean_mib": 398.8,
+    "memory_max_mib": 402.1,
+    "pids_max": 65
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.38,
+    "cpu_max_percent_of_one_core": 7.69,
+    "memory_mean_mib": 400.7,
+    "memory_max_mib": 400.7,
+    "pids_max": 60
+  },
+  {
+    "service": "scheduling-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 22.92,
+    "cpu_max_percent_of_one_core": 47.05,
+    "memory_mean_mib": 393.5,
+    "memory_max_mib": 394.3,
+    "pids_max": 60
+  }
+]

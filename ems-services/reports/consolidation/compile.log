@@ -1,0 +1,126 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] ems-contracts                                                      [jar]
+[INFO] ems-people-service                                                 [jar]
+[INFO] ems-workforce-service                                              [jar]
+[INFO] 
+[INFO] --------------------< com.emssystem:ems-contracts >---------------------
+[INFO] Building ems-contracts 0.0.1-SNAPSHOT                              [1/3]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Parameter 'binaryMavenPlugins' is unknown for plugin 'protobuf-maven-plugin:5.1.8:generate (generate)'
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ ems-contracts ---
+[INFO] Deleting /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target
+[INFO] 
+[INFO] --- protobuf:5.1.8:generate (generate) @ ems-contracts ---
+[INFO] Registering "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/generated-sources/protobuf" as a Maven main source root for compiler plugins
+[INFO] Registering "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/generated-sources/protobuf" as a Maven main source root for compiler plugins
+[INFO] All sources will be compiled, as no previous build data was detected
+[INFO] Generating source code from 3 proto source files and 0 descriptor files (discovered a total of 3 proto source files and 0 descriptor files)
+[INFO] Invoking protoc. Enable debug logs (--debug --errors) for more details
+[INFO] protoc (pid 16405) returned exit code 0 (success) after 886ms
+[INFO] Embedding sources from "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/proto" in Maven main class outputs
+[INFO] PROTOC SUCCEEDED: Protoc invocation succeeded.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-contracts ---
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-contracts ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 41 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-contracts ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-contracts ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-contracts ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ ems-contracts ---
+[INFO] Building jar: /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/ems-contracts-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] ------------------< com.emssystem:ems-people-service >------------------
+[INFO] Building ems-people-service 0.0.1-SNAPSHOT                         [2/3]
+[INFO]   from /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ ems-people-service ---
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-people-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-people-service ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 6 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-people-service ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 62 source files with javac [debug parameters release 17] to target/classes
+[INFO] /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/GlobalExceptionHandler.java: /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/GlobalExceptionHandler.java uses or overrides a deprecated API.
+[INFO] /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/GlobalExceptionHandler.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-people-service ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-people-service ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-people-service ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ ems-people-service ---
+[INFO] Building jar: /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/target/ems-people-service-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.1:repackage (repackage) @ ems-people-service ---
+[INFO] Replacing main artifact /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/target/ems-people-service-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/target/ems-people-service-0.0.1-SNAPSHOT.jar.original
+[INFO] 
+[INFO] ----------------< com.emssystem:ems-workforce-service >-----------------
+[INFO] Building ems-workforce-service 0.0.1-SNAPSHOT                      [3/3]
+[INFO]   from /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ ems-workforce-service ---
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-workforce-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-workforce-service ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 8 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-workforce-service ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 65 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-workforce-service ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-workforce-service ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-workforce-service ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.5.1:jar (default-jar) @ ems-workforce-service ---
+[INFO] Building jar: /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/target/ems-workforce-service-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:4.1.1:repackage (repackage) @ ems-workforce-service ---
+[INFO] Replacing main artifact /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/target/ems-workforce-service-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/target/ems-workforce-service-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for ems-contracts 0.0.1-SNAPSHOT:
+[INFO] 
+[INFO] ems-contracts ...................................... SUCCESS [  4.495 s]
+[INFO] ems-people-service ................................. SUCCESS [  2.935 s]
+[INFO] ems-workforce-service .............................. SUCCESS [  0.862 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.048 s
+[INFO] Finished at: 2026-09-30T12:50:47-06:00
+[INFO] ------------------------------------------------------------------------

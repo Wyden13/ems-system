@@ -1,0 +1,1 @@
+Normal-stack browser login and Workforce overview dashboard passed at http://localhost:5173 using generated private demo admin credentials.

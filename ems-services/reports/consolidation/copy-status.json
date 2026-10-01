@@ -1,0 +1,1627 @@
+[
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/EmsEmployeeServiceApplication.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/EmsEmployeeServiceApplication.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/repository/EmployeeRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/repository/EmployeeRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/entity/EmployeeRole.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/entity/EmployeeRole.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/entity/Employee.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/entity/Employee.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/mapper/EmployeeMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/mapper/EmployeeMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/controller/EmployeeController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/controller/EmployeeController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/IEmployeeService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/IEmployeeService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/EmployeeNumberGenerator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/EmployeeNumberGenerator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/EmployeeService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/EmployeeService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/UserAccountAlreadyLinkedException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/UserAccountAlreadyLinkedException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/EmployeeNumberAlreadyExistsException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/EmployeeNumberAlreadyExistsException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/EmployeeNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/EmployeeNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/exception/EmployeeEmailAlreadyExistsException.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/dto/response/EmployeeSummaryResponse.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/dto/response/EmployeeResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/dto/response/EmployeeResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/dto/request/UpdateEmployeeRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/employee/dto/request/UpdateEmployeeRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/dto/request/CreateEmployeeRequest.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/response/ApiErrorResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/response/ApiErrorResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/response/PageResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/response/PageResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/ReferenceValidator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/ReferenceValidator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/WorkforceReferenceService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/WorkforceReferenceService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/config/JacksonConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/config/JacksonConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/config/JpaAuditingConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/config/JpaAuditingConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/config/ClockConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/config/ClockConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/security/SecurityConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/security/SecurityConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/security/JwtConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/security/JwtConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/entity/AuditableEntity.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/entity/AuditableEntity.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/ErrorCode.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/ErrorCode.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/ResourceNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/ResourceNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/GlobalExceptionHandler.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/GlobalExceptionHandler.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/BusinessRuleException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/exception/BusinessRuleException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/validation/ValidationError.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsemployeeservice/shared/validation/ValidationError.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/ServiceIdentityTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/ServiceIdentityTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/EmsEmployeeServiceApplicationTests.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/EmsEmployeeServiceApplicationTests.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeNumberPostgresTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeNumberPostgresTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeValidationTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeValidationTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeServiceTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeServiceTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeControllerTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeControllerTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/shared/grpc/ReferenceValidatorTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsemployeeservice/shared/grpc/ReferenceValidatorTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/resources/application-grpc.yml",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/resources/application-grpc.yml",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/resources/application.properties",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/resources/application.properties",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/resources/db/migration/V1__employee_schema.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/resources/db/migration/employee/V1__employee_schema.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/resources/db/migration/V2__automatic_employee_numbers.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/resources/db/migration/employee/V2__automatic_employee_numbers.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/EmsOrganizationServiceApplication.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/EmsOrganizationServiceApplication.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/response/ApiErrorResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/response/ApiErrorResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/response/PageResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/response/PageResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/grpc/DepartmentReferenceService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/grpc/DepartmentReferenceService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/grpc/OrganizationDirectoryService.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/config/JacksonConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/config/JacksonConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/config/JpaAuditingConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/config/JpaAuditingConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/security/SecurityConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/security/SecurityConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/security/JwtConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/security/JwtConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/entity/AuditableEntity.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/exception/ErrorCode.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/exception/ResourceNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/exception/ResourceNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/exception/GlobalExceptionHandler.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/exception/GlobalExceptionHandler.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/exception/BusinessRuleException.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/shared/validation/ValidationError.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/shared/validation/ValidationError.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/repository/DepartmentRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/repository/DepartmentRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/repository/LocationRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/repository/LocationRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/entity/Department.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/entity/Department.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/entity/Location.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/entity/Location.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/mapper/OrganizationMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/mapper/OrganizationMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/controller/DepartmentController.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/controller/LocationController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/controller/LocationController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/DefaultDepartmentService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/DefaultDepartmentService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/LocationService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/LocationService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/DefaultLocationService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/DefaultLocationService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/DepartmentService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/service/DepartmentService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/exception/DepartmentNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/exception/DepartmentNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/exception/LocationNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/exception/LocationNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/response/DepartmentResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/response/DepartmentResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/response/LocationResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/response/LocationResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/CreateDepartmentRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/CreateDepartmentRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/CreateLocationRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/CreateLocationRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/UpdateDepartmentRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/UpdateDepartmentRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/java/com/emssystem/emsorganizationservice/organization/dto/request/UpdateLocationRequest.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/EmsOrganizationServiceApplicationTests.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsorganizationservice/EmsOrganizationServiceApplicationTests.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/LocationServiceTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsorganizationservice/organization/LocationServiceTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/OrganizationPostgresIT.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsorganizationservice/organization/OrganizationPostgresIT.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/OrganizationApiTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsorganizationservice/organization/OrganizationApiTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/DepartmentServiceTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/java/com/emssystem/emsorganizationservice/organization/DepartmentServiceTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/resources/application-grpc.yml",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/resources/application-grpc.yml",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/resources/application.properties",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/resources/application.properties",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/resources/db/migration/V3__archive_departments.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/resources/db/migration/organization/V3__archive_departments.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/resources/db/migration/V2__case_insensitive_names.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/resources/db/migration/organization/V2__case_insensitive_names.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-organization-service/src/main/resources/db/migration/V1__organization_schema.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-people-service/src/main/resources/db/migration/organization/V1__organization_schema.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/EmsSchedulingServiceApplication.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/EmsSchedulingServiceApplication.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/Rows.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/Rows.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/ApiErrors.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/ApiErrors.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/response/ApiErrorResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/response/ApiErrorResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/response/PageResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/response/PageResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/OrganizationClient.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/OrganizationClient.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/WorkforceClient.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/WorkforceClient.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/LeaveReservationService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/grpc/LeaveReservationService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/config/JacksonConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/config/JacksonConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/config/JpaAuditingConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/config/JpaAuditingConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/config/ClockConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/config/ClockConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/security/SecurityConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/security/SecurityConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/security/Caller.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/security/Caller.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/security/JwtConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/security/JwtConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/entity/AuditableEntity.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/entity/AuditableEntity.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/exception/ErrorCode.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/exception/ErrorCode.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/exception/ResourceNotFoundException.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/exception/BusinessRuleException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/exception/BusinessRuleException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/shared/validation/ValidationError.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/shared/validation/ValidationError.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/ShiftRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/ShiftRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/ShiftAssignmentRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/ShiftAssignmentRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/ShiftCategoryRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/ShiftCategoryRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/EmployeeAvailabilityRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/repository/EmployeeAvailabilityRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/ShiftAssignment.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/ShiftAssignment.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/EmployeeAvailability.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/EmployeeAvailability.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/Shift.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/Shift.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/ShiftCategory.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/entity/ShiftCategory.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/enums/AvailabilityType.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/enums/AssignmentStatus.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/enums/AssignmentStatus.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/enums/ShiftStatus.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/enums/ShiftStatus.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/mapper/AvailabilityMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/mapper/AvailabilityMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/mapper/ShiftCategoryMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/mapper/ShiftCategoryMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/mapper/ShiftMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/mapper/ShiftMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/AvailabilityController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/AvailabilityController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/ShiftController.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/ShiftAssignmentController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/ShiftAssignmentController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/ShiftCategoryController.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/SchedulingApi.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/controller/SchedulingApi.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftAssignmentService.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/SchedulingOperations.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/SchedulingOperations.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/AvailabilityService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/AvailabilityService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftConflictService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftConflictService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftCategoryService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftCategoryService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/service/ShiftService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/exception/ShiftConflictException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/exception/ShiftConflictException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/exception/ShiftNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/exception/ShiftNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/exception/EmployeeUnavailableException.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/exception/ShiftCategoryNotFoundException.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/validation/ShiftConflictValidator.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/validation/ShiftTimeValidator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/validation/ShiftTimeValidator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftCategoryResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftCategoryResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftAssignmentResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftAssignmentResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftConflictResponse.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/AvailabilityResponse.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/response/ShiftSummaryResponse.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/RespondToAssignmentRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/RespondToAssignmentRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/AssignEmployeeRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/AssignEmployeeRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/CreateShiftRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/CreateShiftRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/PublishShiftRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/PublishShiftRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/UpsertShiftCategoryRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/UpsertShiftCategoryRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/UpdateShiftRequest.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/CreateAvailabilityRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsschedulingservice/scheduling/dto/request/CreateAvailabilityRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/ServiceIdentityTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsschedulingservice/ServiceIdentityTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/SchedulingPostgresTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsschedulingservice/SchedulingPostgresTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/EmsSchedulingServiceApplicationTests.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsschedulingservice/EmsSchedulingServiceApplicationTests.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/test/resources/application-grpc.yml",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application-grpc.yml",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/test/resources/application.properties",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application.properties",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/resources/db/migration/V2__workflow_integrity.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/scheduling/V2__workflow_integrity.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-scheduling-service/src/main/resources/db/migration/V1__scheduling_schema.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/scheduling/V1__scheduling_schema.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/EmsLeaveServiceApplication.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/EmsLeaveServiceApplication.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/Rows.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/Rows.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/ApiErrors.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/ApiErrors.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoBalanceRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoBalanceRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoTypeRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoTypeRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoRequestRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoRequestRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoLedgerRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/repository/PtoLedgerRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoLedgerEntry.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoLedgerEntry.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoBalance.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoBalance.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoType.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoType.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/entity/PtoRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/enums/PtoLedgerEntryType.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/enums/PtoLedgerEntryType.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/enums/PtoRequestStatus.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/mapper/PtoMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/mapper/PtoMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/LeaveApi.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/LeaveApi.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/PtoRequestController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/PtoRequestController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/PtoBalanceController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/PtoBalanceController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/PtoTypeController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/controller/PtoTypeController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoAccrualService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoAccrualService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoRequestService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoRequestService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoTypeService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoTypeService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoBalanceService.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/LeaveOperations.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/service/LeaveOperations.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoApprovalService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/service/PtoApprovalService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/exception/PtoRequestNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/exception/PtoRequestNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/exception/InsufficientPtoBalanceException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/exception/InsufficientPtoBalanceException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/exception/PtoDateConflictException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/exception/PtoDateConflictException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/validation/PtoBalanceValidator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/validation/PtoBalanceValidator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/validation/PtoConflictValidator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/validation/PtoConflictValidator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/response/PtoRequestResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/response/PtoRequestResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/response/PtoTypeResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/response/PtoTypeResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/response/PtoBalanceResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/response/PtoBalanceResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/AdjustPtoBalanceRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/AdjustPtoBalanceRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/ReviewPtoRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/ReviewPtoRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/UpsertPtoTypeRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/UpsertPtoTypeRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/CreatePtoRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/CreatePtoRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/CancelPtoRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/pto/dto/request/CancelPtoRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/grpc/SchedulingClient.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/grpc/SchedulingClient.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/grpc/WorkforceClient.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/grpc/WorkforceClient.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/config/JpaAuditingConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/config/JpaAuditingConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/security/SecurityConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/security/SecurityConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/security/Caller.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/security/Caller.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/security/JwtConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsleaveservice/shared/security/JwtConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/entity/AuditableEntity.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/test/java/com/emssystem/emsleaveservice/LeavePostgresTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsleaveservice/LeavePostgresTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/test/java/com/emssystem/emsleaveservice/EmsLeaveServiceApplicationTests.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsleaveservice/EmsLeaveServiceApplicationTests.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/test/resources/application-grpc.yml",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application-grpc.yml",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/test/resources/application.properties",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application.properties",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/resources/db/migration/V2__workflow_integrity.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/leave/V2__workflow_integrity.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/resources/db/migration/V1__leave_schema.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/leave/V1__leave_schema.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/EmsAttendanceServiceApplication.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/ApiErrors.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/ApiErrors.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/response/ApiErrorResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/response/ApiErrorResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/response/PageResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/response/PageResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/grpc/ServiceIdentityInterceptor.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/grpc/AttendanceRecordService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/grpc/AttendanceRecordService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/grpc/WorkforceClient.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/config/JacksonConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/config/JacksonConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/config/JpaAuditingConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/config/JpaAuditingConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/config/ClockConfig.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/security/SecurityConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/security/SecurityConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/security/Caller.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/security/Caller.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/security/JwtConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/security/JwtConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/entity/AuditableEntity.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/entity/AuditableEntity.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/exception/ErrorCode.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/exception/ErrorCode.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/exception/ResourceNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/exception/ResourceNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/exception/BusinessRuleException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/exception/BusinessRuleException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/shared/validation/ValidationError.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/shared/validation/ValidationError.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/repository/TimeEntryAdjustmentRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/repository/TimeEntryAdjustmentRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/repository/TimeEntryRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/repository/TimeEntryRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/scheduling/StubScheduleProvider.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/scheduling/StubScheduleProvider.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/scheduling/ScheduleProvider.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/scheduling/ScheduleProvider.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/entity/TimeEntry.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/entity/TimeEntry.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/entity/TimeEntryAdjustment.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/entity/TimeEntryAdjustment.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/enums/ClockSource.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/enums/ClockSource.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/enums/TimeEntryStatus.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/enums/TimeEntryStatus.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/mapper/TimeEntryMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/mapper/TimeEntryMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/controller/TimeEntryController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/controller/TimeEntryController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/controller/TimesheetController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/controller/TimesheetController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/calculation/OvertimeCalculator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/calculation/OvertimeCalculator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/calculation/WorkedTimeCalculator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/calculation/WorkedTimeCalculator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/ClockService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/ClockService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/TimeEntryService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/TimeEntryService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/AttendanceOperations.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/AttendanceOperations.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/TimesheetService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/TimesheetService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/TimeEntryApprovalService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/service/TimeEntryApprovalService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/exception/TimeEntryNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/exception/TimeEntryNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/exception/AlreadyClockedInException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/exception/AlreadyClockedInException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/response/TimesheetResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/response/TimesheetResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/response/AttendanceSummaryResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/response/AttendanceSummaryResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/response/TimeEntryResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/response/TimeEntryResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/ClockInRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/ClockInRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/ApproveTimeEntryRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/ApproveTimeEntryRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/AdjustTimeEntryRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/AdjustTimeEntryRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/ClockOutRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emsattendanceservice/attendance/dto/request/ClockOutRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/ServiceIdentityTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsattendanceservice/ServiceIdentityTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/AttendancePostgresTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsattendanceservice/AttendancePostgresTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/EmsAttendanceServiceApplicationTests.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emsattendanceservice/EmsAttendanceServiceApplicationTests.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/test/resources/application-grpc.yml",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application-grpc.yml",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/test/resources/application.properties",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application.properties",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/resources/db/migration/V1__attendance_schema.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/attendance/V1__attendance_schema.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/resources/db/migration/V2__attendance_integrity_and_audit.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/attendance/V2__attendance_integrity_and_audit.sql",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/EmsPayrollServiceApplication.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/EmsPayrollServiceApplication.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/ApiErrors.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/ApiErrors.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayrollRecordRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayrollRecordRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayrollDeductionRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayrollDeductionRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayrollEarningRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayrollEarningRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayPeriodRepository.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/repository/PayPeriodRepository.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayrollDeduction.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayrollDeduction.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayrollEarning.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayrollEarning.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayPeriod.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayPeriod.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayrollRecord.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/entity/PayrollRecord.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/enums/EarningType.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/enums/PayPeriodStatus.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/enums/PayrollStatus.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/enums/PayrollStatus.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/enums/DeductionType.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/mapper/PayrollMapper.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/mapper/PayrollMapper.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/controller/PayrollEstimateController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/controller/PayrollEstimateController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/controller/PayPeriodController.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/controller/PayPeriodController.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/controller/PayrollController.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/GrossPayCalculator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/GrossPayCalculator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/AttendancePayCalculator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/AttendancePayCalculator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/NetPayCalculator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/NetPayCalculator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/RegularPayCalculator.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/RegularPayCalculator.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/calculation/OvertimePayCalculator.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollEstimateService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollEstimateService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayStatementService.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollFinalizationService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollFinalizationService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollGenerationService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollGenerationService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayPeriodService.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayPeriodService.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollCalculationService.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/UnapprovedTimeEntriesException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/UnapprovedTimeEntriesException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/PayPeriodNotFoundException.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/PayrollRecordNotFoundException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/PayrollRecordNotFoundException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/PayrollAlreadyFinalizedException.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/exception/PayrollAlreadyFinalizedException.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayrollSummaryResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayrollSummaryResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayrollRecordResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayrollRecordResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayrollLineItemResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayrollLineItemResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayStatementResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayStatementResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayPeriodResponse.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/response/PayPeriodResponse.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/GeneratePayrollRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/GeneratePayrollRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/AddDeductionRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/AddDeductionRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/AddEarningRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/AddEarningRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/FinalizePayrollRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/FinalizePayrollRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/CreatePayPeriodRequest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/payroll/dto/request/CreatePayPeriodRequest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/grpc/WorkforceClient.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/grpc/WorkforceClient.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/grpc/AttendanceClient.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/grpc/AttendanceClient.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/config/JpaAuditingConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/config/JpaAuditingConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/config/ClockConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/config/ClockConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/security/SecurityConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/security/SecurityConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/security/Caller.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/security/Caller.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/security/JwtConfig.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/security/JwtConfig.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/shared/entity/AuditableEntity.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/java/com/emssystem/emspayrollservice/shared/entity/AuditableEntity.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/EmsPayrollServiceApplicationTests.java",
+    "status": "unavailable",
+    "reason": "TimeoutExpired"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/PayrollEstimateServiceTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emspayrollservice/PayrollEstimateServiceTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/AttendancePayCalculatorTest.java",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/java/com/emssystem/emspayrollservice/AttendancePayCalculatorTest.java",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/test/resources/application-grpc.yml",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application-grpc.yml",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/test/resources/application.properties",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/application.properties",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker",
+    "status": "copied"
+  },
+  {
+    "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/resources/db/migration/V1__payroll_schema.sql",
+    "destination": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/src/main/resources/db/migration/payroll/V1__payroll_schema.sql",
+    "status": "copied"
+  }
+]

@@ -1,1 +1,0 @@
-package com.emssystem.emsleaveservice.pto.exception; public class InsufficientPtoBalanceException extends RuntimeException{public InsufficientPtoBalanceException(Long employeeId){super("Insufficient PTO balance for employee: "+employeeId);}}

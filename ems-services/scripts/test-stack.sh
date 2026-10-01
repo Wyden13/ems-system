@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ./scripts/setup-local.sh
-docker compose build auth-service employee-service organization-service attendance-service payroll-service scheduling-service leave-service gateway-service
+./scripts/build-local.sh
 docker compose -f compose.test.yml up -d --wait postgres
 docker compose -f compose.test.yml exec -T postgres bash /opt/ems/init-databases.sh
 docker compose -f compose.test.yml up -d --wait

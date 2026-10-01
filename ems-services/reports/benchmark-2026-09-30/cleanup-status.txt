@@ -1,0 +1,22 @@
+ Container ems-benchmark-gateway-service-1  Stopping
+ Container ems-benchmark-gateway-service-1  Stopped
+ Container ems-benchmark-scheduling-service-1  Stopping
+ Container ems-benchmark-payroll-service-1  Stopping
+ Container ems-benchmark-organization-service-1  Stopping
+ Container ems-benchmark-auth-service-1  Stopping
+ Container ems-benchmark-leave-service-1  Stopping
+ Container ems-benchmark-payroll-service-1  Stopped
+ Container ems-benchmark-attendance-service-1  Stopping
+ Container ems-benchmark-auth-service-1  Stopped
+ Container ems-benchmark-organization-service-1  Stopped
+ Container ems-benchmark-leave-service-1  Stopped
+ Container ems-benchmark-scheduling-service-1  Stopped
+ Container ems-benchmark-attendance-service-1  Stopped
+ Container ems-benchmark-employee-service-1  Stopping
+ Container ems-benchmark-employee-service-1  Stopped
+ Container ems-benchmark-postgres-1  Stopping
+ Container ems-benchmark-postgres-1  Stopped
+ems-integration-test-payroll-service-1
+ems-integration-test-scheduling-service-1
+ems-integration-test-leave-service-1
+ems-integration-test-attendance-service-1

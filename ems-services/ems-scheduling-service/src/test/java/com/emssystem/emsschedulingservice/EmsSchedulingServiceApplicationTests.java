@@ -1,3 +1,0 @@
-package com.emssystem.emsschedulingservice;
-import com.emssystem.emsschedulingservice.scheduling.entity.*; import com.emssystem.emsschedulingservice.scheduling.enums.*; import org.junit.jupiter.api.Test; import java.time.*; import static org.junit.jupiter.api.Assertions.*;
-class EmsSchedulingServiceApplicationTests{@Test void initializesSchedulingDefaults(){ShiftCategory category=new ShiftCategory("Day","#FFFFFF",LocalTime.of(8,0),LocalTime.of(16,0));Shift shift=new Shift(category,Instant.EPOCH,Instant.EPOCH.plusSeconds(3600),1L,2);ShiftAssignment assignment=new ShiftAssignment(shift,10L);assertEquals(ShiftStatus.DRAFT,shift.getStatus());assertEquals(AssignmentStatus.ASSIGNED,assignment.getStatus());assertTrue(category.isActive());}}

@@ -1,1 +1,0 @@
-package com.emssystem.emsleaveservice.pto.repository; import com.emssystem.emsleaveservice.pto.entity.PtoType; import org.springframework.data.jpa.repository.JpaRepository; public interface PtoTypeRepository extends JpaRepository<PtoType,Long>{boolean existsByNameIgnoreCase(String name);}

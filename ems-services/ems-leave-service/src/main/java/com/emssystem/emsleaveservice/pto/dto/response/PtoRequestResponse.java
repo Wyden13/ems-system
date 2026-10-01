@@ -1,2 +1,0 @@
-package com.emssystem.emsleaveservice.pto.dto.response; import com.emssystem.emsleaveservice.pto.enums.PtoRequestStatus; import java.math.BigDecimal; import java.time.*; import java.util.UUID;
-public record PtoRequestResponse(Long id,Long employeeId,Long ptoTypeId,String ptoTypeName,LocalDate startDate,LocalDate endDate,BigDecimal hours,PtoRequestStatus status,UUID reviewedBy,Instant reviewedAt,Instant createdAt,Instant updatedAt) {}

@@ -1,0 +1,121 @@
+[
+  {
+    "name": "ems-benchmark-gateway-service-1",
+    "image": "sha256:6700ec9423862fd483fc4c4fa7cd77ebd74ee26f428563c1d1a72bf22a98ed87",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:49:39.680734921Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 8446333\nuser_usec 7889838\nsystem_usec 556494\nnr_periods 217\nnr_throttled 164\nthrottled_usec 27254273\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-payroll-service-1",
+    "image": "sha256:25081311ffcd227a2b3289fca0edf5f916891719ca5fabcaf7664a13f5a230ee",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:49:02.967350126Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 18711930\nuser_usec 17426424\nsystem_usec 1285505\nnr_periods 457\nnr_throttled 370\nthrottled_usec 61509957\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-attendance-service-1",
+    "image": "sha256:14f13ae1a72e79a6bada3e86269c577bf52403d1a5f3e709332da70363e4c05b",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:48:14.19035584Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 23455245\nuser_usec 21968695\nsystem_usec 1486549\nnr_periods 702\nnr_throttled 450\nthrottled_usec 73562342\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-leave-service-1",
+    "image": "sha256:ae9da7a9bd1a0c0c094818671d1ea2f44974accfb93e82498b4e1e9478e66733",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:48:14.18530559Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 23682788\nuser_usec 22195315\nsystem_usec 1487473\nnr_periods 668\nnr_throttled 456\nthrottled_usec 74080735\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-scheduling-service-1",
+    "image": "sha256:1bff1380c09710ce857765fa89ad1a0a667a2ebb970d55eccdb1bcd4ae35a565",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:48:14.190087673Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 22493196\nuser_usec 21115853\nsystem_usec 1377342\nnr_periods 706\nnr_throttled 429\nthrottled_usec 71318575\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-employee-service-1",
+    "image": "sha256:e8f5a34f47b547778668cc96420dbca442c4ab8c0c6209cd2c8e3a181113108f",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:47:22.324711052Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 27836081\nuser_usec 25958242\nsystem_usec 1877839\nnr_periods 981\nnr_throttled 520\nthrottled_usec 86921083\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-organization-service-1",
+    "image": "sha256:40e0b46bb1562fed74c40a02694d7a2dbc77dde90ad33bf97ecac34f2eec6b6c",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:47:22.339213302Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 26215957\nuser_usec 24226111\nsystem_usec 1989845\nnr_periods 967\nnr_throttled 474\nthrottled_usec 79237106\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-auth-service-1",
+    "image": "sha256:6b538e1c6286bfbe507c0d1ff882dccce4c8fe078cefaf608a365ba925e47ec6",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:47:22.33522826Z",
+    "health": "healthy",
+    "cpu_limit": 0.5,
+    "memory_limit_bytes": 1073741824,
+    "cpu_stat": "usage_usec 29995624\nuser_usec 27946611\nsystem_usec 2049013\nnr_periods 997\nnr_throttled 557\nthrottled_usec 90126306\nnr_bursts 0\nburst_usec 0\n"
+  },
+  {
+    "name": "ems-benchmark-bootstrap",
+    "image": "sha256:6b538e1c6286bfbe507c0d1ff882dccce4c8fe078cefaf608a365ba925e47ec6",
+    "status": "exited",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:38:28.228768805Z",
+    "health": "unhealthy",
+    "cpu_limit": 0.0,
+    "memory_limit_bytes": 0
+  },
+  {
+    "name": "ems-benchmark-postgres-1",
+    "image": "sha256:86c951e05bf56c93d95d397747fb8820ac76cc3bedb78f43abd83eedbe3666ae",
+    "status": "running",
+    "oom_killed": false,
+    "restart_count": 0,
+    "started_at": "2026-09-30T05:35:04.059674002Z",
+    "health": "healthy",
+    "cpu_limit": 0.0,
+    "memory_limit_bytes": 0,
+    "cpu_stat": "usage_usec 79937557\nuser_usec 42694634\nsystem_usec 37242923\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n"
+  }
+]

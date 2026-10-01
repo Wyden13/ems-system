@@ -1,0 +1,20 @@
+
+> frontend@0.0.0 test:e2e
+> playwright test
+
+[WebServer] (node:28483) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 7 tests using 1 worker
+
+(node:28484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/attendance.spec.ts:27:1 › clock, restore, review, correct, and calculate payroll with role isolation (11.9s)
+  ✓  2 e2e/management.spec.ts:15:1 › admin manages real records; archive preserves references and logout ends refresh (8.4s)
+  ✓  3 e2e/management.spec.ts:160:1 › gateway and services reject spoofed identity, invalid tokens, CSRF, and invalid references (207ms)
+  ✓  4 e2e/profile.spec.ts:25:1 › profile email and password changes persist and revoke old credentials (4.0s)
+  ✓  5 e2e/profile.spec.ts:46:1 › account suspension rejects login and revokes refresh sessions (418ms)
+  ✓  6 e2e/profile.spec.ts:55:1 › organization prevents duplicate names and deletion of referenced locations (274ms)
+  ✓  7 e2e/workflows.spec.ts:6:1 › published shifts, employee response, PTO conflicts, approval and reversal across real services (6.9s)
+
+  7 passed (34.2s)

@@ -23,9 +23,5 @@ SQL
 
 # Creates only missing roles/databases; existing passwords are unchanged.
 create_database ems_auth_db auth_user "${AUTH_DB_PASSWORD:?Set AUTH_DB_PASSWORD}"
-create_database ems_employee_db employee_user "${EMPLOYEE_DB_PASSWORD:?Set EMPLOYEE_DB_PASSWORD}"
-create_database ems_schedule_db schedule_user "${SCHEDULE_DB_PASSWORD:?Set SCHEDULE_DB_PASSWORD}"
-create_database ems_attendance_db attendance_user "${ATTENDANCE_DB_PASSWORD:?Set ATTENDANCE_DB_PASSWORD}"
-create_database ems_payroll_db payroll_user "${PAYROLL_DB_PASSWORD:?Set PAYROLL_DB_PASSWORD}"
-create_database ems_leave_db leave_user "${LEAVE_DB_PASSWORD:?Set LEAVE_DB_PASSWORD}"
-create_database ems_organization_db organization_user "${ORGANIZATION_DB_PASSWORD:?Set ORGANIZATION_DB_PASSWORD}"
+create_database ems_people_db people_user "${PEOPLE_DB_PASSWORD:?Set PEOPLE_DB_PASSWORD}"
+create_database ems_workforce_db workforce_user "${WORKFORCE_DB_PASSWORD:?Set WORKFORCE_DB_PASSWORD}"

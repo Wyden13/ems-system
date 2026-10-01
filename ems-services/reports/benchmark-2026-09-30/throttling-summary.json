@@ -1,0 +1,128 @@
+[
+  {
+    "service": "ems-benchmark-gateway-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 39665162,
+      "user_usec": 34529043,
+      "system_usec": 5136119,
+      "nr_periods": 1436,
+      "nr_throttled": 527,
+      "throttled_usec": 121091716,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 36.7
+  },
+  {
+    "service": "ems-benchmark-payroll-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 35243041,
+      "user_usec": 32401919,
+      "system_usec": 2841122,
+      "nr_periods": 1382,
+      "nr_throttled": 394,
+      "throttled_usec": 50550117,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 28.5
+  },
+  {
+    "service": "ems-benchmark-attendance-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 54760909,
+      "user_usec": 48892543,
+      "system_usec": 5868366,
+      "nr_periods": 1408,
+      "nr_throttled": 1052,
+      "throttled_usec": 442799685,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 74.7
+  },
+  {
+    "service": "ems-benchmark-leave-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 22322799,
+      "user_usec": 20472740,
+      "system_usec": 1850058,
+      "nr_periods": 1245,
+      "nr_throttled": 223,
+      "throttled_usec": 29095257,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 17.9
+  },
+  {
+    "service": "ems-benchmark-scheduling-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 18038840,
+      "user_usec": 16497449,
+      "system_usec": 1541392,
+      "nr_periods": 1222,
+      "nr_throttled": 176,
+      "throttled_usec": 19365019,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 14.4
+  },
+  {
+    "service": "ems-benchmark-employee-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 35482388,
+      "user_usec": 32836956,
+      "system_usec": 2645432,
+      "nr_periods": 1344,
+      "nr_throttled": 485,
+      "throttled_usec": 116250762,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 36.1
+  },
+  {
+    "service": "ems-benchmark-organization-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 26236702,
+      "user_usec": 24119979,
+      "system_usec": 2116723,
+      "nr_periods": 1275,
+      "nr_throttled": 314,
+      "throttled_usec": 47138140,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 24.6
+  },
+  {
+    "service": "ems-benchmark-auth-service-1",
+    "cpu_stat_delta": {
+      "usage_usec": 23806114,
+      "user_usec": 22178294,
+      "system_usec": 1627820,
+      "nr_periods": 1383,
+      "nr_throttled": 284,
+      "throttled_usec": 22209611,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 20.5
+  },
+  {
+    "service": "ems-benchmark-postgres-1",
+    "cpu_stat_delta": {
+      "usage_usec": 18271934,
+      "user_usec": 11058396,
+      "system_usec": 7213538,
+      "nr_periods": 0,
+      "nr_throttled": 0,
+      "throttled_usec": 0,
+      "nr_bursts": 0,
+      "burst_usec": 0
+    },
+    "throttled_periods_percent": 0
+  }
+]

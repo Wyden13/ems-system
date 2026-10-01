@@ -1,0 +1,8 @@
+ems_attendance_db|10
+ems_auth_db|10
+ems_employee_db|10
+ems_leave_db|10
+ems_organization_db|10
+ems_payroll_db|10
+ems_schedule_db|10
+postgres|1

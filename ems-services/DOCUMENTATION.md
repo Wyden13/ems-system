@@ -1,20 +1,20 @@
 # EMS workforce MVP
 
-The integrated application includes authentication/accounts, employee records, organization management, attendance, gross-pay estimates, scheduling, and PTO. React uses actual APIs through the gateway. The historical pre-integration inventory remains in `PRE_INTEGRATION_AUDIT.md`; it is not the current feature status.
+The supported deployment has four applications: Auth, People (employee and organization), Workforce (scheduling, leave, attendance and current payroll estimates), and Gateway. Auth, People and Workforce each have one database. Domain packages remain separate inside the merged applications. The integrated application includes authentication/accounts, employee records, organization management, attendance, gross-pay estimates, scheduling, and PTO. React uses actual APIs through the gateway. The historical pre-integration inventory remains in `PRE_INTEGRATION_AUDIT.md`; it is not the current feature status.
 
 ## Implemented scope
 
 | Module                | Implemented behavior                                                                                                                            |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | Accounts              | Login/logout, rotating refresh sessions, profile/password changes, administrator account management and last-admin protection                   |
-| Employee/organization | Search and edit employee records, automatic employee numbers, linked login accounts, locations, department archival and remote reference checks |
+| Employee/organization | Search and edit employee records, automatic employee numbers, linked login accounts, locations, department archival and local department checks |
 | Attendance            | Clock-in/out, duplicate retry protection, role/department visibility, manager review, corrections and audit history                             |
 | Payroll               | Live CAD gross-pay estimates from approved completed worked time, with daily/weekly overtime                                                    |
 | Scheduling            | Department-owned shifts, categories, weekly availability, assignment, publication, acceptance/decline and cancellation                          |
 | PTO                   | Admin-funded balances, reservations, department review, conflict checks, cancellation/reversal, ledger and action history                       |
 | Dashboards            | Real role-scoped schedules, PTO requests, attendance review counts, personal clock state and pay estimates                                      |
 
-Notifications/email, automatic PTO accrual/carryover, paid-leave pay, scheduled break deductions, attendance scores, finalized payroll, taxes/deductions, payment processing, imports and reports/exports are deferred. Notification scaffolding is outside the main reactor and deployment.
+Notifications/email, automatic PTO accrual/carryover, paid-leave pay, scheduled break deductions, detailed lateness/break scoring, finalized payroll, taxes/deductions, payment processing, imports and reports/exports are deferred. Notification scaffolding is outside the main reactor and deployment.
 
 ## Access rules
 
@@ -39,7 +39,7 @@ Nobody may approve/reject their own PTO or review/correct their own attendance. 
 
 ## Scheduling behavior
 
-Each new shift has a department and its department's location. A supervisor cannot read or change shifts outside their department. Existing legacy shifts may have a null department; managers/admins must assign one before publication. Migration V2 preserves their IDs and data.
+Each new shift has a department and its department's location. A supervisor cannot read or change shifts outside their department. All shifts require a department. Consolidation uses fresh databases because all existing records were explicitly declared disposable mock data.
 
 Only draft shifts can be edited, and active assignments must first be removed. Published shifts are cancelled and replaced when their details change. Shifts are future-dated and at most 24 hours long. Publication may leave open positions; staffing counts remain visible.
 
@@ -57,13 +57,12 @@ Available hours = allocated hours − used hours − reserved hours. Requests ex
 
 - Creation reserves hours and records an audit action.
 - Rejection or pending cancellation releases reserved hours.
-- Approval first persists `APPROVING`, then asks scheduling for an idempotent leave hold. The same scheduling lock serializes holds, assignment and publication.
-- Conflicting draft or published commitments return the request to `PENDING` with conflicting shift IDs. A planner must remove those assignments before approving again.
-- Successful approval moves reserved hours to used hours and records exactly one usage ledger entry.
-- Approved cancellation first persists `CANCELLING`, releases the scheduling hold and records one reversal. Owners can cancel leave starting today or later; authorized planners may reverse historical leave with a reason.
-- Scheduling outages leave an explicit processing state. Recovery retries every 15 seconds and after process restart. No manual database repair is needed for a successful remote operation followed by a local rollback.
+- Approval creates a local scheduling hold, moves reserved hours to used hours and records one usage ledger entry in one Workforce transaction.
+- Conflicting draft or published commitments return 409 with conflicting shift IDs; the request remains PENDING with its original version. Remove those assignments before approving again.
+- Approved cancellation releases the hold and records one reversal in the same transaction. Owners can cancel leave starting today or later; authorized planners may reverse historical leave with a reason.
+- A database failure rolls back the request, hold, balance and audit changes together. A shared database lock serializes holds, assignment and publication, including concurrent approval/assignment.
 
-Each database owns its data. The leave service uses mTLS gRPC to scheduling; it does not write scheduling tables. Pending requests do not block scheduling until approval coordination begins. Intermediate states prevent ambiguous rollback and overdraw during dependency failures. The UI displays processing states and polls them.
+Scheduling and leave call local domain operations and share a database and transaction manager. APPROVING/CANCELLING are transient within a transaction; no distributed recovery job or internal scheduling RPC is needed. Pending requests reserve balances but do not block scheduling before approval.
 
 Paid PTO labels do not add PTO hours or pay to the payroll estimate in this MVP.
 
@@ -71,7 +70,7 @@ Paid PTO labels do not add PTO hours or pay to the payroll estimate in this MVP.
 
 Business time is America/Edmonton and currency is CAD. Fourteen-day pay periods are anchored at 2026-09-25. Workweeks begin Saturday. The estimator applies the greater of daily excess over eight hours or weekly excess over 44 hours at 1.5× without double counting. Full surrounding workweeks are considered before allocation into the chosen pay period.
 
-Estimates use current employee rates and approved completed attendance; they are not immutable payroll records. Open weeks or unapproved attendance make estimates provisional. No scheduled breaks are deducted. Attendance scores remain `UNAVAILABLE`, with null counts/percentage.
+Estimates use current employee rates and approved completed attendance; they are not immutable payroll records. Open weeks or unapproved attendance make estimates provisional. No scheduled breaks are deducted. Schedule reconciliation reads published active assignments from the Workforce database. Scores are AVAILABLE: expected events count completed published shifts; missed events count shifts with no overlapping non-rejected attendance. Percentage is zero when no completed shifts exist. Future/cancelled shifts are excluded. This measures presence by overlap, not late arrivals or partial-shift completion. Payroll reads authorized employees' attendance in one grouped local query.
 
 Legacy timesheet worked-minute totals clip completed entries to the requested local dates and aggregate seconds before truncating to minutes. Their `overtimeMinutes` is explicitly null until timesheet overtime is implemented. Payroll estimates retain their existing independent overtime calculation.
 
@@ -106,7 +105,7 @@ Existing account, employee, organization, time-entry, timesheet and estimate API
 
 Responses expose versions where used by commands. Date-only values remain strings. Instants use ISO timestamps. Invalid input, unauthorized access, stale/conflicting data and unavailable dependencies return 400, 401/403, 409 and 503 respectively. Forms retain input on errors.
 
-`ems-contracts` includes organization directory lookups and scheduling leave reservations. Organization directory calls accept scheduling certificates; workforce references accept attendance/payroll/scheduling/leave certificates; scheduling reservation calls accept only leave certificates. Internal ports are not published. Service identities come from DNS SANs in certificates verified against the configured CA.
+`ems-contracts` retains protobuf types used by the local domain adapters and the two external gRPC links: People → Auth for new account links, Workforce → People for employee and directory references. Auth accepts only People certificates; People accepts only Workforce certificates. Internal ports are not published. Service identities use verified DNS SANs. There are no network calls between employee/organization or between Workforce modules.
 
 ## Local startup and verification
 
@@ -116,24 +115,25 @@ Requirements: Docker Compose, Java 17+, compatible Node (CI uses Node 24), Pytho
 ./scripts/setup-local.sh
 docker compose up -d postgres
 ./scripts/provision-databases.sh
-docker compose up --build -d --wait auth-service employee-service organization-service attendance-service payroll-service scheduling-service leave-service gateway-service
+./scripts/build-local.sh
+docker compose up -d --wait
 ```
 
-Setup preserves existing secrets and certificate pairs. It adds missing scheduling/leave identities using the existing CA. Database provisioning creates missing databases and roles, never resets volumes or overwrites passwords. Flyway owns schemas; Hibernate validates them. Unexpected unversioned nonempty schemas require explicit inspection, not automatic baselining.
+Setup preserves existing secrets and certificate pairs. It adds Auth, People and Workforce identities using the existing CA. Database provisioning creates missing databases and roles, never resets volumes or overwrites passwords. Flyway owns schemas; Hibernate validates them. Unexpected unversioned nonempty schemas require explicit inspection, not automatic baselining.
 
 Set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in your shell and run `./scripts/bootstrap-admin.sh` for the first admin. There are no normal-stack default credentials.
 
-From `frontend/`, run `npm ci` and `npm run dev`. Vite proxies `/api` to gateway port 8080. `EMS_GATEWAY_URL` overrides the target. Application ports are loopback-bound: auth 8081, employee 8082, scheduling 8083, attendance 8084, payroll 8085, leave 8086 and organization 8087.
+From `frontend/`, run `npm ci` and `npm run dev`. Vite proxies `/api` to gateway port 8080. `EMS_GATEWAY_URL` overrides the target. Application ports are loopback-bound: gateway 8080, Auth 8081, People 8082 and Workforce 8083.
 
 ```sh
-./ems-auth-service/mvnw -f pom.xml -Pintegration verify
+./mvnw -Dtest='*Test,*Tests,*IT' -Dsurefire.failIfNoSpecifiedTests=false test
 # From frontend/: npm run build && npm run lint && npm test
 ./scripts/test-stack.sh
 ```
 
-The browser script builds all integrated images and runs a separate `ems-integration-test` Compose project with its own volume, service ports 18080–18087 and Vite port 15173. Only this test stack uses `admin@integration.test` / `IntegrationTest123!`. Browser tests create their own records. Stop it with `docker compose -f compose.test.yml down`; never reset the normal platform volume for testing.
+The browser script builds all integrated images and runs a separate `ems-integration-test` Compose project with its own volume, service ports 18080–18083 and Vite port 15173. Only this test stack uses `admin@integration.test` / `IntegrationTest123!`. Browser tests create their own records. Stop it with `docker compose -f compose.test.yml down`; never reset the normal platform volume for testing.
 
-CI runs backend PostgreSQL tests, frontend checks, browser workflows and backup restoration. Test artifacts are retained on failure.
+The consolidation verification report records the backend PostgreSQL tests, frontend checks, browser workflows and operational checks that have actually run. Historical CI must use the current four-service reactor and Compose configuration.
 
 ## Operations and rollout
 
@@ -146,6 +146,16 @@ Before applying migrations to an existing deployment, back up all service databa
 
 Backups use restrictive permissions and refuse to overwrite existing archives. Restoration verification uses a disposable PostgreSQL container with no published ports and no existing platform volume. For isolated test data, supply `compose.test.yml` as the backup script's second argument. Cross-service backups are taken sequentially; quiesce workforce writes for a coordinated recovery point. Do not restore individual service backups independently into a live system with in-flight PTO operations.
 
-Use `docker compose ps -a` and readiness endpoints to monitor all eight applications. Monitor failed readiness, repeated restarts, leave requests remaining in processing, and recovery warnings. Certificate expiration requires explicit renewal. Keep the local CA signing key private and out of containers.
+Use `docker compose ps -a` and readiness endpoints to monitor all four applications. Monitor failed readiness, repeated restarts, database connection failures and transaction errors. Certificate expiration requires explicit renewal. Keep the local CA signing key private and out of containers.
 
-A hosted pilot still requires environment-specific HTTPS termination, frontend hosting, secrets and alert routing; no production environment has been selected or deployed. Keep secure refresh cookies enabled outside loopback development, expose only the gateway to browsers, and restrict database/internal service access. Test backup restoration before rollout. Deploy organization/employee reference providers and scheduling before leave consumers, then the gateway/frontend. Preserve additive migrations on rollback and use compatible application images; do not delete data or applied migration history.
+A hosted pilot still requires environment-specific HTTPS termination, frontend hosting, secrets and alert routing; no production environment has been selected or deployed. Keep secure refresh cookies enabled outside loopback development, expose only the gateway to browsers, and restrict database/internal service access. Test backup restoration before rollout. Deploy Auth and People before Workforce, then Gateway/frontend. Preserve additive migrations on rollback and use compatible application images; do not delete data or applied migration history.
+
+## Disposable data reset and reseeding
+
+The user authorized rebuilding all mock data. The consolidated normal and test stacks use new volumes; legacy databases are not copied. `scripts/reset-test-stack.sh` removes only the isolated consolidated integration volume, then provisions three empty databases, starts four applications, bootstraps the test admin and runs the repeatable demo seed. It does not rebuild images; run `scripts/build-local.sh` first. Normal-stack data reset is a separate explicit operation.
+
+`seed-demo.py` creates linked employee/supervisor accounts, an office/department, a published assigned shift and a funded PTO balance through the gateway. Repeat runs reuse fixtures and the adjustment UUID to avoid duplicate funding. Supply `BOOTSTRAP_ADMIN_EMAIL`, `BOOTSTRAP_ADMIN_PASSWORD`, `DEMO_ACCOUNT_PASSWORD`, and optionally `EMS_BASE_URL` (default test gateway 18080). It never prints passwords or tokens. Fixtures use `@demo.test` accounts and a fixed future shift date.
+
+If a registry lookup is unavailable, an existing trusted image containing Java, curl and the spring user can be supplied as `EMS_RUNTIME_IMAGE` to `build-local.sh`; the default build uses Eclipse Temurin 17. Retired source directories remain for reference but are excluded from the reactor, build context and supported deployment.
+
+The completed local consolidation run leaves the normal frontend at http://localhost:5173 and gateway at http://localhost:8080. Generated demo credentials are stored privately in `.local/demo-admin.env`; administrator email is `admin@demo.test`, with separate employee/supervisor credentials using `DEMO_ACCOUNT_PASSWORD`. See `reports/consolidation/VERIFICATION.md` and `BENCHMARK.md` for measured evidence.

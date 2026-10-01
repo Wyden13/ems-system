@@ -1,0 +1,74 @@
+{
+  "ems-attendance-service": {
+    "java_files": 45,
+    "java_lines": 664,
+    "rest_controllers": 2,
+    "entities": 2,
+    "test_files": 3,
+    "migrations": 2
+  },
+  "ems-auth-service": {
+    "java_files": 46,
+    "java_lines": 1565,
+    "rest_controllers": 3,
+    "entities": 2,
+    "test_files": 6,
+    "migrations": 1
+  },
+  "ems-employee-service": {
+    "java_files": 33,
+    "java_lines": 1094,
+    "rest_controllers": 1,
+    "entities": 1,
+    "test_files": 7,
+    "migrations": 2
+  },
+  "ems-gateway-service": {
+    "java_files": 4,
+    "java_lines": 202,
+    "rest_controllers": 0,
+    "entities": 0,
+    "test_files": 2,
+    "migrations": 0
+  },
+  "ems-leave-service": {
+    "java_files": 44,
+    "java_lines": 486,
+    "rest_controllers": 1,
+    "entities": 4,
+    "test_files": 2,
+    "migrations": 2
+  },
+  "ems-notification-service": {
+    "java_files": 13,
+    "java_lines": 34,
+    "rest_controllers": 0,
+    "entities": 1,
+    "test_files": 1,
+    "migrations": 1
+  },
+  "ems-organization-service": {
+    "java_files": 35,
+    "java_lines": 981,
+    "rest_controllers": 2,
+    "entities": 2,
+    "test_files": 5,
+    "migrations": 3
+  },
+  "ems-payroll-service": {
+    "java_files": 51,
+    "java_lines": 928,
+    "rest_controllers": 1,
+    "entities": 4,
+    "test_files": 3,
+    "migrations": 1
+  },
+  "ems-scheduling-service": {
+    "java_files": 64,
+    "java_lines": 957,
+    "rest_controllers": 1,
+    "entities": 4,
+    "test_files": 3,
+    "migrations": 2
+  }
+}

@@ -1,1 +1,0 @@
-package com.emssystem.emsleaveservice.pto.dto.response; import java.math.BigDecimal; public record PtoBalanceResponse(Long id,Long employeeId,Long ptoTypeId,String ptoTypeName,BigDecimal accruedHours,BigDecimal usedHours,BigDecimal reservedHours) {}

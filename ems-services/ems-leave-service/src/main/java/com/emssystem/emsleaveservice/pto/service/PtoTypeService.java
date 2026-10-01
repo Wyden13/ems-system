@@ -1,2 +1,0 @@
-package com.emssystem.emsleaveservice.pto.service; import com.emssystem.emsleaveservice.pto.dto.request.UpsertPtoTypeRequest; import com.emssystem.emsleaveservice.pto.dto.response.PtoTypeResponse; import java.util.List;
-public interface PtoTypeService{PtoTypeResponse create(UpsertPtoTypeRequest request);PtoTypeResponse get(Long id);List<PtoTypeResponse> list();PtoTypeResponse replace(Long id,UpsertPtoTypeRequest request);void delete(Long id);}

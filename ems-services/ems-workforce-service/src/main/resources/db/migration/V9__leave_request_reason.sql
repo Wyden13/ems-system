@@ -1,0 +1,1 @@
+ALTER TABLE pto_requests ADD COLUMN reason VARCHAR(500) NOT NULL DEFAULT '';

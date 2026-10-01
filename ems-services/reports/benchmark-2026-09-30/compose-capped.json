@@ -1,0 +1,708 @@
+{
+  "name": "ems-benchmark",
+  "networks": {
+    "default": {
+      "name": "ems-benchmark_default",
+      "ipam": {}
+    }
+  },
+  "services": {
+    "attendance-service": {
+      "command": null,
+      "depends_on": {
+        "employee-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "SERVER_PORT": "8080",
+        "SPRING_DATASOURCE_PASSWORD": "integration-test-only",
+        "SPRING_DATASOURCE_URL": "jdbc:postgresql://postgres:5432/ems_attendance_db",
+        "SPRING_DATASOURCE_USERNAME": "attendance_user",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/attendance-service.crt",
+        "TLS_KEY": "file:/certs/attendance-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "5s",
+        "retries": 40,
+        "start_period": "30s"
+      },
+      "image": "ems/attendance-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28084",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/attendance-service.crt",
+          "target": "/certs/attendance-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/attendance-service.key",
+          "target": "/certs/attendance-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "auth-service": {
+      "command": null,
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "DB_PASSWORD": "integration-test-only",
+        "DB_URL": "jdbc:postgresql://postgres:5432/ems_auth_db",
+        "DB_USERNAME": "auth_user",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/auth-service.crt",
+        "TLS_KEY": "file:/certs/auth-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "3s",
+        "retries": 50,
+        "start_period": "20s"
+      },
+      "image": "ems/auth-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28081",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/auth-service.crt",
+          "target": "/certs/auth-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/auth-service.key",
+          "target": "/certs/auth-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "employee-service": {
+      "command": null,
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "DB_PASSWORD": "integration-test-only",
+        "DB_URL": "jdbc:postgresql://postgres:5432/ems_employee_db",
+        "DB_USERNAME": "employee_user",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/employee-service.crt",
+        "TLS_KEY": "file:/certs/employee-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "3s",
+        "retries": 50,
+        "start_period": "20s"
+      },
+      "image": "ems/employee-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28082",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/employee-service.crt",
+          "target": "/certs/employee-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/employee-service.key",
+          "target": "/certs/employee-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "gateway-service": {
+      "command": null,
+      "depends_on": {
+        "attendance-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "auth-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "employee-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "leave-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "organization-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "payroll-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "scheduling-service": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "ATTENDANCE_URL": "http://attendance-service:8080",
+        "AUTH_URL": "http://auth-service:8080",
+        "EMPLOYEE_URL": "http://employee-service:8080",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "LEAVE_URL": "http://leave-service:8080",
+        "ORGANIZATION_URL": "http://organization-service:8080",
+        "PAYROLL_URL": "http://payroll-service:8080",
+        "SCHEDULING_URL": "http://scheduling-service:8080",
+        "SECURE_COOKIE": "false",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "3s",
+        "retries": 50,
+        "start_period": "20s"
+      },
+      "image": "ems/gateway-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28080",
+          "protocol": "tcp"
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "leave-service": {
+      "command": null,
+      "depends_on": {
+        "employee-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "SERVER_PORT": "8080",
+        "SPRING_DATASOURCE_PASSWORD": "integration-test-only",
+        "SPRING_DATASOURCE_URL": "jdbc:postgresql://postgres:5432/ems_leave_db",
+        "SPRING_DATASOURCE_USERNAME": "leave_user",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/leave-service.crt",
+        "TLS_KEY": "file:/certs/leave-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "5s",
+        "retries": 40,
+        "start_period": "30s"
+      },
+      "image": "ems/leave-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28086",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/leave-service.crt",
+          "target": "/certs/leave-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/leave-service.key",
+          "target": "/certs/leave-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "organization-service": {
+      "command": null,
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "DB_PASSWORD": "integration-test-only",
+        "DB_URL": "jdbc:postgresql://postgres:5432/ems_organization_db",
+        "DB_USERNAME": "organization_user",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/organization-service.crt",
+        "TLS_KEY": "file:/certs/organization-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "3s",
+        "retries": 50,
+        "start_period": "20s"
+      },
+      "image": "ems/organization-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28087",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/organization-service.crt",
+          "target": "/certs/organization-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/organization-service.key",
+          "target": "/certs/organization-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "payroll-service": {
+      "command": null,
+      "depends_on": {
+        "attendance-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "employee-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "SERVER_PORT": "8080",
+        "SPRING_DATASOURCE_PASSWORD": "integration-test-only",
+        "SPRING_DATASOURCE_URL": "jdbc:postgresql://postgres:5432/ems_payroll_db",
+        "SPRING_DATASOURCE_USERNAME": "payroll_user",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/payroll-service.crt",
+        "TLS_KEY": "file:/certs/payroll-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "5s",
+        "retries": 40,
+        "start_period": "30s"
+      },
+      "image": "ems/payroll-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28085",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/payroll-service.crt",
+          "target": "/certs/payroll-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/payroll-service.key",
+          "target": "/certs/payroll-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    },
+    "postgres": {
+      "command": null,
+      "entrypoint": null,
+      "environment": {
+        "ATTENDANCE_DB_PASSWORD": "integration-test-only",
+        "AUTH_DB_PASSWORD": "integration-test-only",
+        "EMPLOYEE_DB_PASSWORD": "integration-test-only",
+        "LEAVE_DB_PASSWORD": "integration-test-only",
+        "ORGANIZATION_DB_PASSWORD": "integration-test-only",
+        "PAYROLL_DB_PASSWORD": "integration-test-only",
+        "POSTGRES_DB": "postgres",
+        "POSTGRES_PASSWORD": "integration-test-only",
+        "POSTGRES_USER": "postgres",
+        "SCHEDULE_DB_PASSWORD": "integration-test-only"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "pg_isready",
+          "-U",
+          "postgres"
+        ],
+        "timeout": "3s",
+        "interval": "2s",
+        "retries": 30
+      },
+      "image": "postgres:18",
+      "networks": {
+        "default": null
+      },
+      "volumes": [
+        {
+          "type": "volume",
+          "source": "integration-test-data",
+          "target": "/var/lib/postgresql",
+          "volume": {}
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/docker/postgres-server/init-databases.sh",
+          "target": "/opt/ems/init-databases.sh",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ]
+    },
+    "scheduling-service": {
+      "command": null,
+      "depends_on": {
+        "employee-service": {
+          "condition": "service_healthy",
+          "required": true
+        },
+        "postgres": {
+          "condition": "service_healthy",
+          "required": true
+        }
+      },
+      "entrypoint": null,
+      "environment": {
+        "ALLOWED_ORIGINS": "http://localhost:15173",
+        "JWT_SECRET": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "SECURE_COOKIE": "false",
+        "SERVER_PORT": "8080",
+        "SPRING_DATASOURCE_PASSWORD": "integration-test-only",
+        "SPRING_DATASOURCE_URL": "jdbc:postgresql://postgres:5432/ems_schedule_db",
+        "SPRING_DATASOURCE_USERNAME": "schedule_user",
+        "TLS_CA": "file:/certs/ca.crt",
+        "TLS_CERT": "file:/certs/scheduling-service.crt",
+        "TLS_KEY": "file:/certs/scheduling-service.key",
+        "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=15.0"
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://localhost:8080/actuator/health/readiness"
+        ],
+        "timeout": "3s",
+        "interval": "5s",
+        "retries": 40,
+        "start_period": "30s"
+      },
+      "image": "ems/scheduling-service:local",
+      "networks": {
+        "default": null
+      },
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8080,
+          "published": "28083",
+          "protocol": "tcp"
+        }
+      ],
+      "volumes": [
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/ca.crt",
+          "target": "/certs/ca.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/scheduling-service.crt",
+          "target": "/certs/scheduling-service.crt",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        },
+        {
+          "type": "bind",
+          "source": "/Users/uyennguyen/Documents/projects/ems-system/ems-services/.local/certs/scheduling-service.key",
+          "target": "/certs/scheduling-service.key",
+          "read_only": true,
+          "bind": {
+            "create_host_path": true
+          }
+        }
+      ],
+      "cpus": 0.5,
+      "mem_limit": "1g"
+    }
+  },
+  "volumes": {
+    "integration-test-data": {
+      "name": "ems-benchmark_integration-test-data"
+    }
+  }
+}

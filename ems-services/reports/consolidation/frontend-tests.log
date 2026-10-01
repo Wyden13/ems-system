@@ -1,0 +1,13 @@
+
+> frontend@0.0.0 test
+> vitest run
+
+
+ RUN  v5.0.1 /Users/uyennguyen/Documents/projects/ems-system/frontend
+
+
+ Test Files  5 passed (5)
+      Tests  12 passed (12)
+   Start at  14:31:50
+   Duration  3.16s (environment 43%, import 31%, tests 10%, setup 9%, transform 6%)
+

@@ -1,0 +1,39 @@
+# Architecture assessment
+
+The current codebase is a small-to-medium employee-management application spread across eight deployed Spring Boot JVMs, seven PostgreSQL databases, and a ninth notification module. Source inventory counts 335 main Java files and 6,911 physical lines, excluding generated contracts, tests, SQL, and configuration. Many classes are compressed onto one line, and several APIs are interfaces without implementations, so line count is evidence of footprint, not a measure of feature completeness.
+
+## Recommended service boundaries
+
+| Current services | Recommendation | Reason and tradeoff |
+|---|---|---|
+| Employee + organization | Merge first into a people/directory application | Organization primarily owns departments and locations; employee creation validates department references over gRPC. These are closely related reference data with no demonstrated independent scaling requirement. Removes one JVM, pool, deployment, certificate identity, and network failure point. Preserve internal modules and authorization rules. |
+| Scheduling + leave | Merge into a workforce application | Leave approval reserves scheduling holds, cancellation releases them, and a scheduled recovery loop retries transitions. This is a distributed consistency protocol for one business invariant: approved absence must not conflict with a shift. A shared transactional boundary can simplify it. Merely putting both containers in one ECS task does not provide this benefit. |
+| Attendance | Include in the workforce application for the present MVP | Time clock, timesheets, schedule reconciliation, and leave share employee/time concepts. Attendance currently has a StubScheduleProvider returning Optional.empty(), so real schedule reconciliation is not implemented. Keep attendance as an internal module, and retain a path to extract it if clock-in bursts, device ingestion, or availability requirements justify it. |
+| Payroll | Merge the **current estimate feature** into workforce; keep a strict module boundary | The implemented feature loops over employees and calls attendance once per employee. It is currently a read/calculation feature; generation, finalization, statements, and pay-period APIs are largely interfaces. In-process bulk reads can avoid the call fan-out. A future durable payroll ledger with separate ownership, compliance controls, batch processing, or payment integrations is a sound reason to split it back out. |
+| Auth | Keep separate for now | Credentials, refresh sessions, account lifecycle, and login hashing form a clearer boundary and a different workload. Preserve existing JWT/CSRF behavior. This is not a claim that a separate process alone gives strong compromise isolation: the services currently share an HMAC JWT secret. Consider asymmetric signing later. |
+| Gateway | Keep during migration; reassess after consolidation | Only four Java classes plus routing configuration, but it handles JWT checks, route authorization, CORS, and identity-header stripping. An ALB cannot automatically replace that application behavior. After equivalent controls are verified in backends, ALB path routing could eliminate this JVM. |
+| Notification | Do not deploy as a standalone service yet | Not included in the root Maven reactor or Compose stack. The 13 Java files include listener and email-sender interfaces, not a complete delivery pipeline. Start as an internal module using an outbox; extract a durable queue-backed worker when delivery, retries, and volume warrant it. No runtime measurements are claimed for this scaffold. |
+
+Preferred near-term result: **four deployed applications** — gateway, auth, people (employee + organization), workforce (scheduling + leave + attendance + payroll estimates). A conservative intermediate step leaves attendance and payroll separate: six applications after the two clearest pairwise merges. A three-application result is possible later if the gateway can safely be retired. A modular monolith is also reasonable for a single small team, but migration cost and existing security boundaries make the staged four-application approach less disruptive.
+
+## Concrete code evidence
+
+- [EmployeeService.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/employee/service/EmployeeService.java): create/replace call `ReferenceValidator` before persistence.
+- [LeaveOperations.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/pto/service/LeaveOperations.java): transition recovery scheduled every 15 seconds; approval/cancellation calls scheduling reserve/release.
+- [SchedulingClient.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-leave-service/src/main/java/com/emssystem/emsleaveservice/shared/grpc/SchedulingClient.java): five-second RPC deadlines and service-unavailable handling.
+- [PayrollEstimateService.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-payroll-service/src/main/java/com/emssystem/emspayrollservice/payroll/service/PayrollEstimateService.java): `workforce.list(0)` followed by a sequential attendance RPC for every employee.
+- [WorkforceReferenceService.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-employee-service/src/main/java/com/emssystem/emsemployeeservice/shared/grpc/WorkforceReferenceService.java): `findAll()` then in-memory department filtering; no pagination on this internal list.
+- [StubScheduleProvider.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-attendance-service/src/main/java/com/emssystem/emsattendanceservice/attendance/scheduling/StubScheduleProvider.java): returns empty optional, explicitly indicating unavailable scheduling.
+- [SecurityConfig.java](/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-gateway-service/src/main/java/com/emssystem/emsgatewayservice/shared/security/SecurityConfig.java) and `IdentityHeaderFilter.java`: security behaviors to preserve before removing gateway.
+- Root [pom.xml](/Users/uyennguyen/Documents/projects/ems-system/ems-services/pom.xml) and [docker-compose.yml](/Users/uyennguyen/Documents/projects/ems-system/ems-services/docker-compose.yml): eight service applications and shared contracts; notification omitted.
+
+## Migration sequence
+
+1. Establish regression tests for roles, object-level access, cookie/CSRF flows, PTO approvals/reversals, shift conflicts, attendance adjustments, and pay calculations. Existing tests provide starting coverage; this benchmark is not a correctness certification.
+2. Merge people first. Keep public routes and DTOs stable so the frontend need not change. Keep modules and table ownership explicit.
+3. Merge scheduling and leave. Move data into one PostgreSQL database with module-owned schemas if a local transaction is desired; separate databases on the same server cannot share a normal single-datasource transaction. Reconcile outstanding reservations and retry transitions before retiring the old workflow.
+4. Add attendance and the payroll-estimate module. Replace serial per-employee RPCs with bulk reads or a well-defined internal query service. Keep durable finance entities isolated from editable workforce data.
+5. Rebenchmark the resulting application. Savings estimates for merged JVMs are hypothetical until this is done; their memory footprints do not simply equal either the sum or the maximum of the old services.
+6. Reduce database pool minimums, right-size maximums to measured concurrency, and budget total connections across replica counts and rolling deployments.
+
+Service extraction should be driven by independent scale, ownership, security, release cadence, or failure isolation. Current package names alone do not justify eight separate always-on runtimes.

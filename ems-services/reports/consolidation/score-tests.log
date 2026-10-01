@@ -1,0 +1,80 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] ems-contracts                                                      [jar]
+[INFO] ems-workforce-service                                              [jar]
+[INFO] 
+[INFO] --------------------< com.emssystem:ems-contracts >---------------------
+[INFO] Building ems-contracts 0.0.1-SNAPSHOT                              [1/2]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Parameter 'binaryMavenPlugins' is unknown for plugin 'protobuf-maven-plugin:5.1.8:generate (generate)'
+[INFO] 
+[INFO] --- protobuf:5.1.8:generate (generate) @ ems-contracts ---
+[INFO] Registering "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/generated-sources/protobuf" as a Maven main source root for compiler plugins
+[INFO] Registering "/Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/target/generated-sources/protobuf" as a Maven main source root for compiler plugins
+[INFO] Found 3 proto source files and 0 descriptor files to compile, but all are up-to-date so none will be built this time
+[INFO] NOTHING TO DO: There is nothing to do. If this is unexpected, review the above logs for more details.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-contracts ---
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-contracts ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-contracts ---
+[INFO] skip non existing resourceDirectory /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-contracts/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-contracts ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-contracts ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] ----------------< com.emssystem:ems-workforce-service >-----------------
+[INFO] Building ems-workforce-service 0.0.1-SNAPSHOT                      [2/2]
+[INFO]   from /Users/uyennguyen/Documents/projects/ems-system/ems-services/ems-workforce-service/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.10.0:properties (default) @ ems-workforce-service ---
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ ems-workforce-service ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 8 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ ems-workforce-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ ems-workforce-service ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ ems-workforce-service ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 8 source files with javac [debug parameters release 17] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ ems-workforce-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.emssystem.ScheduleScoreTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.377 s -- in com.emssystem.ScheduleScoreTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for ems-contracts 0.0.1-SNAPSHOT:
+[INFO] 
+[INFO] ems-contracts ...................................... SUCCESS [  2.673 s]
+[INFO] ems-workforce-service .............................. SUCCESS [  4.996 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.868 s
+[INFO] Finished at: 2026-09-30T14:35:38-06:00
+[INFO] ------------------------------------------------------------------------

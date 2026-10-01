@@ -1,1 +1,0 @@
-package com.emssystem.emsleaveservice.pto.dto.response; import java.math.BigDecimal; public record PtoTypeResponse(Long id,String name,BigDecimal accrualRatePerPeriod,BigDecimal maxCarryover,boolean paid) {}

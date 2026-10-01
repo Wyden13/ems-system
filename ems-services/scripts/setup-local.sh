@@ -9,7 +9,7 @@ python3 - <<'PYTHON'
 from pathlib import Path
 import secrets,base64
 p=Path('.env'); lines=p.read_text().splitlines() if p.exists() else []
-keys=['POSTGRES_ADMIN_PASSWORD','AUTH_DB_PASSWORD','EMPLOYEE_DB_PASSWORD','ORGANIZATION_DB_PASSWORD','SCHEDULE_DB_PASSWORD','ATTENDANCE_DB_PASSWORD','PAYROLL_DB_PASSWORD','LEAVE_DB_PASSWORD','JWT_SECRET']
+keys=['POSTGRES_ADMIN_PASSWORD','AUTH_DB_PASSWORD','PEOPLE_DB_PASSWORD','WORKFORCE_DB_PASSWORD','JWT_SECRET']
 for key in keys:
     index=next((i for i,line in enumerate(lines) if line.startswith(key+'=')),None)
     if index is not None and lines[index].split('=',1)[1].strip(): continue
@@ -24,7 +24,7 @@ if [ ! -d .local/certs ]; then
   openssl req -x509 -newkey rsa:3072 -nodes -days 365 -subj '/CN=EMS local CA' -keyout .local/certs/ca.key -out .local/certs/ca.crt 2>/dev/null
 fi
 test -s .local/certs/ca.crt
-for service in auth employee organization attendance payroll scheduling leave; do
+for service in auth people workforce; do
   cert=".local/certs/${service}-service.crt"
   key=".local/certs/${service}-service.key"
   if [ -s "$cert" ] && [ -s "$key" ]; then continue; fi

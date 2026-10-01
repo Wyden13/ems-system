@@ -1,0 +1,252 @@
+[
+  {
+    "service": "auth-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 1.82,
+    "cpu_max_percent_of_one_core": 12.75,
+    "memory_mean_mib": 463.6,
+    "memory_max_mib": 465.5,
+    "pids_max": 52
+  },
+  {
+    "service": "auth-service",
+    "phase": "load20",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 3.44,
+    "cpu_max_percent_of_one_core": 11.31,
+    "memory_mean_mib": 466.6,
+    "memory_max_mib": 467.9,
+    "pids_max": 51
+  },
+  {
+    "service": "auth-service",
+    "phase": "load50",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 6.09,
+    "cpu_max_percent_of_one_core": 22.03,
+    "memory_mean_mib": 475.3,
+    "memory_max_mib": 486.8,
+    "pids_max": 51
+  },
+  {
+    "service": "auth-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.92,
+    "cpu_max_percent_of_one_core": 6.12,
+    "memory_mean_mib": 483.8,
+    "memory_max_mib": 483.9,
+    "pids_max": 51
+  },
+  {
+    "service": "auth-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.02,
+    "cpu_max_percent_of_one_core": 6.97,
+    "memory_mean_mib": 461.1,
+    "memory_max_mib": 461.6,
+    "pids_max": 51
+  },
+  {
+    "service": "gateway-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 1.21,
+    "cpu_max_percent_of_one_core": 5.31,
+    "memory_mean_mib": 294.8,
+    "memory_max_mib": 296.1,
+    "pids_max": 55
+  },
+  {
+    "service": "gateway-service",
+    "phase": "load20",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 16.86,
+    "cpu_max_percent_of_one_core": 38.57,
+    "memory_mean_mib": 298.3,
+    "memory_max_mib": 300.9,
+    "pids_max": 56
+  },
+  {
+    "service": "gateway-service",
+    "phase": "load50",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 24.67,
+    "cpu_max_percent_of_one_core": 81.0,
+    "memory_mean_mib": 304.8,
+    "memory_max_mib": 309.0,
+    "pids_max": 91
+  },
+  {
+    "service": "gateway-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.26,
+    "cpu_max_percent_of_one_core": 6.51,
+    "memory_mean_mib": 308.8,
+    "memory_max_mib": 308.8,
+    "pids_max": 91
+  },
+  {
+    "service": "gateway-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 10.35,
+    "cpu_max_percent_of_one_core": 17.91,
+    "memory_mean_mib": 294.2,
+    "memory_max_mib": 294.7,
+    "pids_max": 54
+  },
+  {
+    "service": "people-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 2.55,
+    "cpu_max_percent_of_one_core": 12.19,
+    "memory_mean_mib": 544.9,
+    "memory_max_mib": 546.2,
+    "pids_max": 62
+  },
+  {
+    "service": "people-service",
+    "phase": "load20",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 13.72,
+    "cpu_max_percent_of_one_core": 38.27,
+    "memory_mean_mib": 556.5,
+    "memory_max_mib": 578.7,
+    "pids_max": 61
+  },
+  {
+    "service": "people-service",
+    "phase": "load50",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 19.59,
+    "cpu_max_percent_of_one_core": 65.84,
+    "memory_mean_mib": 580.1,
+    "memory_max_mib": 581.5,
+    "pids_max": 70
+  },
+  {
+    "service": "people-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.9,
+    "cpu_max_percent_of_one_core": 6.3,
+    "memory_mean_mib": 581.5,
+    "memory_max_mib": 581.6,
+    "pids_max": 70
+  },
+  {
+    "service": "people-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 10.84,
+    "cpu_max_percent_of_one_core": 26.53,
+    "memory_mean_mib": 534.5,
+    "memory_max_mib": 544.8,
+    "pids_max": 61
+  },
+  {
+    "service": "postgres",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 1.88,
+    "cpu_max_percent_of_one_core": 5.38,
+    "memory_mean_mib": 126.0,
+    "memory_max_mib": 126.2,
+    "pids_max": 39
+  },
+  {
+    "service": "postgres",
+    "phase": "load20",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 3.77,
+    "cpu_max_percent_of_one_core": 10.79,
+    "memory_mean_mib": 126.5,
+    "memory_max_mib": 127.1,
+    "pids_max": 39
+  },
+  {
+    "service": "postgres",
+    "phase": "load50",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 6.99,
+    "cpu_max_percent_of_one_core": 28.8,
+    "memory_mean_mib": 128.7,
+    "memory_max_mib": 132.3,
+    "pids_max": 39
+  },
+  {
+    "service": "postgres",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.22,
+    "cpu_max_percent_of_one_core": 7.02,
+    "memory_mean_mib": 132.4,
+    "memory_max_mib": 132.6,
+    "pids_max": 39
+  },
+  {
+    "service": "postgres",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 2.94,
+    "cpu_max_percent_of_one_core": 5.44,
+    "memory_mean_mib": 125.5,
+    "memory_max_mib": 125.9,
+    "pids_max": 39
+  },
+  {
+    "service": "workforce-service",
+    "phase": "idle",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 1.62,
+    "cpu_max_percent_of_one_core": 7.03,
+    "memory_mean_mib": 504.7,
+    "memory_max_mib": 504.7,
+    "pids_max": 59
+  },
+  {
+    "service": "workforce-service",
+    "phase": "load20",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 18.25,
+    "cpu_max_percent_of_one_core": 46.67,
+    "memory_mean_mib": 512.5,
+    "memory_max_mib": 515.2,
+    "pids_max": 65
+  },
+  {
+    "service": "workforce-service",
+    "phase": "load50",
+    "samples": 18,
+    "cpu_mean_percent_of_one_core": 24.08,
+    "cpu_max_percent_of_one_core": 86.12,
+    "memory_mean_mib": 517.9,
+    "memory_max_mib": 525.6,
+    "pids_max": 64
+  },
+  {
+    "service": "workforce-service",
+    "phase": "recovery",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 1.17,
+    "cpu_max_percent_of_one_core": 5.48,
+    "memory_mean_mib": 523.2,
+    "memory_max_mib": 523.3,
+    "pids_max": 63
+  },
+  {
+    "service": "workforce-service",
+    "phase": "warmup",
+    "samples": 9,
+    "cpu_mean_percent_of_one_core": 12.03,
+    "cpu_max_percent_of_one_core": 32.24,
+    "memory_mean_mib": 504.1,
+    "memory_max_mib": 507.9,
+    "pids_max": 61
+  }
+]

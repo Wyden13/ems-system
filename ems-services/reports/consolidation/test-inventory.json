@@ -1,0 +1,97 @@
+[
+  {
+    "module": "ems-leave-service",
+    "tests": [
+      "ems-leave-service/src/test/java/com/emssystem/emsleaveservice/LeavePostgresTest.java",
+      "ems-leave-service/src/test/java/com/emssystem/emsleaveservice/EmsLeaveServiceApplicationTests.java"
+    ],
+    "offloaded_tests": []
+  },
+  {
+    "module": "ems-auth-service",
+    "tests": [
+      "ems-auth-service/src/test/java/com/emssystem/emsauthservice/ServiceIdentityTest.java",
+      "ems-auth-service/src/test/java/com/emssystem/emsauthservice/AuthPostgresIT.java",
+      "ems-auth-service/src/test/java/com/emssystem/emsauthservice/auth/AuthControllerTest.java",
+      "ems-auth-service/src/test/java/com/emssystem/emsauthservice/auth/AuthenticationServiceTest.java",
+      "ems-auth-service/src/test/java/com/emssystem/emsauthservice/user/UserAccountServiceTest.java",
+      "ems-auth-service/src/test/java/com/emssystem/emsauthservice/user/UserAccountController.java"
+    ],
+    "offloaded_tests": []
+  },
+  {
+    "module": "ems-employee-service",
+    "tests": [
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/ServiceIdentityTest.java",
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/EmsEmployeeServiceApplicationTests.java",
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/shared/grpc/ReferenceValidatorTest.java",
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeNumberPostgresTest.java",
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeValidationTest.java",
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeServiceTest.java",
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeControllerTest.java"
+    ],
+    "offloaded_tests": [
+      "ems-employee-service/src/test/java/com/emssystem/emsemployeeservice/employee/EmployeeControllerTest.java"
+    ]
+  },
+  {
+    "module": "ems-payroll-service",
+    "tests": [
+      "ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/EmsPayrollServiceApplicationTests.java",
+      "ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/PayrollEstimateServiceTest.java",
+      "ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/AttendancePayCalculatorTest.java"
+    ],
+    "offloaded_tests": [
+      "ems-payroll-service/src/test/java/com/emssystem/emspayrollservice/EmsPayrollServiceApplicationTests.java"
+    ]
+  },
+  {
+    "module": "ems-attendance-service",
+    "tests": [
+      "ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/ServiceIdentityTest.java",
+      "ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/AttendancePostgresTest.java",
+      "ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/EmsAttendanceServiceApplicationTests.java"
+    ],
+    "offloaded_tests": [
+      "ems-attendance-service/src/test/java/com/emssystem/emsattendanceservice/EmsAttendanceServiceApplicationTests.java"
+    ]
+  },
+  {
+    "module": "ems-organization-service",
+    "tests": [
+      "ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/EmsOrganizationServiceApplicationTests.java",
+      "ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/LocationServiceTest.java",
+      "ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/OrganizationPostgresIT.java",
+      "ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/OrganizationApiTest.java",
+      "ems-organization-service/src/test/java/com/emssystem/emsorganizationservice/organization/DepartmentServiceTest.java"
+    ],
+    "offloaded_tests": []
+  },
+  {
+    "module": "ems-gateway-service",
+    "tests": [
+      "ems-gateway-service/src/test/java/com/emssystem/emsgatewayservice/EmsGatewayServiceApplicationTests.java",
+      "ems-gateway-service/src/test/java/com/emssystem/emsgatewayservice/GatewayAccessTest.java"
+    ],
+    "offloaded_tests": []
+  },
+  {
+    "module": "ems-notification-service",
+    "tests": [
+      "ems-notification-service/src/test/java/com/emssystem/emsnotificationservice/EmsNotificationServiceApplicationTests.java"
+    ],
+    "offloaded_tests": []
+  },
+  {
+    "module": "ems-scheduling-service",
+    "tests": [
+      "ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/ServiceIdentityTest.java",
+      "ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/SchedulingPostgresTest.java",
+      "ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/EmsSchedulingServiceApplicationTests.java"
+    ],
+    "offloaded_tests": [
+      "ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/ServiceIdentityTest.java",
+      "ems-scheduling-service/src/test/java/com/emssystem/emsschedulingservice/EmsSchedulingServiceApplicationTests.java"
+    ]
+  }
+]

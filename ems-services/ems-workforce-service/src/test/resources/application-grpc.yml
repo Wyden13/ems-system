@@ -1,0 +1,11 @@
+spring:
+  grpc:
+    server:
+      enabled: false
+    client:
+      enabled: true
+      channel:
+        auth:
+          target: localhost:1
+        people:
+          target: localhost:1

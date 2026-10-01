@@ -1,0 +1,472 @@
+organization-service-1  | 
+organization-service-1  |   .   ____          _            __ _ _
+organization-service-1  |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+organization-service-1  | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+organization-service-1  |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+organization-service-1  |   '  |____| .__|_| |_|_| |_\__, | / / / /
+leave-service-1         | 
+leave-service-1         |   .   ____          _            __ _ _
+leave-service-1         |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+leave-service-1         | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+leave-service-1         |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+leave-service-1         |   '  |____| .__|_| |_|_| |_\__, | / / / /
+leave-service-1         |  =========|_|==============|___/=/_/_/_/
+leave-service-1         | 
+leave-service-1         |  :: Spring Boot ::                (v4.1.1)
+leave-service-1         | 
+leave-service-1         | 2026-09-30T05:38:13.734Z  INFO 1 --- [ems-leave-service] [           main] c.e.e.EmsLeaveServiceApplication         : Starting EmsLeaveServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+leave-service-1         | 2026-09-30T05:38:13.746Z  INFO 1 --- [ems-leave-service] [           main] c.e.e.EmsLeaveServiceApplication         : The following 1 profile is active: "grpc"
+leave-service-1         | 2026-09-30T05:38:18.470Z  INFO 1 --- [ems-leave-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+leave-service-1         | 2026-09-30T05:38:18.567Z  INFO 1 --- [ems-leave-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 78 ms. Found 4 JPA repository interfaces.
+leave-service-1         | 2026-09-30T05:38:20.857Z  INFO 1 --- [ems-leave-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+leave-service-1         | 2026-09-30T05:38:20.901Z  INFO 1 --- [ems-leave-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+organization-service-1  |  =========|_|==============|___/=/_/_/_/
+organization-service-1  | 
+organization-service-1  |  :: Spring Boot ::                (v4.1.1)
+organization-service-1  | 
+leave-service-1         | 2026-09-30T05:38:20.901Z  INFO 1 --- [ems-leave-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+leave-service-1         | 2026-09-30T05:38:20.943Z  INFO 1 --- [ems-leave-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 6959 ms
+leave-service-1         | 2026-09-30T05:38:21.971Z  INFO 1 --- [ems-leave-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+leave-service-1         | 2026-09-30T05:38:22.335Z  INFO 1 --- [ems-leave-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7c3c3d67
+leave-service-1         | 2026-09-30T05:38:22.337Z  INFO 1 --- [ems-leave-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+leave-service-1         | 2026-09-30T05:38:22.399Z  INFO 1 --- [ems-leave-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_leave_db (PostgreSQL 18.6)
+leave-service-1         | 2026-09-30T05:38:22.728Z  INFO 1 --- [ems-leave-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+leave-service-1         | 2026-09-30T05:38:22.733Z  INFO 1 --- [ems-leave-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.083s)
+postgres-1              | The files belonging to this database system will be owned by user "postgres".
+postgres-1              | This user must also own the server process.
+postgres-1              | 
+postgres-1              | The database cluster will be initialized with locale "en_US.utf8".
+postgres-1              | The default database encoding has accordingly been set to "UTF8".
+postgres-1              | The default text search configuration will be set to "english".
+postgres-1              | 
+leave-service-1         | 2026-09-30T05:38:22.816Z  INFO 1 --- [ems-leave-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+leave-service-1         | 2026-09-30T05:38:23.308Z  INFO 1 --- [ems-leave-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+leave-service-1         | 2026-09-30T05:38:23.445Z  INFO 1 --- [ems-leave-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - leave schema"
+leave-service-1         | 2026-09-30T05:38:23.677Z  INFO 1 --- [ems-leave-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - workflow integrity"
+organization-service-1  | 2026-09-30T05:37:50.182Z  INFO 1 --- [ems-organization-service] [           main] c.e.e.EmsOrganizationServiceApplication  : Starting EmsOrganizationServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+organization-service-1  | 2026-09-30T05:37:50.204Z  INFO 1 --- [ems-organization-service] [           main] c.e.e.EmsOrganizationServiceApplication  : The following 1 profile is active: "grpc"
+organization-service-1  | 2026-09-30T05:37:52.980Z  INFO 1 --- [ems-organization-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+organization-service-1  | 2026-09-30T05:37:53.076Z  INFO 1 --- [ems-organization-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 78 ms. Found 2 JPA repository interfaces.
+postgres-1              | Data page checksums are enabled.
+postgres-1              | 
+postgres-1              | fixing permissions on existing directory /var/lib/postgresql/18/docker ... ok
+organization-service-1  | 2026-09-30T05:37:55.561Z  INFO 1 --- [ems-organization-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+organization-service-1  | 2026-09-30T05:37:55.585Z  INFO 1 --- [ems-organization-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+organization-service-1  | 2026-09-30T05:37:55.585Z  INFO 1 --- [ems-organization-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+organization-service-1  | 2026-09-30T05:37:55.679Z  INFO 1 --- [ems-organization-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 5064 ms
+organization-service-1  | 2026-09-30T05:37:56.785Z  INFO 1 --- [ems-organization-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+organization-service-1  | 2026-09-30T05:37:57.181Z  INFO 1 --- [ems-organization-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@47b4ac83
+organization-service-1  | 2026-09-30T05:37:57.184Z  INFO 1 --- [ems-organization-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+organization-service-1  | 2026-09-30T05:37:57.235Z  INFO 1 --- [ems-organization-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_organization_db (PostgreSQL 18.6)
+organization-service-1  | 2026-09-30T05:37:57.455Z  INFO 1 --- [ems-organization-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+organization-service-1  | 2026-09-30T05:37:57.464Z  INFO 1 --- [ems-organization-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.058s)
+organization-service-1  | 2026-09-30T05:37:57.515Z  INFO 1 --- [ems-organization-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+organization-service-1  | 2026-09-30T05:37:57.624Z  INFO 1 --- [ems-organization-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+organization-service-1  | 2026-09-30T05:37:57.656Z  INFO 1 --- [ems-organization-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - organization schema"
+organization-service-1  | 2026-09-30T05:37:57.739Z  INFO 1 --- [ems-organization-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - case insensitive names"
+organization-service-1  | 2026-09-30T05:37:57.776Z  INFO 1 --- [ems-organization-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - archive departments"
+organization-service-1  | 2026-09-30T05:37:57.818Z  INFO 1 --- [ems-organization-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "public", now at version v3 (execution time 00:00.069s)
+organization-service-1  | 2026-09-30T05:37:58.048Z  INFO 1 --- [ems-organization-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+organization-service-1  | 2026-09-30T05:37:58.180Z  INFO 1 --- [ems-organization-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+leave-service-1         | 2026-09-30T05:38:23.788Z  INFO 1 --- [ems-leave-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema "public", now at version v2 (execution time 00:00.175s)
+leave-service-1         | 2026-09-30T05:38:24.107Z  INFO 1 --- [ems-leave-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+leave-service-1         | 2026-09-30T05:38:24.630Z  INFO 1 --- [ems-leave-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+leave-service-1         | 2026-09-30T05:38:26.317Z  INFO 1 --- [ems-leave-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+leave-service-1         | 2026-09-30T05:38:27.021Z  INFO 1 --- [ems-leave-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+leave-service-1         | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_leave_db]
+leave-service-1         | 	Database driver: PostgreSQL JDBC Driver
+leave-service-1         | 	Database dialect: PostgreSQLDialect
+leave-service-1         | 	Database version: 18.6
+leave-service-1         | 	Default catalog/schema: ems_leave_db/public
+organization-service-1  | 2026-09-30T05:37:59.056Z  INFO 1 --- [ems-organization-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+organization-service-1  | 2026-09-30T05:37:59.268Z  INFO 1 --- [ems-organization-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+organization-service-1  | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_organization_db]
+leave-service-1         | 	Autocommit mode: undefined/unknown
+leave-service-1         | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+leave-service-1         | 	JDBC fetch size: none
+leave-service-1         | 	Pool: DataSourceConnectionProvider
+leave-service-1         | 	Minimum pool size: undefined/unknown
+leave-service-1         | 	Maximum pool size: undefined/unknown
+leave-service-1         | 2026-09-30T05:38:33.044Z  INFO 1 --- [ems-leave-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+leave-service-1         | 2026-09-30T05:38:33.274Z  INFO 1 --- [ems-leave-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+leave-service-1         | 2026-09-30T05:38:46.441Z  INFO 1 --- [ems-leave-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+organization-service-1  | 	Database driver: PostgreSQL JDBC Driver
+organization-service-1  | 	Database dialect: PostgreSQLDialect
+organization-service-1  | 	Database version: 18.6
+organization-service-1  | 	Default catalog/schema: ems_organization_db/public
+organization-service-1  | 	Autocommit mode: undefined/unknown
+organization-service-1  | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+organization-service-1  | 	JDBC fetch size: none
+organization-service-1  | 	Pool: DataSourceConnectionProvider
+organization-service-1  | 	Minimum pool size: undefined/unknown
+organization-service-1  | 	Maximum pool size: undefined/unknown
+organization-service-1  | 2026-09-30T05:38:01.496Z  INFO 1 --- [ems-organization-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+organization-service-1  | 2026-09-30T05:38:01.612Z  INFO 1 --- [ems-organization-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+organization-service-1  | 2026-09-30T05:38:01.818Z  INFO 1 --- [ems-organization-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+organization-service-1  | 2026-09-30T05:38:05.067Z  INFO 1 --- [ems-organization-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+organization-service-1  | 2026-09-30T05:38:05.762Z  INFO 1 --- [ems-organization-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+organization-service-1  | 2026-09-30T05:38:06.599Z  INFO 1 --- [ems-organization-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: ems.references.v1.DepartmentReferences
+organization-service-1  | 2026-09-30T05:38:06.601Z  INFO 1 --- [ems-organization-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: ems.references.v1.OrganizationDirectory
+organization-service-1  | 2026-09-30T05:38:06.601Z  INFO 1 --- [ems-organization-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: grpc.health.v1.Health
+organization-service-1  | 2026-09-30T05:38:06.881Z  INFO 1 --- [ems-organization-service] [           main] o.s.g.s.lifecycle.GrpcServerLifecycle    : gRPC Server started, listening on address: [/[0:0:0:0:0:0:0:0]:9090], port: 9090
+postgres-1              | creating subdirectories ... ok
+postgres-1              | selecting dynamic shared memory implementation ... posix
+postgres-1              | selecting default "max_connections" ... 100
+postgres-1              | selecting default "shared_buffers" ... 128MB
+postgres-1              | selecting default time zone ... Etc/UTC
+postgres-1              | creating configuration files ... ok
+postgres-1              | running bootstrap script ... ok
+postgres-1              | performing post-bootstrap initialization ... ok
+postgres-1              | syncing data to disk ... ok
+postgres-1              | 
+organization-service-1  | 2026-09-30T05:38:06.911Z  INFO 1 --- [ems-organization-service] [           main] c.e.e.EmsOrganizationServiceApplication  : Started EmsOrganizationServiceApplication in 19.94 seconds (process running for 22.861)
+organization-service-1  | 2026-09-30T05:38:08.656Z  INFO 1 --- [ems-organization-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+organization-service-1  | 2026-09-30T05:38:08.657Z  INFO 1 --- [ems-organization-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+organization-service-1  | 2026-09-30T05:38:08.664Z  INFO 1 --- [ems-organization-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+postgres-1              | 
+postgres-1              | Success. You can now start the database server using:
+postgres-1              | 
+postgres-1              |     pg_ctl -D /var/lib/postgresql/18/docker -l logfile start
+postgres-1              | 
+postgres-1              | initdb: warning: enabling "trust" authentication for local connections
+postgres-1              | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+postgres-1              | waiting for server to start....2026-09-30 05:35:08.520 UTC [58] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+postgres-1              | 2026-09-30 05:35:08.536 UTC [58] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres-1              | 2026-09-30 05:35:08.576 UTC [64] LOG:  database system was shut down at 2026-09-30 05:35:07 UTC
+postgres-1              | 2026-09-30 05:35:08.618 UTC [58] LOG:  database system is ready to accept connections
+postgres-1              |  done
+postgres-1              | server started
+postgres-1              | 
+postgres-1              | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+leave-service-1         | 2026-09-30T05:38:48.896Z  INFO 1 --- [ems-leave-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+leave-service-1         | 2026-09-30T05:38:49.801Z  INFO 1 --- [ems-leave-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+postgres-1              | 
+postgres-1              | waiting for server to shut down...2026-09-30 05:35:08.796 UTC [58] LOG:  received fast shutdown request
+postgres-1              | .2026-09-30 05:35:08.808 UTC [58] LOG:  aborting any active transactions
+postgres-1              | 2026-09-30 05:35:08.810 UTC [58] LOG:  background worker "logical replication launcher" (PID 67) exited with exit code 1
+leave-service-1         | 2026-09-30T05:38:49.924Z  INFO 1 --- [ems-leave-service] [           main] c.e.e.EmsLeaveServiceApplication         : Started EmsLeaveServiceApplication in 38.246 seconds (process running for 39.9)
+leave-service-1         | 2026-09-30T05:38:52.901Z  INFO 1 --- [ems-leave-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+leave-service-1         | 2026-09-30T05:38:52.908Z  INFO 1 --- [ems-leave-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+leave-service-1         | 2026-09-30T05:38:52.932Z  INFO 1 --- [ems-leave-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 22 ms
+postgres-1              | 2026-09-30 05:35:08.828 UTC [62] LOG:  shutting down
+postgres-1              | 2026-09-30 05:35:08.837 UTC [62] LOG:  checkpoint starting: shutdown immediate
+postgres-1              | 2026-09-30 05:35:08.873 UTC [62] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.019 s, sync=0.001 s, total=0.045 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1761920, redo lsn=0/1761920
+postgres-1              | 2026-09-30 05:35:08.894 UTC [58] LOG:  database system is shut down
+postgres-1              |  done
+postgres-1              | server stopped
+postgres-1              | 
+postgres-1              | PostgreSQL init process complete; ready for start up.
+postgres-1              | 
+postgres-1              | 2026-09-30 05:35:08.970 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+postgres-1              | 2026-09-30 05:35:08.970 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres-1              | 2026-09-30 05:35:08.970 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres-1              | 2026-09-30 05:35:09.080 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres-1              | 2026-09-30 05:35:09.136 UTC [1] LOG:  untracked child process (PID 58) exited with exit code 0
+postgres-1              | 2026-09-30 05:35:09.141 UTC [78] LOG:  database system was shut down at 2026-09-30 05:35:08 UTC
+postgres-1              | 2026-09-30 05:35:09.170 UTC [1] LOG:  database system is ready to accept connections
+postgres-1              | 2026-09-30 05:40:09.224 UTC [76] LOG:  checkpoint starting: time
+payroll-service-1       | 
+payroll-service-1       |   .   ____          _            __ _ _
+auth-service-1          | 
+auth-service-1          |   .   ____          _            __ _ _
+auth-service-1          |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+auth-service-1          | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+auth-service-1          |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+auth-service-1          |   '  |____| .__|_| |_|_| |_\__, | / / / /
+auth-service-1          |  =========|_|==============|___/=/_/_/_/
+auth-service-1          | 
+auth-service-1          |  :: Spring Boot ::                (v4.1.1)
+auth-service-1          | 
+payroll-service-1       |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+payroll-service-1       | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+payroll-service-1       |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+payroll-service-1       |   '  |____| .__|_| |_|_| |_\__, | / / / /
+payroll-service-1       |  =========|_|==============|___/=/_/_/_/
+payroll-service-1       | 
+payroll-service-1       |  :: Spring Boot ::                (v4.1.1)
+auth-service-1          | 2026-09-30T05:37:50.179Z  INFO 1 --- [ems-auth-service] [           main] c.e.e.EmsAuthServiceApplication          : Starting EmsAuthServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+auth-service-1          | 2026-09-30T05:37:50.204Z  INFO 1 --- [ems-auth-service] [           main] c.e.e.EmsAuthServiceApplication          : The following 1 profile is active: "grpc"
+auth-service-1          | 2026-09-30T05:37:53.638Z  INFO 1 --- [ems-auth-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+auth-service-1          | 2026-09-30T05:37:53.771Z  INFO 1 --- [ems-auth-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 86 ms. Found 2 JPA repository interfaces.
+auth-service-1          | 2026-09-30T05:37:56.576Z  INFO 1 --- [ems-auth-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+auth-service-1          | 2026-09-30T05:37:56.603Z  INFO 1 --- [ems-auth-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+auth-service-1          | 2026-09-30T05:37:56.604Z  INFO 1 --- [ems-auth-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+auth-service-1          | 2026-09-30T05:37:56.658Z  INFO 1 --- [ems-auth-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 6158 ms
+auth-service-1          | 2026-09-30T05:37:57.583Z  INFO 1 --- [ems-auth-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+auth-service-1          | 2026-09-30T05:37:58.008Z  INFO 1 --- [ems-auth-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5be69f7e
+auth-service-1          | 2026-09-30T05:37:58.012Z  INFO 1 --- [ems-auth-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+auth-service-1          | 2026-09-30T05:37:58.066Z  INFO 1 --- [ems-auth-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_auth_db (PostgreSQL 18.6)
+auth-service-1          | 2026-09-30T05:37:58.179Z  INFO 1 --- [ems-auth-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+auth-service-1          | 2026-09-30T05:37:58.187Z  INFO 1 --- [ems-auth-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.027s)
+auth-service-1          | 2026-09-30T05:37:58.212Z  INFO 1 --- [ems-auth-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+auth-service-1          | 2026-09-30T05:37:58.271Z  INFO 1 --- [ems-auth-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+auth-service-1          | 2026-09-30T05:37:58.280Z  INFO 1 --- [ems-auth-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - accounts and sessions"
+auth-service-1          | 2026-09-30T05:37:58.332Z  INFO 1 --- [ems-auth-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v1 (execution time 00:00.020s)
+auth-service-1          | 2026-09-30T05:37:58.729Z  INFO 1 --- [ems-auth-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+payroll-service-1       | 
+payroll-service-1       | 2026-09-30T05:39:03.945Z  INFO 1 --- [ems-payroll-service] [           main] c.e.e.EmsPayrollServiceApplication       : Starting EmsPayrollServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+payroll-service-1       | 2026-09-30T05:39:03.962Z  INFO 1 --- [ems-payroll-service] [           main] c.e.e.EmsPayrollServiceApplication       : The following 1 profile is active: "grpc"
+payroll-service-1       | 2026-09-30T05:39:06.410Z  INFO 1 --- [ems-payroll-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+payroll-service-1       | 2026-09-30T05:39:06.480Z  INFO 1 --- [ems-payroll-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 4 JPA repository interfaces.
+auth-service-1          | 2026-09-30T05:37:58.965Z  INFO 1 --- [ems-auth-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+auth-service-1          | 2026-09-30T05:37:59.971Z  INFO 1 --- [ems-auth-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+gateway-service-1       | 
+auth-service-1          | 2026-09-30T05:38:00.255Z  INFO 1 --- [ems-auth-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+auth-service-1          | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_auth_db]
+auth-service-1          | 	Database driver: PostgreSQL JDBC Driver
+auth-service-1          | 	Database dialect: PostgreSQLDialect
+gateway-service-1       |   .   ____          _            __ _ _
+gateway-service-1       |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+gateway-service-1       | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+gateway-service-1       |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+auth-service-1          | 	Database version: 18.6
+auth-service-1          | 	Default catalog/schema: ems_auth_db/public
+auth-service-1          | 	Autocommit mode: undefined/unknown
+auth-service-1          | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+auth-service-1          | 	JDBC fetch size: none
+auth-service-1          | 	Pool: DataSourceConnectionProvider
+auth-service-1          | 	Minimum pool size: undefined/unknown
+auth-service-1          | 	Maximum pool size: undefined/unknown
+auth-service-1          | 2026-09-30T05:38:02.269Z  INFO 1 --- [ems-auth-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+auth-service-1          | 2026-09-30T05:38:02.357Z  INFO 1 --- [ems-auth-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+auth-service-1          | 2026-09-30T05:38:02.681Z  INFO 1 --- [ems-auth-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+auth-service-1          | 2026-09-30T05:38:05.830Z  INFO 1 --- [ems-auth-service] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name accountUserDetailsService
+auth-service-1          | 2026-09-30T05:38:08.217Z  INFO 1 --- [ems-auth-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+auth-service-1          | 2026-09-30T05:38:08.397Z  INFO 1 --- [ems-auth-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+auth-service-1          | 2026-09-30T05:38:08.772Z  INFO 1 --- [ems-auth-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+gateway-service-1       |   '  |____| .__|_| |_|_| |_\__, | / / / /
+auth-service-1          | 2026-09-30T05:38:08.773Z  INFO 1 --- [ems-auth-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+auth-service-1          | 2026-09-30T05:38:08.787Z  INFO 1 --- [ems-auth-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 14 ms
+auth-service-1          | 2026-09-30T05:38:09.165Z  INFO 1 --- [ems-auth-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: ems.references.v1.AccountReferences
+auth-service-1          | 2026-09-30T05:38:09.165Z  INFO 1 --- [ems-auth-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: grpc.health.v1.Health
+auth-service-1          | 2026-09-30T05:38:09.354Z  INFO 1 --- [ems-auth-service] [           main] o.s.g.s.lifecycle.GrpcServerLifecycle    : gRPC Server started, listening on address: [/[0:0:0:0:0:0:0:0]:9090], port: 9090
+auth-service-1          | 2026-09-30T05:38:09.410Z  INFO 1 --- [ems-auth-service] [           main] c.e.e.EmsAuthServiceApplication          : Started EmsAuthServiceApplication in 22.299 seconds (process running for 25.054)
+auth-service-1          | 2026-09-30T05:38:09.703Z  WARN 1 --- [ems-auth-service] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+auth-service-1          | 2026-09-30T05:38:09.704Z  WARN 1 --- [ems-auth-service] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+gateway-service-1       |  =========|_|==============|___/=/_/_/_/
+gateway-service-1       | 
+gateway-service-1       |  :: Spring Boot ::                (v4.1.1)
+gateway-service-1       | 
+gateway-service-1       | 2026-09-30T05:39:21.924Z  INFO 1 --- [ems-gateway-service] [           main] c.e.e.EmsGatewayServiceApplication       : Starting EmsGatewayServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+gateway-service-1       | 2026-09-30T05:39:21.926Z  INFO 1 --- [ems-gateway-service] [           main] c.e.e.EmsGatewayServiceApplication       : No active profile set, falling back to 1 default profile: "default"
+gateway-service-1       | 2026-09-30T05:39:23.300Z  INFO 1 --- [ems-gateway-service] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=dc08007c-da2c-3357-b145-51270a73c830
+gateway-service-1       | 2026-09-30T05:39:23.571Z  INFO 1 --- [ems-gateway-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+gateway-service-1       | 2026-09-30T05:39:23.581Z  INFO 1 --- [ems-gateway-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+payroll-service-1       | 2026-09-30T05:39:08.184Z  INFO 1 --- [ems-payroll-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+payroll-service-1       | 2026-09-30T05:39:08.198Z  INFO 1 --- [ems-payroll-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+payroll-service-1       | 2026-09-30T05:39:08.198Z  INFO 1 --- [ems-payroll-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+payroll-service-1       | 2026-09-30T05:39:08.257Z  INFO 1 --- [ems-payroll-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 4057 ms
+payroll-service-1       | 2026-09-30T05:39:09.406Z  INFO 1 --- [ems-payroll-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+payroll-service-1       | 2026-09-30T05:39:09.906Z  INFO 1 --- [ems-payroll-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@628b503a
+payroll-service-1       | 2026-09-30T05:39:09.908Z  INFO 1 --- [ems-payroll-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+payroll-service-1       | 2026-09-30T05:39:09.939Z  INFO 1 --- [ems-payroll-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_payroll_db (PostgreSQL 18.6)
+payroll-service-1       | 2026-09-30T05:39:10.081Z  INFO 1 --- [ems-payroll-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+payroll-service-1       | 2026-09-30T05:39:10.095Z  INFO 1 --- [ems-payroll-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.051s)
+payroll-service-1       | 2026-09-30T05:39:10.174Z  INFO 1 --- [ems-payroll-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+payroll-service-1       | 2026-09-30T05:39:10.339Z  INFO 1 --- [ems-payroll-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+payroll-service-1       | 2026-09-30T05:39:10.394Z  INFO 1 --- [ems-payroll-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - payroll schema"
+payroll-service-1       | 2026-09-30T05:39:10.458Z  INFO 1 --- [ems-payroll-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema "public", now at version v1 (execution time 00:00.045s)
+payroll-service-1       | 2026-09-30T05:39:10.561Z  INFO 1 --- [ems-payroll-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+payroll-service-1       | 2026-09-30T05:39:10.632Z  INFO 1 --- [ems-payroll-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+payroll-service-1       | 2026-09-30T05:39:11.964Z  INFO 1 --- [ems-payroll-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+payroll-service-1       | 2026-09-30T05:39:12.062Z  INFO 1 --- [ems-payroll-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+payroll-service-1       | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_payroll_db]
+payroll-service-1       | 	Database driver: PostgreSQL JDBC Driver
+payroll-service-1       | 	Database dialect: PostgreSQLDialect
+payroll-service-1       | 	Database version: 18.6
+payroll-service-1       | 	Default catalog/schema: ems_payroll_db/public
+payroll-service-1       | 	Autocommit mode: undefined/unknown
+payroll-service-1       | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+payroll-service-1       | 	JDBC fetch size: none
+payroll-service-1       | 	Pool: DataSourceConnectionProvider
+payroll-service-1       | 	Minimum pool size: undefined/unknown
+payroll-service-1       | 	Maximum pool size: undefined/unknown
+payroll-service-1       | 2026-09-30T05:39:13.337Z  INFO 1 --- [ems-payroll-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+payroll-service-1       | 2026-09-30T05:39:13.427Z  INFO 1 --- [ems-payroll-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+payroll-service-1       | 2026-09-30T05:39:14.638Z  INFO 1 --- [ems-payroll-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+payroll-service-1       | 2026-09-30T05:39:14.961Z  INFO 1 --- [ems-payroll-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+payroll-service-1       | 2026-09-30T05:39:15.036Z  INFO 1 --- [ems-payroll-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+payroll-service-1       | 2026-09-30T05:39:15.044Z  INFO 1 --- [ems-payroll-service] [           main] c.e.e.EmsPayrollServiceApplication       : Started EmsPayrollServiceApplication in 14.052 seconds (process running for 15.721)
+payroll-service-1       | 2026-09-30T05:39:19.962Z  INFO 1 --- [ems-payroll-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+payroll-service-1       | 2026-09-30T05:39:19.963Z  INFO 1 --- [ems-payroll-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+payroll-service-1       | 2026-09-30T05:39:19.987Z  INFO 1 --- [ems-payroll-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 24 ms
+gateway-service-1       | 2026-09-30T05:39:23.581Z  INFO 1 --- [ems-gateway-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+gateway-service-1       | 2026-09-30T05:39:23.602Z  INFO 1 --- [ems-gateway-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1632 ms
+gateway-service-1       | 2026-09-30T05:39:24.607Z  INFO 1 --- [ems-gateway-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+gateway-service-1       | 2026-09-30T05:39:24.665Z  INFO 1 --- [ems-gateway-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+gateway-service-1       | 2026-09-30T05:39:24.675Z  INFO 1 --- [ems-gateway-service] [           main] c.e.e.EmsGatewayServiceApplication       : Started EmsGatewayServiceApplication in 3.29 seconds (process running for 4.102)
+gateway-service-1       | 2026-09-30T05:39:25.664Z  INFO 1 --- [ems-gateway-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+gateway-service-1       | 2026-09-30T05:39:25.664Z  INFO 1 --- [ems-gateway-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+gateway-service-1       | 2026-09-30T05:39:25.666Z  INFO 1 --- [ems-gateway-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+attendance-service-1    | 
+attendance-service-1    |   .   ____          _            __ _ _
+attendance-service-1    |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+attendance-service-1    | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+attendance-service-1    |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+attendance-service-1    |   '  |____| .__|_| |_|_| |_\__, | / / / /
+attendance-service-1    |  =========|_|==============|___/=/_/_/_/
+attendance-service-1    | 
+attendance-service-1    |  :: Spring Boot ::                (v4.1.1)
+attendance-service-1    | 
+attendance-service-1    | 2026-09-30T05:38:13.844Z  INFO 1 --- [ems-attendance-service] [           main] c.e.e.EmsAttendanceServiceApplication    : Starting EmsAttendanceServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+attendance-service-1    | 2026-09-30T05:38:13.895Z  INFO 1 --- [ems-attendance-service] [           main] c.e.e.EmsAttendanceServiceApplication    : The following 1 profile is active: "grpc"
+attendance-service-1    | 2026-09-30T05:38:18.571Z  INFO 1 --- [ems-attendance-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+attendance-service-1    | 2026-09-30T05:38:18.742Z  INFO 1 --- [ems-attendance-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 2 JPA repository interfaces.
+attendance-service-1    | 2026-09-30T05:38:21.068Z  INFO 1 --- [ems-attendance-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+attendance-service-1    | 2026-09-30T05:38:21.089Z  INFO 1 --- [ems-attendance-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+attendance-service-1    | 2026-09-30T05:38:21.089Z  INFO 1 --- [ems-attendance-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+attendance-service-1    | 2026-09-30T05:38:21.133Z  INFO 1 --- [ems-attendance-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 6968 ms
+attendance-service-1    | 2026-09-30T05:38:22.145Z  INFO 1 --- [ems-attendance-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+attendance-service-1    | 2026-09-30T05:38:22.656Z  INFO 1 --- [ems-attendance-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2fcc5f49
+attendance-service-1    | 2026-09-30T05:38:22.668Z  INFO 1 --- [ems-attendance-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+attendance-service-1    | 2026-09-30T05:38:22.816Z  INFO 1 --- [ems-attendance-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_attendance_db (PostgreSQL 18.6)
+attendance-service-1    | 2026-09-30T05:38:23.203Z  INFO 1 --- [ems-attendance-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+attendance-service-1    | 2026-09-30T05:38:23.268Z  INFO 1 --- [ems-attendance-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.198s)
+attendance-service-1    | 2026-09-30T05:38:23.424Z  INFO 1 --- [ems-attendance-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+attendance-service-1    | 2026-09-30T05:38:23.701Z  INFO 1 --- [ems-attendance-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+attendance-service-1    | 2026-09-30T05:38:23.742Z  INFO 1 --- [ems-attendance-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - attendance schema"
+attendance-service-1    | 2026-09-30T05:38:23.893Z  INFO 1 --- [ems-attendance-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - attendance integrity and audit"
+attendance-service-1    | 2026-09-30T05:38:23.936Z  INFO 1 --- [ems-attendance-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema "public", now at version v2 (execution time 00:00.117s)
+attendance-service-1    | 2026-09-30T05:38:24.693Z  INFO 1 --- [ems-attendance-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+attendance-service-1    | 2026-09-30T05:38:24.966Z  INFO 1 --- [ems-attendance-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+attendance-service-1    | 2026-09-30T05:38:26.871Z  INFO 1 --- [ems-attendance-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+attendance-service-1    | 2026-09-30T05:38:27.628Z  INFO 1 --- [ems-attendance-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+attendance-service-1    | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_attendance_db]
+attendance-service-1    | 	Database driver: PostgreSQL JDBC Driver
+attendance-service-1    | 	Database dialect: PostgreSQLDialect
+attendance-service-1    | 	Database version: 18.6
+attendance-service-1    | 	Default catalog/schema: ems_attendance_db/public
+attendance-service-1    | 	Autocommit mode: undefined/unknown
+attendance-service-1    | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+attendance-service-1    | 	JDBC fetch size: none
+attendance-service-1    | 	Pool: DataSourceConnectionProvider
+attendance-service-1    | 	Minimum pool size: undefined/unknown
+attendance-service-1    | 	Maximum pool size: undefined/unknown
+attendance-service-1    | 2026-09-30T05:38:33.467Z  INFO 1 --- [ems-attendance-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+attendance-service-1    | 2026-09-30T05:38:33.904Z  INFO 1 --- [ems-attendance-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+attendance-service-1    | 2026-09-30T05:38:34.651Z  INFO 1 --- [ems-attendance-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+attendance-service-1    | 2026-09-30T05:38:54.401Z  INFO 1 --- [ems-attendance-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+attendance-service-1    | 2026-09-30T05:38:54.839Z  INFO 1 --- [ems-attendance-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+attendance-service-1    | 2026-09-30T05:38:55.094Z  INFO 1 --- [ems-attendance-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: ems.workforce.v1.AttendanceRecords
+attendance-service-1    | 2026-09-30T05:38:55.094Z  INFO 1 --- [ems-attendance-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: grpc.health.v1.Health
+attendance-service-1    | 2026-09-30T05:38:55.307Z  INFO 1 --- [ems-attendance-service] [           main] o.s.g.s.lifecycle.GrpcServerLifecycle    : gRPC Server started, listening on address: [/[0:0:0:0:0:0:0:0]:9090], port: 9090
+attendance-service-1    | 2026-09-30T05:38:55.330Z  INFO 1 --- [ems-attendance-service] [           main] c.e.e.EmsAttendanceServiceApplication    : Started EmsAttendanceServiceApplication in 43.683 seconds (process running for 45.383)
+attendance-service-1    | 2026-09-30T05:38:57.796Z  INFO 1 --- [ems-attendance-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+attendance-service-1    | 2026-09-30T05:38:57.797Z  INFO 1 --- [ems-attendance-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+attendance-service-1    | 2026-09-30T05:38:57.821Z  INFO 1 --- [ems-attendance-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 24 ms
+employee-service-1      | 
+employee-service-1      |   .   ____          _            __ _ _
+employee-service-1      |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+employee-service-1      | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+employee-service-1      |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+employee-service-1      |   '  |____| .__|_| |_|_| |_\__, | / / / /
+employee-service-1      |  =========|_|==============|___/=/_/_/_/
+employee-service-1      | 
+employee-service-1      |  :: Spring Boot ::                (v4.1.1)
+employee-service-1      | 
+employee-service-1      | 2026-09-30T05:37:49.767Z  INFO 1 --- [ems-employee-service] [           main] c.e.e.EmsEmployeeServiceApplication      : Starting EmsEmployeeServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+employee-service-1      | 2026-09-30T05:37:49.864Z  INFO 1 --- [ems-employee-service] [           main] c.e.e.EmsEmployeeServiceApplication      : The following 1 profile is active: "grpc"
+employee-service-1      | 2026-09-30T05:37:53.098Z  INFO 1 --- [ems-employee-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+employee-service-1      | 2026-09-30T05:37:53.231Z  INFO 1 --- [ems-employee-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 113 ms. Found 1 JPA repository interface.
+employee-service-1      | 2026-09-30T05:37:55.876Z  INFO 1 --- [ems-employee-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+employee-service-1      | 2026-09-30T05:37:55.897Z  INFO 1 --- [ems-employee-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+employee-service-1      | 2026-09-30T05:37:55.898Z  INFO 1 --- [ems-employee-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+employee-service-1      | 2026-09-30T05:37:55.940Z  INFO 1 --- [ems-employee-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 5615 ms
+employee-service-1      | 2026-09-30T05:37:56.944Z  INFO 1 --- [ems-employee-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+employee-service-1      | 2026-09-30T05:37:57.277Z  INFO 1 --- [ems-employee-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3578a45b
+employee-service-1      | 2026-09-30T05:37:57.281Z  INFO 1 --- [ems-employee-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+employee-service-1      | 2026-09-30T05:37:57.348Z  INFO 1 --- [ems-employee-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_employee_db (PostgreSQL 18.6)
+employee-service-1      | 2026-09-30T05:37:57.501Z  INFO 1 --- [ems-employee-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+employee-service-1      | 2026-09-30T05:37:57.507Z  INFO 1 --- [ems-employee-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.052s)
+employee-service-1      | 2026-09-30T05:37:57.544Z  INFO 1 --- [ems-employee-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+employee-service-1      | 2026-09-30T05:37:57.678Z  INFO 1 --- [ems-employee-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+employee-service-1      | 2026-09-30T05:37:57.689Z  INFO 1 --- [ems-employee-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - employee schema"
+employee-service-1      | 2026-09-30T05:37:57.747Z  INFO 1 --- [ems-employee-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - automatic employee numbers"
+employee-service-1      | 2026-09-30T05:37:57.819Z  INFO 1 --- [ems-employee-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema "public", now at version v2 (execution time 00:00.057s)
+employee-service-1      | 2026-09-30T05:37:58.029Z  INFO 1 --- [ems-employee-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+employee-service-1      | 2026-09-30T05:37:58.091Z  INFO 1 --- [ems-employee-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+employee-service-1      | 2026-09-30T05:37:59.219Z  INFO 1 --- [ems-employee-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+employee-service-1      | 2026-09-30T05:37:59.441Z  INFO 1 --- [ems-employee-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+employee-service-1      | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_employee_db]
+employee-service-1      | 	Database driver: PostgreSQL JDBC Driver
+employee-service-1      | 	Database dialect: PostgreSQLDialect
+employee-service-1      | 	Database version: 18.6
+employee-service-1      | 	Default catalog/schema: ems_employee_db/public
+employee-service-1      | 	Autocommit mode: undefined/unknown
+employee-service-1      | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+employee-service-1      | 	JDBC fetch size: none
+employee-service-1      | 	Pool: DataSourceConnectionProvider
+employee-service-1      | 	Minimum pool size: undefined/unknown
+employee-service-1      | 	Maximum pool size: undefined/unknown
+employee-service-1      | 2026-09-30T05:38:01.407Z  INFO 1 --- [ems-employee-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+employee-service-1      | 2026-09-30T05:38:01.498Z  INFO 1 --- [ems-employee-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+employee-service-1      | 2026-09-30T05:38:01.737Z  INFO 1 --- [ems-employee-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+employee-service-1      | 2026-09-30T05:38:07.585Z  INFO 1 --- [ems-employee-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+employee-service-1      | 2026-09-30T05:38:07.684Z  INFO 1 --- [ems-employee-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+employee-service-1      | 2026-09-30T05:38:07.820Z  INFO 1 --- [ems-employee-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: ems.workforce.v1.WorkforceReferences
+employee-service-1      | 2026-09-30T05:38:07.820Z  INFO 1 --- [ems-employee-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: grpc.health.v1.Health
+employee-service-1      | 2026-09-30T05:38:07.909Z  INFO 1 --- [ems-employee-service] [           main] o.s.g.s.lifecycle.GrpcServerLifecycle    : gRPC Server started, listening on address: [/[0:0:0:0:0:0:0:0]:9090], port: 9090
+employee-service-1      | 2026-09-30T05:38:07.935Z  INFO 1 --- [ems-employee-service] [           main] c.e.e.EmsEmployeeServiceApplication      : Started EmsEmployeeServiceApplication in 20.934 seconds (process running for 23.727)
+employee-service-1      | 2026-09-30T05:38:08.649Z  INFO 1 --- [ems-employee-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+employee-service-1      | 2026-09-30T05:38:08.650Z  INFO 1 --- [ems-employee-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+employee-service-1      | 2026-09-30T05:38:08.658Z  INFO 1 --- [ems-employee-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+employee-service-1      | 2026-09-30T05:40:19.668Z  WARN 1 --- [ems-employee-service] [nio-8080-exec-7] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+employee-service-1      | 	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+employee-service-1      | 	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+employee-service-1      | 
+scheduling-service-1    | 
+scheduling-service-1    |   .   ____          _            __ _ _
+scheduling-service-1    |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+scheduling-service-1    | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+scheduling-service-1    |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+scheduling-service-1    |   '  |____| .__|_| |_|_| |_\__, | / / / /
+scheduling-service-1    |  =========|_|==============|___/=/_/_/_/
+scheduling-service-1    | 
+scheduling-service-1    |  :: Spring Boot ::                (v4.1.1)
+scheduling-service-1    | 
+scheduling-service-1    | 2026-09-30T05:38:13.631Z  INFO 1 --- [ems-scheduling-service] [           main] c.e.e.EmsSchedulingServiceApplication    : Starting EmsSchedulingServiceApplication v0.0.1-SNAPSHOT using Java 17.0.20.1 with PID 1 (/app/app.jar started by spring in /app)
+scheduling-service-1    | 2026-09-30T05:38:13.642Z  INFO 1 --- [ems-scheduling-service] [           main] c.e.e.EmsSchedulingServiceApplication    : The following 1 profile is active: "grpc"
+scheduling-service-1    | 2026-09-30T05:38:18.337Z  INFO 1 --- [ems-scheduling-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+scheduling-service-1    | 2026-09-30T05:38:18.458Z  INFO 1 --- [ems-scheduling-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 99 ms. Found 4 JPA repository interfaces.
+scheduling-service-1    | 2026-09-30T05:38:20.854Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+scheduling-service-1    | 2026-09-30T05:38:20.901Z  INFO 1 --- [ems-scheduling-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+scheduling-service-1    | 2026-09-30T05:38:20.902Z  INFO 1 --- [ems-scheduling-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+scheduling-service-1    | 2026-09-30T05:38:20.953Z  INFO 1 --- [ems-scheduling-service] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 7015 ms
+scheduling-service-1    | 2026-09-30T05:38:21.974Z  INFO 1 --- [ems-scheduling-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+scheduling-service-1    | 2026-09-30T05:38:22.356Z  INFO 1 --- [ems-scheduling-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@13b29b34
+scheduling-service-1    | 2026-09-30T05:38:22.360Z  INFO 1 --- [ems-scheduling-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+scheduling-service-1    | 2026-09-30T05:38:22.424Z  INFO 1 --- [ems-scheduling-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://postgres:5432/ems_schedule_db (PostgreSQL 18.6)
+scheduling-service-1    | 2026-09-30T05:38:23.470Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+scheduling-service-1    | 2026-09-30T05:38:23.491Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.310s)
+scheduling-service-1    | 2026-09-30T05:38:23.643Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+scheduling-service-1    | 2026-09-30T05:38:23.919Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+scheduling-service-1    | 2026-09-30T05:38:23.962Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - scheduling schema"
+scheduling-service-1    | 2026-09-30T05:38:24.168Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - workflow integrity"
+scheduling-service-1    | 2026-09-30T05:38:24.329Z  INFO 1 --- [ems-scheduling-service] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema "public", now at version v2 (execution time 00:00.150s)
+scheduling-service-1    | 2026-09-30T05:38:25.059Z  INFO 1 --- [ems-scheduling-service] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+scheduling-service-1    | 2026-09-30T05:38:25.247Z  INFO 1 --- [ems-scheduling-service] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+scheduling-service-1    | 2026-09-30T05:38:27.655Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+scheduling-service-1    | 2026-09-30T05:38:27.995Z  INFO 1 --- [ems-scheduling-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+scheduling-service-1    | 	Database JDBC URL [jdbc:postgresql://postgres:5432/ems_schedule_db]
+scheduling-service-1    | 	Database driver: PostgreSQL JDBC Driver
+scheduling-service-1    | 	Database dialect: PostgreSQLDialect
+scheduling-service-1    | 	Database version: 18.6
+scheduling-service-1    | 	Default catalog/schema: ems_schedule_db/public
+scheduling-service-1    | 	Autocommit mode: undefined/unknown
+scheduling-service-1    | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+scheduling-service-1    | 	JDBC fetch size: none
+scheduling-service-1    | 	Pool: DataSourceConnectionProvider
+scheduling-service-1    | 	Minimum pool size: undefined/unknown
+scheduling-service-1    | 	Maximum pool size: undefined/unknown
+scheduling-service-1    | 2026-09-30T05:38:33.862Z  INFO 1 --- [ems-scheduling-service] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+scheduling-service-1    | 2026-09-30T05:38:34.014Z  INFO 1 --- [ems-scheduling-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+scheduling-service-1    | 2026-09-30T05:38:47.499Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+scheduling-service-1    | 2026-09-30T05:38:50.990Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+scheduling-service-1    | 2026-09-30T05:38:52.247Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+scheduling-service-1    | 2026-09-30T05:38:53.008Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: ems.scheduling.v1.LeaveReservations
+scheduling-service-1    | 2026-09-30T05:38:53.009Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.grpc.server.NettyGrpcServerFactory   : Registered gRPC service: grpc.health.v1.Health
+scheduling-service-1    | 2026-09-30T05:38:53.049Z  INFO 1 --- [ems-scheduling-service] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+scheduling-service-1    | 2026-09-30T05:38:53.050Z  INFO 1 --- [ems-scheduling-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+scheduling-service-1    | 2026-09-30T05:38:53.146Z  INFO 1 --- [ems-scheduling-service] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 87 ms
+scheduling-service-1    | 2026-09-30T05:38:53.892Z  INFO 1 --- [ems-scheduling-service] [           main] o.s.g.s.lifecycle.GrpcServerLifecycle    : gRPC Server started, listening on address: [/[0:0:0:0:0:0:0:0]:9090], port: 9090
+scheduling-service-1    | 2026-09-30T05:38:54.032Z  INFO 1 --- [ems-scheduling-service] [           main] c.e.e.EmsSchedulingServiceApplication    : Started EmsSchedulingServiceApplication in 42.287 seconds (process running for 43.916)
