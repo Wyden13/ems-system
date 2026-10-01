@@ -14,8 +14,16 @@ import java.util.UUID;
 public class LeaveApi {
     public record Request(@NotNull UUID requestKey, @NotNull @Positive Long ptoTypeId, @NotNull LocalDate startDate,
             @NotNull LocalDate endDate,
-            @NotNull @DecimalMin("0.25") @Digits(integer = 8, fraction = 2) BigDecimal hours,
-            @Size(max = 500) String reason) {
+            @DecimalMin("0.25") @Digits(integer = 8, fraction = 2) BigDecimal hours,
+            @Size(max = 500) String reason,
+            @Pattern(regexp = "DAYS|HOURS") String requestUnit,
+            @DecimalMin("0.25") @Digits(integer = 8, fraction = 2) BigDecimal requestedHours,
+            @Size(max = 100) String reasonCategory,
+            @Size(max = 200) String employeeSignature) {
+        public Request(UUID requestKey, Long ptoTypeId, LocalDate startDate, LocalDate endDate, BigDecimal hours,
+                String reason) {
+            this(requestKey, ptoTypeId, startDate, endDate, hours, reason, null, null, null, null);
+        }
         public Request(UUID requestKey, Long ptoTypeId, LocalDate startDate, LocalDate endDate, BigDecimal hours) {
             this(requestKey, ptoTypeId, startDate, endDate, hours, null);
         }

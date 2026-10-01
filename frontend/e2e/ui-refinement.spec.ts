@@ -72,6 +72,9 @@ async function fixture(page: Page, role: Role) {
     endDate: addDays(day, 3),
     hours: 8,
     status: "PENDING",
+    reasonCategory: "Vacation",
+    employeeSignature: "Alex Worker",
+    signedAt: new Date().toISOString(),
     version: 0,
     operationError: null,
     comment: null,
@@ -386,7 +389,8 @@ test("planner: overnight shift controls send Mountain Time instants", async ({
     Date.parse(String(body?.endsAt)) - Date.parse(String(body?.startsAt)),
   ).toBe(8 * 3600000);
   expect(String(body?.startsAt)).toMatch(/:17\.000Z$/);
-  await page.getByRole("button", { name: "Week", exact: true }).click();
+  await page.getByRole("combobox", { name: "Schedule view", exact: true }).click();
+  await page.getByRole("option", { name: "Week", exact: true }).click();
   await expect(page.getByRole("button", { name: "Next week" })).toBeVisible();
 });
 
@@ -440,8 +444,16 @@ test("administrator: grouped setup, optional fields, searched account and contex
 test("time-off: insufficient balance is blocked and reviewer sees named conflict links", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   const { calls, day } = await fixture(page, "EMPLOYEE");
   await page.goto("/pto");
+  const overview = page.getByRole("region", { name: "Time-off overview" });
+  await expect(overview.getByText("2 days", { exact: true })).toBeVisible();
+  await expect(overview.getByText("16 hours · Alex Worker", { exact: true })).toBeVisible();
+  const table = page.getByRole("table", { name: "Time-off requests" });
+  await expect(table.getByRole("columnheader", { name: "Duration", exact: true })).toBeVisible();
+  await expect(table.getByText("Pending", { exact: true })).toBeVisible();
+  await page.screenshot({ path: test.info().outputPath("time-off-desktop.png"), fullPage: true, animations: "disabled" });
   await page
     .getByRole("button", { name: "Request time off", exact: true })
     .click();
@@ -450,8 +462,11 @@ test("time-off: insufficient balance is blocked and reviewer sees named conflict
   await page.getByRole("option", { name: "Vacation", exact: true }).click();
   await dialog.getByLabel("Start date", { exact: false }).fill(day);
   await dialog.getByLabel("End date", { exact: false }).fill(day);
-  await dialog.getByLabel("Hours", { exact: false }).fill("24");
-  await dialog.getByLabel("Leave reason", { exact: false }).fill("Family trip");
+  await dialog.getByLabel("Total hours", { exact: false }).fill("24");
+  await dialog.getByRole("combobox", { name: "Reason for leave" }).click();
+  await page.getByRole("option", { name: "Family reason", exact: true }).click();
+  await dialog.getByLabel("Additional details", { exact: false }).fill("Family trip");
+  await dialog.getByLabel("Employee Signature", { exact: false }).fill("Alex Morgan");
   await expect(dialog.getByText(/Available: 16 hours/)).toBeVisible();
   await dialog
     .getByRole("button", { name: "Request time off", exact: true })
@@ -463,7 +478,13 @@ test("time-off: insufficient balance is blocked and reviewer sees named conflict
     calls.some((c) => c.path === "/api/pto/requests" && c.method === "POST"),
   ).toBe(false);
   await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await page.setViewportSize({ width: 375, height: 900 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: test.info().outputPath("time-off-mobile.png"), fullPage: true, animations: "disabled" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("button", { name: "History and conflicts" }).click();
+  await expect(page.getByRole("dialog").getByText(/Employee Signature: Alex Worker/)).toBeVisible();
   await expect(
     page.getByRole("dialog").getByRole("link", { name: /Morning.*Shift 10/ }),
   ).toBeVisible();
@@ -472,4 +493,58 @@ test("time-off: insufficient balance is blocked and reviewer sees named conflict
     .getByRole("link", { name: /Morning.*Shift 10/ })
     .click();
   await expect(page.locator("#shift-10")).toBeVisible();
+});
+
+test("time-off: days calculate hours without a total and require a fresh employee signature", async ({ page }) => {
+  const { calls, day } = await fixture(page, "EMPLOYEE");
+  await page.goto("/pto");
+  await page.getByRole("button", { name: "Request time off", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Request time off", exact: true });
+  await dialog.getByRole("combobox", { name: "Leave type" }).click();
+  await page.getByRole("option", { name: "Vacation", exact: true }).click();
+  await dialog.getByLabel("Start date", { exact: false }).fill(day);
+  await dialog.getByLabel("End date", { exact: false }).fill(addDays(day, 1));
+  await expect(dialog.getByText(/2 days selected · 16 hours/)).toBeVisible();
+  await expect(dialog.getByLabel("Total hours", { exact: false })).not.toHaveAttribute("required");
+  await expect(dialog.getByLabel("Total hours", { exact: false })).toHaveValue("");
+  await dialog.getByRole("combobox", { name: "Reason for leave" }).click();
+  for (const reason of ["Vacation", "Personal leave", "Funeral", "Bereavement", "Jury duty", "Family reason", "Medical leave", "Other"])
+    await expect(page.getByRole("option", { name: reason, exact: true })).toBeVisible();
+  await page.getByRole("option", { name: "Bereavement", exact: true }).click();
+  await dialog.getByRole("button", { name: "Request time off", exact: true }).click();
+  await expect(dialog.getByText("Type your full name to sign this request.")).toBeVisible();
+  expect(calls.some(call => call.path === "/api/pto/requests" && call.method === "POST")).toBe(false);
+  await dialog.getByLabel("Employee Signature", { exact: false }).fill("  Alex Worker  ");
+  await dialog.getByRole("button", { name: "Request time off", exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  expect(calls.find(call => call.path === "/api/pto/requests" && call.method === "POST")?.body).toMatchObject({
+    requestUnit: "DAYS", hours: null, requestedHours: null, reasonCategory: "Bereavement", employeeSignature: "Alex Worker",
+  });
+  await page.getByRole("button", { name: "Request time off", exact: true }).click();
+  await expect(dialog.getByLabel("Employee Signature", { exact: false })).toHaveValue("");
+});
+
+test("time-off: hourly requests use requested hours with an optional total on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 900 });
+  const { calls, day } = await fixture(page, "EMPLOYEE");
+  await page.goto("/pto");
+  await page.getByRole("button", { name: "Request time off", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Request time off", exact: true });
+  await dialog.getByRole("combobox", { name: "Leave type" }).click();
+  await page.getByRole("option", { name: "Vacation", exact: true }).click();
+  await dialog.getByRole("button", { name: "Hours", exact: true }).click();
+  await dialog.getByLabel("Start date", { exact: false }).fill(day);
+  await dialog.getByLabel("End date", { exact: false }).fill(day);
+  await dialog.getByLabel("Hours requested", { exact: false }).fill("2.5");
+  await dialog.getByRole("combobox", { name: "Reason for leave" }).click();
+  await page.getByRole("option", { name: "Medical leave", exact: true }).click();
+  await dialog.getByLabel("Employee Signature", { exact: false }).fill("Alex Worker");
+  await expect(dialog.getByText("2.5 total hours requested")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: test.info().outputPath("time-off-request-mobile.png"), fullPage: true, animations: "disabled" });
+  await dialog.getByRole("button", { name: "Request time off", exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  expect(calls.find(call => call.path === "/api/pto/requests" && call.method === "POST")?.body).toMatchObject({
+    requestUnit: "HOURS", requestedHours: 2.5, hours: null, reasonCategory: "Medical leave", employeeSignature: "Alex Worker",
+  });
 });

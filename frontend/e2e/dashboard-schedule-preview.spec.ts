@@ -293,7 +293,10 @@ with zipfile.ZipFile(sys.argv[1]) as z:
   await expect(
     page.getByRole("button", { name: "Preview schedule", exact: true }),
   ).toBeFocused();
-  await page.getByRole("button", { name: "List", exact: true }).click();
+  await page
+    .getByRole("combobox", { name: "Schedule view", exact: true })
+    .click();
+  await page.getByRole("option", { name: "List", exact: true }).click();
   await page
     .getByRole("button", { name: "Preview schedule", exact: true })
     .click();

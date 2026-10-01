@@ -219,6 +219,8 @@ public class LeaveOperations {
   }
 
   public Map<String, Object> create(Request r) {
+    var details = LeaveRequestDetails.from(r);
+    var hours = details.hours();
     String reason = r.reason() == null ? "" : r.reason().trim();
     var p = mine();
     require(p.getActive(), "Employee is inactive");
@@ -230,7 +232,11 @@ public class LeaveOperations {
         require(
             id(previous, "employeeId") == p.getEmployeeId() && id(previous, "ptoTypeId") == r.ptoTypeId()
                 && previous.get("startDate").equals(r.startDate()) && previous.get("endDate").equals(r.endDate())
-                && amount(previous, "hours").compareTo(r.hours()) == 0 && reason.equals(previous.get("reason")),
+                && amount(previous, "hours").compareTo(hours) == 0 && reason.equals(previous.get("reason"))
+                && details.unit().equals(previous.get("requestUnit"))
+                && amount(previous, "requestedAmount").compareTo(details.amount()) == 0
+                && details.category().equals(previous.get("reasonCategory"))
+                && details.signature().equals(previous.get("employeeSignature")),
             "Request key already used");
         return request(id(previous, "id"));
       }
@@ -243,14 +249,16 @@ public class LeaveOperations {
           Long.class, p.getEmployeeId(), r.endDate(), r.startDate()) == 0,
           "A PTO request already overlaps these dates");
       ensureBalance(p.getEmployeeId(), r.ptoTypeId());
-      require(available(balance(p.getEmployeeId(), r.ptoTypeId())).compareTo(r.hours()) >= 0,
+      require(available(balance(p.getEmployeeId(), r.ptoTypeId())).compareTo(hours) >= 0,
           "Insufficient available PTO hours");
       long id = db.queryForObject(
-          "insert into pto_requests(employee_id,pto_type_id,start_date,end_date,hours,request_key,reason) values (?,?,?,?,?,?,?) returning id",
-          Long.class, p.getEmployeeId(), r.ptoTypeId(), r.startDate(), r.endDate(), r.hours(), r.requestKey(), reason);
+          "insert into pto_requests(employee_id,pto_type_id,start_date,end_date,hours,request_key,reason,request_unit,requested_amount,reason_category,employee_signature,signed_at) values (?,?,?,?,?,?,?,?,?,?,?,?) returning id",
+          Long.class, p.getEmployeeId(), r.ptoTypeId(), r.startDate(), r.endDate(), hours, r.requestKey(), reason,
+          details.unit(), details.amount(), details.category(), details.signature(),
+          details.signature().isBlank() ? null : OffsetDateTime.now());
       db.update(
           "update pto_balances set reserved_hours=reserved_hours+?,version=version+1,updated_at=now() where employee_id=? and pto_type_id=?",
-          r.hours(), p.getEmployeeId(), r.ptoTypeId());
+          hours, p.getEmployeeId(), r.ptoTypeId());
       audit(id, "REQUEST", Caller.current().accountId(), reason.isBlank() ? "Requested" : reason);
       return request(id);
     });

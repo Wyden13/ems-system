@@ -538,6 +538,13 @@ test("weekly roster shows partial coverage and overnight hours, filters and open
 }) => {
   await page.setViewportSize({ width: 1920, height: 1200 });
   const { errors } = await fixture(page);
+  await page.getByRole("button", { name: "Next week", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Oct 3 – Oct 9", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Choose schedule date", exact: true }).click();
+  await page.getByLabel("Week of", { exact: true }).fill("2026-09-28");
+  await page.getByRole("button", { name: "Done", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Sep 26 – Oct 2", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Choose schedule date", exact: true })).toBeFocused();
   await expect(
     page.getByRole("table", { name: "Employee weekly roster" }),
   ).toBeVisible();
@@ -599,7 +606,8 @@ test("weekly roster shows partial coverage and overnight hours, filters and open
   await page.getByRole("button", { name: "Clear", exact: true }).click();
   await page.getByRole("checkbox", { name: "Needs attention" }).check();
   await expect(page.getByText("2 shifts · 16h scheduled")).toBeVisible();
-  await page.getByRole("button", { name: "List", exact: true }).click();
+  await page.getByRole("combobox", { name: "Schedule view", exact: true }).click();
+  await page.getByRole("option", { name: "List", exact: true }).click();
   await expect(
     page.getByRole("region", { name: "Schedule list" }),
   ).toContainText("Shift 12");
@@ -630,6 +638,7 @@ test("mobile agenda and filter drawer fit small screens and restore focus", asyn
   await expect(
     page.getByRole("button", { name: "Create shift", exact: true }),
   ).toBeEnabled();
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: test.info().outputPath("ems-schedule-mobile.png"),
     fullPage: true,
@@ -786,7 +795,9 @@ test("planner drops an employee onto a shift and an empty day, with warning and 
 }) => {
   await page.setViewportSize({ width: 1920, height: 1200 });
   const { requests, errors } = await fixture(page);
+  await page.getByRole("button", { name: "Choose schedule date", exact: true }).click();
   await expect(page.getByLabel("Week of")).toHaveValue("2026-09-26");
+  await page.getByRole("button", { name: "Done", exact: true }).click();
   await page.route("**/api/shifts/assignment-preview", async (route) => {
     const body = route.request().postDataJSON();
     const state =

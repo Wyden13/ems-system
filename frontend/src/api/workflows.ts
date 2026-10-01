@@ -89,6 +89,11 @@ export interface LeaveRequest {
   operationError: string | null;
   comment: string | null;
   reason?: string;
+  requestUnit?: "DAYS" | "HOURS";
+  requestedAmount?: number;
+  reasonCategory?: string;
+  employeeSignature?: string;
+  signedAt?: string | null;
 }
 export const processing = (status: string) =>
   ["APPROVING", "CANCELLING"].includes(status);

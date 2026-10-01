@@ -27,7 +27,7 @@ const hoursLabel = (hours: number) => `${Number(hours.toFixed(1))}h`;
 const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map(word => word[0]).join('');
 const columns = '180px repeat(7, minmax(120px, 1fr)) 80px';
 
-export default function ScheduleCalendar({ from, shifts, options, categories = [], planner, view = 'week', initialShiftId, renderShift, createShift, assignEmployee, shiftActions, pasteShift }: {
+export default function ScheduleCalendar({ from, shifts, options, categories = [], planner, view = 'week', initialShiftId, navigationControls, renderShift, createShift, assignEmployee, shiftActions, pasteShift }: {
   from: string;
   shifts: Shift[];
   options?: ScheduleOptions;
@@ -35,6 +35,7 @@ export default function ScheduleCalendar({ from, shifts, options, categories = [
   planner: boolean;
   view?: 'list' | 'week';
   initialShiftId?: number;
+  navigationControls?: ReactNode;
   renderShift: (shift: Shift, viewDetails?: () => void) => ReactNode;
   createShift: (day: string, employee?: WorkforcePerson) => void;
   assignEmployee: (shift: Shift, employee?: WorkforcePerson) => void;
@@ -264,23 +265,26 @@ export default function ScheduleCalendar({ from, shifts, options, categories = [
     {planner && <Alert severity="info" sx={{ minHeight: 60 }} action={<Button size="small" disabled={!chosen} onClick={() => { setEmployeeId(undefined); setHovered(undefined); }}>Clear selection</Button>}>
       {chosen ? `Scheduling ${chosen.name}. Select an existing shift to assign them, or a day in their row to create a shift.` : "Click an employee’s name to check availability, or click a day in their row to create and assign a shift."} Green: available · Amber: warning · Red: blocked.
     </Alert>}
-    <Stack direction="row" spacing={1.5} useFlexGap sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
-      <Button variant={filtersOpen ? 'contained' : 'outlined'} startIcon={<TuneRounded />} aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>
-        Filters{filterCount > 0 && ` (${filterCount})`}
-      </Button>
-      <TextField label="Search employees" placeholder="Name or employee number" size="small" value={search} onChange={e => setSearch(e.target.value)}
-        sx={{ width: { xs: '100%', sm: 280 }, '& .MuiOutlinedInput-root': { minHeight: 44 } }} slotProps={{ input: { startAdornment: <SearchRounded sx={{ mr: 1, fontSize: 19, color: 'text.secondary' }} /> } }} />
-      <Box sx={{ flex: 1 }} />
-      <Typography variant="caption" color="text.secondary">{filtered.length} shifts · {hoursLabel(scheduledHours)} scheduled</Typography>
-      <Chip size="small" color={missing ? 'warning' : live.length ? 'success' : 'default'} variant="outlined" label={missing ? `${missing} unfilled positions` : live.length ? 'Fully staffed' : 'No active shifts'} />
-    </Stack>
     <Box sx={{ display: 'grid', gridTemplateColumns: !mobile && filtersOpen ? '240px minmax(0, 1fr)' : 'minmax(0, 1fr)', gap: 2, alignItems: 'start' }}>
       {!mobile && filtersOpen && <Paper component="aside" aria-label="Schedule filters" variant="outlined" sx={{ bgcolor: '#FAFBFD' }}>{filters}</Paper>}
       <Paper component="section" aria-label={view === 'week' ? 'Weekly schedule calendar' : 'Schedule list'} variant="outlined" sx={{ minWidth: 0, overflow: 'hidden' }}>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', px: 2.5, py: 2, borderBottom: 1, borderColor: 'divider', bgcolor: '#FAFBFD' }}>
+        {!navigationControls && <Stack direction="row" spacing={1} sx={{ alignItems: 'center', px: 2.5, py: 2, borderBottom: 1, borderColor: 'divider', bgcolor: '#FAFBFD' }}>
           <PeopleOutlineRounded sx={{ fontSize: 20, color: 'primary.main' }} />
           <Typography variant="h3" sx={{ fontSize: 16, flex: 1 }}>{view === 'list' ? 'Shift list' : 'Team schedule'}</Typography>
           <Typography variant="caption" color="text.secondary">Mountain Time</Typography>
+        </Stack>}
+        <Stack spacing={2} sx={{ px: { xs: 1.5, sm: 2.5 }, py: 2, borderBottom: 1, borderColor: 'divider' }}>
+          {navigationControls}
+          <Stack direction="row" spacing={1.5} useFlexGap sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button variant={filtersOpen ? 'contained' : 'outlined'} startIcon={<TuneRounded />} aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>
+              Filters{filterCount > 0 && ` (${filterCount})`}
+            </Button>
+            <TextField label="Search employees" placeholder="Name or employee number" size="small" value={search} onChange={e => setSearch(e.target.value)}
+              sx={{ width: { xs: '100%', sm: 280 }, '& .MuiOutlinedInput-root': { minHeight: 44 } }} slotProps={{ input: { startAdornment: <SearchRounded sx={{ mr: 1, fontSize: 19, color: 'text.secondary' }} /> } }} />
+            <Box sx={{ flex: 1 }} />
+            <Typography variant="caption" color="text.secondary">{filtered.length} shifts · {hoursLabel(scheduledHours)} scheduled</Typography>
+            <Chip size="small" color={missing ? 'warning' : live.length ? 'success' : 'default'} variant="outlined" label={missing ? `${missing} unfilled positions` : live.length ? 'Fully staffed' : 'No active shifts'} />
+          </Stack>
         </Stack>
         {view === 'list' ? <Stack spacing={1.5} sx={{ p: 2 }}>{filtered.map(s => renderShift(s, () => setSelectedId(s.id)))}{!filtered.length && <Typography color="text.secondary">No shifts match your filters.</Typography>}</Stack>
           : mobile ? <Box sx={{ p: 2 }}>

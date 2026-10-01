@@ -4,20 +4,14 @@ import {
   Alert,
   Tabs,
   Tab,
-  ToggleButton,
-  ToggleButtonGroup,
   Button,
   Box,
   Chip,
-  IconButton,
   Paper,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import AddRounded from "@mui/icons-material/AddRounded";
-import ChevronLeftRounded from "@mui/icons-material/ChevronLeftRounded";
-import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
 import { useAuth } from "../auth/context";
 import { api, send, params } from "../api/client";
 import {
@@ -42,6 +36,7 @@ import type {
 import FormDialog, { type Field } from "../components/management/FormDialog";
 import QueryState from "../components/management/QueryState";
 import ScheduleCalendar from "../components/ScheduleCalendar";
+import ScheduleNavigation from "../components/ScheduleNavigation";
 import SchedulePreviewDialog from "../components/SchedulePreviewDialog";
 import AvailabilityCalendar from "../components/AvailabilityCalendar";
 import AssignmentPreviewSummary from "../components/AssignmentPreviewSummary";
@@ -557,76 +552,6 @@ export default function SchedulePage() {
         {own && <Tab value="availability" label="My availability" />}
         {manager && <Tab value="categories" label="Shift categories" />}
       </Tabs>
-      {section === "shifts" && (
-        <Paper variant="outlined" sx={{ p: 1.5 }}>
-          <Stack
-            direction="row"
-            spacing={1}
-            useFlexGap
-            sx={{ alignItems: "center", flexWrap: "wrap" }}
-          >
-            <Button
-              variant="outlined"
-              sx={{ px: { xs: 1.5, sm: 2 } }}
-              onClick={() => setFrom(weekStart(businessDate()))}
-            >
-              Today
-            </Button>
-            <IconButton
-              sx={{ minWidth: { xs: 32, sm: 44 }, px: 0.5 }}
-              aria-label={`Previous ${view === "week" ? "week" : "range"}`}
-              onClick={() => setFrom(addDays(from, -span))}
-            >
-              <ChevronLeftRounded />
-            </IconButton>
-            <TextField
-              label="Week of"
-              type="date"
-              size="small"
-              value={from}
-              onChange={(e) => setFrom(weekStart(e.target.value || businessDate()))}
-              slotProps={{ inputLabel: { shrink: true } }}
-              sx={{
-                width: { xs: 160, sm: 170 },
-                "& .MuiInputBase-input": { fontSize: 14 },
-              }}
-            />
-            <IconButton
-              sx={{ minWidth: { xs: 32, sm: 44 }, px: 0.5 }}
-              aria-label={`Next ${view === "week" ? "week" : "range"}`}
-              onClick={() => setFrom(addDays(from, span))}
-            >
-              <ChevronRightRounded />
-            </IconButton>
-            <Typography variant="body2" sx={{ fontWeight: 600, px: 1 }}>
-              {[from, addDays(from, span - 1)]
-                .map((day, i) =>
-                  new Intl.DateTimeFormat("en-CA", {
-                    month: "short",
-                    day: "numeric",
-                    ...(i === 1 ? ({ year: "numeric" } as const) : {}),
-                    timeZone: "UTC",
-                  }).format(new Date(`${day}T12:00:00Z`)),
-                )
-                .join(" – ")}
-            </Typography>
-            <Box sx={{ flex: 1 }} />
-            <Button variant="outlined" disabled={!shifts.data || !options.data || shifts.isFetching || !!shifts.error || !!options.error} onClick={() => setPreviewOpen(true)}>Preview schedule</Button>
-            <ToggleButtonGroup
-              value={view}
-              exclusive
-              onChange={(_, next) => {
-                if (next) setView(next);
-              }}
-              aria-label="Schedule view"
-              size="small"
-            >
-              <ToggleButton value="week">Week</ToggleButton>
-              <ToggleButton value="list">List</ToggleButton>
-            </ToggleButtonGroup>
-          </Stack>
-        </Paper>
-      )}
       <QueryState
         loading={shifts.isPending || options.isPending}
         error={shifts.error ?? options.error ?? categories.error}
@@ -653,6 +578,16 @@ export default function SchedulePage() {
           categories={categories.data}
           planner={planner}
           view={view}
+          navigationControls={
+            <ScheduleNavigation
+              from={from}
+              view={view}
+              onFromChange={setFrom}
+              onViewChange={setView}
+              onPreview={() => setPreviewOpen(true)}
+              previewDisabled={!shifts.data || !options.data || shifts.isFetching || !!shifts.error || !!options.error}
+            />
+          }
           initialShiftId={Number(searchParams.get("shift")) || undefined}
           renderShift={renderShift}
           createShift={(day, employee) => shiftForm(undefined, day, employee)}

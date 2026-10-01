@@ -150,7 +150,9 @@ test("published shifts, employee response, PTO conflicts, approval and reversal 
   ).toBeVisible();
   await page.getByRole("link", { name: "Schedule", exact: true }).click();
   // The roster defaults to this week; the future shift may be in the next one.
+  await page.getByRole("button", { name: "Choose schedule date", exact: true }).click();
   await page.getByLabel("Week of", { exact: true }).fill(day);
+  await page.getByRole("button", { name: "Done", exact: true }).click();
   await page
     .getByRole("button", {
       name: `${category.name}, ${day}, shift ${shift.id}`,
@@ -186,8 +188,11 @@ test("published shifts, employee response, PTO conflicts, approval and reversal 
   await page.getByRole("option", { name: type.name, exact: true }).click();
   await dialog.getByLabel(/^Start date/).fill(day);
   await dialog.getByLabel(/^End date/).fill(day);
-  await dialog.getByLabel(/^Hours/).fill("8");
-  await dialog.getByLabel(/^Leave reason/).fill("Family trip");
+  await dialog.getByLabel(/^Total hours/).fill("8");
+  await dialog.getByRole("combobox", { name: "Reason for leave" }).click();
+  await page.getByRole("option", { name: "Family reason", exact: true }).click();
+  await dialog.getByLabel(/^Additional details/).fill("Family trip");
+  await dialog.getByLabel("Employee Signature", { exact: false }).fill("ScheduleWorker Workflow");
   await dialog
     .getByRole("button", { name: "Request time off", exact: true })
     .click();

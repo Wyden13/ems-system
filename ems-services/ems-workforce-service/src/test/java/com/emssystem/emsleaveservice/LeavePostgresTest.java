@@ -23,6 +23,39 @@ class LeavePostgresTest {
  @AfterEach void clear(){SecurityContextHolder.clearContext();}@AfterAll static void stop(){DB.stop();}
  Request input(LocalDate date,String hours){return new Request(UUID.randomUUID(),type,date,date,new BigDecimal(hours));}
  Map<String,Object> request(){return service.create(input(day,"8"));}
+ @Test void dayRequestWithoutTotalPersistsSignatureAndReservesOnce(){
+  var input=new Request(UUID.randomUUID(),type,day,day.plusDays(1),null,"Family trip","DAYS",null,"Vacation","  Person One  ");
+  var r=service.create(input);long key=id(r,"id");
+  assertEquals("DAYS",r.get("requestUnit"));assertEquals(new BigDecimal("2.00"),r.get("requestedAmount"));
+  assertEquals(new BigDecimal("16.00"),r.get("hours"));assertEquals("Vacation",r.get("reasonCategory"));
+  assertEquals("Person One",r.get("employeeSignature"));assertNotNull(r.get("signedAt"));
+  assertEquals(key,id(service.create(input),"id"));assertEquals(new BigDecimal("16.00"),balance("reserved_hours"));
+  assertThrows(ResponseStatusException.class,()->service.create(new Request(input.requestKey(),type,day,day.plusDays(1),null,"Family trip","DAYS",null,"Vacation","Another Person")));
+  login(supervisor,"SUPERVISOR");r=service.review(key,new Decision(0L,"APPROVED","Enjoy"));
+  assertEquals("Person One",r.get("employeeSignature"));
+  login(worker,"EMPLOYEE");r=service.cancel(key,new Cancel(id(r,"version"),"Plans changed"));
+  assertEquals("Person One",r.get("employeeSignature"));assertEquals(new BigDecimal("0.00"),balance("used_hours"));
+ }
+ @Test void hourlyRequestUsesRequestedHoursAndDayOverrideUsesTotal(){
+  var hourly=service.create(new Request(UUID.randomUUID(),type,day,day,null,"Appointment","HOURS",new BigDecimal("2.50"),"Medical leave","Person One"));
+  assertEquals(new BigDecimal("2.50"),hourly.get("hours"));
+  var days=service.create(new Request(UUID.randomUUID(),type,day.plusDays(1),day.plusDays(2),new BigDecimal("8"),null,"DAYS",null,"Personal leave","Person One"));
+  assertEquals(new BigDecimal("8.00"),days.get("hours"));assertEquals(new BigDecimal("2.00"),days.get("requestedAmount"));
+  assertEquals(new BigDecimal("10.50"),balance("reserved_hours"));
+ }
+ @Test void requestApiAcceptsOmittedTotalAndRejectsMissingSignature() throws Exception {
+  String body="{\"requestKey\":\""+UUID.randomUUID()+"\",\"ptoTypeId\":"+type+",\"startDate\":\""+day+"\",\"endDate\":\""+day+"\",\"requestUnit\":\"DAYS\",\"reasonCategory\":\"Vacation\",\"employeeSignature\":\"Person One\"}";
+  var jwt=org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt().jwt(token->token.subject(worker.toString()).claim("role","EMPLOYEE"));
+  mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/pto/requests").contentType("application/json").content(body.replace("Person One","")).with(jwt))
+   .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isBadRequest());
+  assertEquals(new BigDecimal("0.00"),balance("reserved_hours"));
+  mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/pto/requests").contentType("application/json").content(body).with(jwt))
+   .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
+   .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.hours").value(8))
+   .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.employeeSignature").value("Person One"))
+   .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.signedAt").isNotEmpty());
+  assertEquals(new BigDecimal("8.00"),balance("reserved_hours"));
+ }
  BigDecimal balance(String field){return jdbc.queryForObject("select "+field+" from pto_balances where employee_id=1",BigDecimal.class);}
  @Test void reservationApprovalCancellationAndAuditAreExactlyOnce(){var r=request();long key=id(r,"id");assertEquals(new BigDecimal("8.00"),balance("reserved_hours"));login(supervisor,"SUPERVISOR");r=service.review(key,new Decision(id(r,"version"),"APPROVED","Enjoy"));assertEquals("APPROVED",r.get("status"));service.process(key);assertEquals(new BigDecimal("8.00"),balance("used_hours"));login(worker,"EMPLOYEE");r=service.cancel(key,new Cancel(id(r,"version"),"Plans changed"));assertEquals("CANCELLED",r.get("status"));service.process(key);assertEquals(new BigDecimal("0.00"),balance("used_hours"));assertEquals(2L,jdbc.queryForObject("select count(*) from pto_ledger_entries where source_request_id=?",Long.class,key));assertTrue(jdbc.queryForObject("select count(*) from pto_audits",Long.class)>=4);}
  @Test void leaveReasonSurvivesReviewAndCancellationAndIsPartOfRetryIdentity(){
