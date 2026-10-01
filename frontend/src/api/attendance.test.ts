@@ -15,23 +15,25 @@ describe("business time", () => {
     expect(currentPeriod(new Date("2026-10-09T06:00:00Z"))).toBe("2026-10-09");
   });
   it("uses actual DST midnight offsets", () => {
+    // Alberta stopped falling back in 2026; use its last autumn transition.
     expect(midnight("2026-03-08")).toBe("2026-03-08T07:00:00.000Z");
     expect(midnight("2026-03-09")).toBe("2026-03-09T06:00:00.000Z");
-    expect(midnight("2026-11-02")).toBe("2026-11-02T07:00:00.000Z");
+    expect(midnight("2025-11-02")).toBe("2025-11-02T06:00:00.000Z");
+    expect(midnight("2025-11-03")).toBe("2025-11-03T07:00:00.000Z");
   });
   it("distinguishes repeated times and rejects nonexistent ones", () => {
-    expect(parseTime("2026-11-01T01:30:00-06:00")).toBe(
-      "2026-11-01T07:30:00.000Z",
+    expect(parseTime("2025-11-02T01:30:00-06:00")).toBe(
+      "2025-11-02T07:30:00.000Z",
     );
-    expect(parseTime("2026-11-01T01:30:00-07:00")).toBe(
-      "2026-11-01T08:30:00.000Z",
+    expect(parseTime("2025-11-02T01:30:00-07:00")).toBe(
+      "2025-11-02T08:30:00.000Z",
     );
     expect(() => parseTime("2026-03-08T02:30:00-07:00")).toThrow();
     expect(() => parseTime("2026-09-26T08:00:00")).toThrow();
   });
   it("resolves wall time without the device timezone and exposes DST choices", () => {
     expect(localTimeCandidates("2026-09-26T08:00:17")).toEqual(["2026-09-26T08:00:17-06:00"]);
-    expect(localTimeCandidates("2026-11-01T01:30:00")).toEqual(["2026-11-01T01:30:00-06:00", "2026-11-01T01:30:00-07:00"]);
+    expect(localTimeCandidates("2025-11-02T01:30:00")).toEqual(["2025-11-02T01:30:00-06:00", "2025-11-02T01:30:00-07:00"]);
     expect(localTimeCandidates("2026-03-08T02:30:00")).toEqual([]);
     expect(localTimeCandidates("2026-02-30T09:00:00")).toEqual([]);
     expect(localTimeCandidates("")).toEqual([]);

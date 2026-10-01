@@ -50,7 +50,7 @@ it("requires a repeated-time choice and preserves correction seconds", async () 
           required: true,
         },
       ]}
-      initial={{ clockIn: "2026-11-01T01:30:17" }}
+      initial={{ clockIn: "2025-11-02T01:30:17" }}
       submitLabel="Save correction"
       onClose={vi.fn()}
       onSave={save}
@@ -64,5 +64,5 @@ it("requires a repeated-time choice and preserves correction seconds", async () 
   );
   await user.click(screen.getByRole("option", { name: /Second occurrence/ }));
   await user.click(screen.getByRole("button", { name: "Save correction" }));
-  expect(save).toHaveBeenCalledWith({ clockIn: "2026-11-01T01:30:17-07:00" });
+  expect(save).toHaveBeenCalledWith({ clockIn: "2025-11-02T01:30:17-07:00" });
 });

@@ -30,13 +30,13 @@ it("pastes overnight local times onto another day using the destination daylight
     startsAt: "2026-09-30T22:00:17-06:00",
     endsAt: "2026-10-01T06:00:17-06:00",
   };
-  const pasted = shiftTemplateOnDay(values, "2026-11-10");
+  const pasted = shiftTemplateOnDay(values, "2025-11-10");
   expect(pasted).toEqual({
     categoryId: "2",
-    startsAt: "2026-11-10T22:00:17-07:00",
-    endsAt: "2026-11-11T06:00:17-07:00",
+    startsAt: "2025-11-10T22:00:17-07:00",
+    endsAt: "2025-11-11T06:00:17-07:00",
   });
-  expect(parseTime(pasted.startsAt)).toBe("2026-11-11T05:00:17.000Z");
+  expect(parseTime(pasted.startsAt)).toBe("2025-11-11T05:00:17.000Z");
   expect(values.startsAt).toBe("2026-09-30T22:00:17-06:00");
 });
 
@@ -46,8 +46,8 @@ it("requires an occurrence choice when a pasted start time is repeated by the cl
       startsAt: "2026-09-30T01:30:00-06:00",
       endsAt: "2026-09-30T03:30:00-06:00",
     },
-    "2026-11-01",
+    "2025-11-02",
   );
-  expect(pasted.startsAt).toBe("2026-11-01T01:30:00");
-  expect(pasted.endsAt).toBe("2026-11-01T03:30:00-07:00");
+  expect(pasted.startsAt).toBe("2025-11-02T01:30:00");
+  expect(pasted.endsAt).toBe("2025-11-02T03:30:00-07:00");
 });

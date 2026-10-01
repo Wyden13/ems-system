@@ -20,7 +20,8 @@ class AttendancePayCalculatorTest {
  @Test void dailyOvertimeStaysOnItsDayAndWeeklyTopUpUsesLatestHours(){var entries=week(6,8);entries.add(hours("2026-10-02",8,10));var result=pay(entries);assertEquals(44*3600,result.regularSeconds());assertEquals(14*3600,result.overtimeSeconds());}
  @Test void midnightAndPayBoundarySplitWithoutLosingSeconds(){var start=LocalDate.of(2026,10,8).atTime(22,0).atZone(ZONE).toInstant();var entries=List.of(new Interval(start,start.plusSeconds(10*3600)));var first=pay(entries);var second=calculator.calculate(entries,ANCHOR.plusDays(14),BigDecimal.TEN);assertEquals(2*3600,first.regularSeconds());assertEquals(8*3600,second.regularSeconds());assertEquals(0,first.overtimeSeconds()+second.overtimeSeconds());}
  @Test void daylightSavingUsesElapsedTime(){
-  for(var pair:List.of(new String[]{"2026-03-08","3"},new String[]{"2026-11-01","5"})){
+  // Alberta's last autumn clock change was in 2025; 2026 has no repeated hour.
+  for(var pair:List.of(new String[]{"2026-03-08","3"},new String[]{"2025-11-02","5"})){
    var day=LocalDate.parse(pair[0]);var start=day.atStartOfDay(ZONE).toInstant();var end=day.atTime(4,0).atZone(ZONE).toInstant();var result=calculator.calculate(List.of(new Interval(start,end)),periodFor(day),BigDecimal.TEN);assertEquals(Long.parseLong(pair[1])*3600,result.regularSeconds());
   }
  }

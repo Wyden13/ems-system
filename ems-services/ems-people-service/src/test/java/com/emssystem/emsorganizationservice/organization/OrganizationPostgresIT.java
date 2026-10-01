@@ -96,6 +96,8 @@ class OrganizationPostgresIT {
         assertNotNull(created.id());
         assertNotNull(created.createdAt());
         assertNotNull(created.updatedAt());
+        assertEquals(0, created.createdAt().getNano() % 1_000);
+        assertEquals(0, created.updatedAt().getNano() % 1_000);
         assertEquals("Calgary", locations.get(created.id()).name());
         var replaced = locations.replace(created.id(), new UpdateLocationRequest("Edmonton"));
         assertEquals(created.id(), replaced.id());
@@ -123,6 +125,7 @@ class OrganizationPostgresIT {
         var first = locations.create(new CreateLocationRequest("Calgary"));
         var second = locations.create(new CreateLocationRequest("Edmonton"));
         var department = departments.create(new CreateDepartmentRequest(" Operations ", first.id()));
+        assertEquals(0, department.createdAt().getNano() % 1_000);
         var moved = departments.replace(department.id(), new UpdateDepartmentRequest("OPERATIONS", second.id()));
         assertEquals(department.id(), moved.id());
         assertEquals("Edmonton", moved.locationName());

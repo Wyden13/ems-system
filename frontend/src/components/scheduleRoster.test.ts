@@ -30,7 +30,7 @@ describe('roster staffing and scheduled hours', () => {
   });
 
   it('uses elapsed hours when Mountain Time changes at the DST boundary', () => {
-    expect(hoursInRange({ ...shift, startsAt: '2026-11-01T00:00:00-06:00', endsAt: '2026-11-01T04:00:00-07:00' }, '2026-11-01', '2026-11-02')).toBe(5);
+    expect(hoursInRange({ ...shift, startsAt: '2025-11-02T00:00:00-06:00', endsAt: '2025-11-02T04:00:00-07:00' }, '2025-11-02', '2025-11-03')).toBe(5);
     expect(hoursInRange({ ...shift, startsAt: '2026-03-08T00:00:00-07:00', endsAt: '2026-03-08T04:00:00-06:00' }, '2026-03-08', '2026-03-09')).toBe(3);
   });
 });

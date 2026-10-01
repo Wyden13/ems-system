@@ -18,8 +18,8 @@ describe("schedule preview and exports", () => {
     expect(table[3]).toEqual(["Open coverage", "", "", "Night · 22:00–24:00 · Edmonton · Published · 1 open", "Night · 00:00–06:00 · Edmonton · Published · 1 open", 8]);
   });
   it("uses elapsed Mountain Time hours at DST boundaries and clips the selected range", () => {
-    const dst = { ...shift, startsAt: "2026-11-01T00:00:00-06:00", endsAt: "2026-11-01T04:00:00-07:00" };
-    expect(scheduleTable([dst], options, "2026-11-01", 1)[1].at(-1)).toBe(5);
+    const dst = { ...shift, startsAt: "2025-11-02T00:00:00-06:00", endsAt: "2025-11-02T04:00:00-07:00" };
+    expect(scheduleTable([dst], options, "2025-11-02", 1)[1].at(-1)).toBe(5);
     expect(scheduleTable([shift], options, "2026-09-29", 1)[1].at(-1)).toBe(6);
   });
   it("quotes multiline CSV values and exports user text without treating it as formulas", () => {

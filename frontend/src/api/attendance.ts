@@ -119,7 +119,7 @@ export function parseTime(value: string) {
   const iso = new Date(value).toISOString();
   if (zonedInput(iso) !== value)
     throw new Error(
-      "Use the valid Mountain Time offset for this date: -06:00 for MDT or -07:00 for MST.",
+      "Use the valid America/Edmonton UTC offset for this date.",
     );
   return iso;
 }

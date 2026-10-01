@@ -2,6 +2,8 @@
 
 React, TypeScript, MUI and TanStack Query frontend for the integrated workforce MVP. See [backend setup and current feature status](../ems-services/DOCUMENTATION.md).
 
+Use Node.js 24.21.0 or newer in the 24.x series to match CI's updated Edmonton timezone rules. Older timezone data incorrectly predicts an autumn clock change in November 2026. DST tests use the historical November 2025 transition.
+
 Run `npm ci` and `npm run dev` after starting the services and bootstrapping an admin. Open http://localhost:5173. Vite proxies `/api` to the gateway at http://localhost:8080; `EMS_GATEWAY_URL` overrides it.
 
 All roles have a real dashboard, attendance, payroll estimates, scheduling and PTO navigation. Supervisors plan shifts/review PTO within their employee department; managers/admins work across departments. Only admins manage accounts/employees/organization and allocate PTO. Account links are required for personal workforce features. Payroll estimates include approved worked time only; paid leave, scheduled break deductions and scores remain deferred.
