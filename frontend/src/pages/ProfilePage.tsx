@@ -2,20 +2,21 @@ import { useState } from "react";
 import { Alert, Button, Paper, Stack, Typography } from "@mui/material";
 import { useAuth } from "../auth/context";
 import { send } from "../api/client";
+import { statusLabel } from "../api/workflows";
 import FormDialog from "../components/management/FormDialog";
 export default function ProfilePage() {
   const { account, reload, signOut } = useAuth();
   const [form, setForm] = useState<"email" | "password" | null>(null);
   const [message, setMessage] = useState("");
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }}>
       <Stack spacing={2}>
         <Typography variant="h2">My Profile</Typography>
         <Typography>{account?.email}</Typography>
-        <Typography>Access role: {account?.role}</Typography>
-        <Typography>Account status: {account?.status}</Typography>
+        <Typography>Access role: {account?.role ? statusLabel(account.role) : ""}</Typography>
+        <Typography>Account status: {account?.status ? statusLabel(account.status) : ""}</Typography>
         {message && <Alert severity="success">{message}</Alert>}
-        <Stack direction="row" spacing={2}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
           <Button variant="outlined" onClick={() => setForm("email")}>
             Change email
           </Button>
@@ -27,6 +28,7 @@ export default function ProfilePage() {
       {form === "email" && (
         <FormDialog
           title="Change email"
+          submitLabel="Change email"
           fields={[
             { name: "email", label: "Email", type: "email", required: true },
           ]}
@@ -42,6 +44,7 @@ export default function ProfilePage() {
       {form === "password" && (
         <FormDialog
           title="Change password"
+          submitLabel="Change password"
           notice="This revokes refresh sessions on all devices. You will be signed out after saving. Existing access tokens expire within 15 minutes."
           fields={[
             {

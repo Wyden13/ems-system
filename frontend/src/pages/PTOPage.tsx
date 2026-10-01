@@ -2,6 +2,12 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Tabs,
+  Tab,
   Button,
   Chip,
   MenuItem,
@@ -10,9 +16,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../auth/context";
 import { api, send, params } from "../api/client";
-import { businessDate } from "../api/attendance";
+import { businessDate, dateTime } from "../api/attendance";
 import {
   processing,
   statusLabel,
@@ -22,21 +29,33 @@ import {
   type WorkforcePerson,
 } from "../api/workflows";
 import FormDialog, { type Field } from "../components/management/FormDialog";
+import PtoConflictSummary from "../components/management/PtoConflictSummary";
+import PtoDeductionSummary from "../components/management/PtoDeductionSummary";
 import QueryState from "../components/management/QueryState";
+import { useObjectContextMenu, type ContextAction } from "../components/context-menu/context";
+import { useObjectControls } from "../components/context-menu/objectControls";
 type Form = {
   title: string;
   fields: Field[];
   initial: Record<string, string>;
   notice?: string;
+  summary?: string;
+  request?: LeaveRequest;
+  validate?: (values: Record<string, string>) => Record<string, string>;
   save: (v: Record<string, string>) => Promise<unknown>;
 };
 export default function PTOPage() {
+  const contextMenu = useObjectContextMenu();
+  const { objectActions, pasteAction } = useObjectControls();
   const { account } = useAuth();
   const cache = useQueryClient();
   const admin = account?.role === "ADMIN",
     reviewer = account?.role !== "EMPLOYEE";
+  const canDeduct = admin || account?.role === "MANAGER";
+  const [section, setSection] = useState("requests");
   const [employee, setEmployee] = useState("");
-  const [status, setStatus] = useState("");
+  const [searchParams] = useSearchParams();
+  const [status, setStatus] = useState(searchParams.get("status") === "PENDING" ? "PENDING" : "");
   const [form, setForm] = useState<Form | null>(null);
   const [details, setDetails] = useState<LeaveRequest | null>(null);
   const people = useQuery({
@@ -97,14 +116,9 @@ export default function PTOPage() {
         }[]
       >(`/api/pto/requests/${details?.id}/history`, { signal }),
   });
-  const conflicts = useQuery({
-    queryKey: ["pto", "conflicts", details?.id],
-    enabled: !!details && details.status === "PENDING",
-    queryFn: ({ signal }) =>
-      api<{ shiftIds: number[] }>(
-        `/api/pto/requests/${details?.id}/conflicts`,
-        { signal },
-      ),
+  const ownBalances = useQuery({
+    queryKey: ["pto", "balances", own?.id], enabled: !!own && form?.title === "Request time off",
+    queryFn: ({ signal }) => api<Balance[]>(`/api/pto/balances/employees/${own?.id}`, { signal }),
   });
   const refresh = () =>
     Promise.all([
@@ -112,10 +126,15 @@ export default function PTOPage() {
       cache.invalidateQueries({ queryKey: ["schedule"] }),
       cache.invalidateQueries({ queryKey: ["work-dashboard"] }),
     ]);
-  function requestForm() {
+  function requestForm(initial: Record<string, string> = {}) {
     const key = crypto.randomUUID();
     setForm({
       title: "Request time off",
+      validate: v => {
+        const errors: Record<string, string> = {};
+        if (v.endDate < v.startDate) errors.endDate = "End date must be on or after start date.";
+        return errors;
+      },
       notice:
         "Hours are entered explicitly and reserved immediately. Approved date-based leave blocks assignments on the entire selected local dates. Paid leave is not included in gross-pay estimates yet.",
       fields: [
@@ -150,8 +169,9 @@ export default function PTOPage() {
           step: "0.25",
           required: true,
         },
+        { name: "reason", label: "Leave reason", required: true, maxLength: 500 },
       ],
-      initial: {},
+      initial,
       save: (v) =>
         send("/api/pto/requests", "POST", {
           ...v,
@@ -238,9 +258,11 @@ export default function PTOPage() {
   }
   function decision(r: LeaveRequest, decision: string) {
     setForm({
-      title: decision === "APPROVED" ? "Approve PTO" : "Reject PTO",
+      title: decision === "APPROVED" ? "Approve time off" : "Reject time off",
+      request: r,
+      summary: requestContext(r),
       notice:
-        "Approval checks for conflicting shift assignments. Cancel those assignments before approving.",
+        "Approval reserves the selected dates against new assignments. Review any conflicting assignments below before approving.",
       fields: [{ name: "comment", label: "Comment", maxLength: 500 }],
       initial: {},
       save: async (v) => {
@@ -256,20 +278,63 @@ export default function PTOPage() {
       },
     });
   }
+  function deduct() {
+    const key = crypto.randomUUID();
+    setForm({
+      title: "Deduct PTO",
+      notice: "Enter the hours to subtract from the employee’s available PTO. The deduction and your reason will appear in balance history.",
+      fields: [
+        { name: "employeeId", label: "Employee", required: true, options: (people.data ?? []).map(p => ({ value: String(p.id), label: p.name })) },
+        { name: "ptoTypeId", label: "Leave type", required: true, options: (types.data ?? []).map(t => ({ value: String(t.id), label: t.name })) },
+        { name: "hours", label: "Hours to deduct", type: "number", min: "0.25", step: "0.25", required: true },
+        { name: "reason", label: "Deduction reason", required: true, maxLength: 500 },
+      ],
+      initial: { employeeId: selected ? String(selected) : "" },
+      validate: v => {
+        const errors: Record<string, string> = {};
+        if (!Number.isFinite(Number(v.hours)) || Number(v.hours) <= 0) errors.hours = "Enter a positive number of hours to deduct.";
+        if (!v.reason?.trim()) errors.reason = "Enter a reason for this deduction.";
+        return errors;
+      },
+      save: async v => {
+        await send("/api/pto/balances/deduct", "POST", {
+          requestKey: key, employeeId: Number(v.employeeId), ptoTypeId: Number(v.ptoTypeId),
+          hours: Number(v.hours), reason: v.reason.trim(),
+        });
+        setEmployee(v.employeeId);
+      },
+    });
+  }
+  const requestContext = (r: LeaveRequest) => `${people.data?.find(p => p.id === r.employeeId)?.name ?? "Employee"} · ${r.ptoTypeName} · ${r.startDate} – ${r.endDate} · ${r.hours} hours`;
+  const cancelRequest = (r: LeaveRequest) => setForm({
+    title: 'Cancel time off', summary: requestContext(r),
+    fields: [{ name: 'reason', label: 'Reason', required: true, maxLength: 500 }],
+    initial: {},
+    save: v => send(`/api/pto/requests/${r.id}/cancel`, 'POST', { ...v, version: r.version }),
+  });
+  const requestActions = (r: LeaveRequest): ContextAction[] => objectActions({
+    copy: { kind: 'pto-request', label: `${r.ptoTypeName} request`, values: { ptoTypeId: String(r.ptoTypeId), startDate: r.startDate, endDate: r.endDate, hours: String(r.hours), reason: r.reason ?? '' } },
+    paste: { kind: 'pto-request', disabled: !types.data || !people.data, onPaste: requestForm },
+    editReason: 'Submitted requests cannot be edited. Cancel the request and create a new one.',
+    deleteReason: 'Use Cancel request on the card to retain request history.',
+    details: () => setDetails(r),
+  });
   return (
-    <Stack spacing={2}>
-      <Typography variant="h2">Paid Time Off</Typography>
+    <Stack spacing={3} {...contextMenu('Time off', [pasteAction({ kind: 'pto-request', disabled: !types.data || !people.data, onPaste: requestForm })])}>
+      <Typography variant="h2">Time off</Typography>
+      {admin && <Tabs value={section} onChange={(_, value) => setSection(value)} aria-label="Time-off sections"><Tab value="requests" label="Requests and balances" /><Tab value="settings" label="Leave administration" /></Tabs>}
       <Alert severity="info">
         PTO balances are allocated by an administrator. Gross-pay estimates
         include approved worked time only.
       </Alert>
-      <Stack direction="row" spacing={1}>
+      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
         {own && (
-          <Button variant="contained" onClick={requestForm}>
+          <Button variant="contained" disabled={!types.data || !people.data} onClick={() => requestForm()}>
             Request time off
           </Button>
         )}
-        {admin && (
+        {canDeduct && section === "requests" && <Button disabled={!types.data || !people.data} onClick={deduct}>Deduct PTO</Button>}
+        {admin && section === "settings" && (
           <>
             <Button onClick={adjust}>Adjust balance</Button>
             <Button onClick={() => typeForm()}>Create leave type</Button>
@@ -291,15 +356,15 @@ export default function PTOPage() {
           permitted management actions.
         </Alert>
       )}
-      <Stack direction="row" spacing={2}>
+      {section === "requests" && <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
         <TextField
           select
           label="Employee filter"
           value={employee}
           onChange={(e) => setEmployee(e.target.value)}
-          sx={{ minWidth: 230 }}
+          sx={{ minWidth: { xs: 0, sm: 230 }, width: { xs: "100%", sm: "auto" } }}
         >
-          <MenuItem value="">All permitted employees</MenuItem>
+          <MenuItem value="">All employees you can view</MenuItem>
           {people.data?.map((p) => (
             <MenuItem key={p.id} value={String(p.id)}>
               {p.name}
@@ -312,7 +377,7 @@ export default function PTOPage() {
           label="Request status"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          sx={{ minWidth: 190 }}
+          sx={{ minWidth: { xs: 0, sm: 190 }, width: { xs: "100%", sm: "auto" } }}
         >
           <MenuItem value="">All statuses</MenuItem>
           {[
@@ -328,8 +393,8 @@ export default function PTOPage() {
             </MenuItem>
           ))}
         </TextField>
-      </Stack>
-      {selected && (
+      </Stack>}
+      {section === "requests" && selected && (
         <Paper sx={{ p: 2 }}>
           <Stack spacing={1}>
             <Typography variant="h3">
@@ -356,18 +421,18 @@ export default function PTOPage() {
           </Stack>
         </Paper>
       )}
-      <QueryState
+      {section === "requests" && <QueryState
         loading={requests.isPending}
         error={requests.error}
         retry={requests.refetch}
-      />
-      {requests.data?.length === 0 && (
-        <Alert severity="info">No time-off requests match these filters.</Alert>
+      />}
+      {section === "requests" && requests.data?.length === 0 && (
+        <Alert severity="info">No time-off requests match these filters. <Button onClick={() => { setEmployee(""); setStatus(""); }}>Clear filters</Button></Alert>
       )}
-      {requests.data?.map((r) => (
-        <Paper key={r.id} sx={{ p: 2 }}>
+      {section === "requests" && requests.data?.map((r) => (
+        <Paper key={r.id} sx={{ p: 2 }} {...contextMenu(`${r.ptoTypeName} · ${r.startDate} – ${r.endDate}`, requestActions(r))}>
           <Stack spacing={1}>
-            <Stack direction="row" spacing={2}>
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
               <Typography variant="h3">
                 {people.data?.find((p) => p.id === r.employeeId)?.name ??
                   `Employee ${r.employeeId}`}{" "}
@@ -378,13 +443,14 @@ export default function PTOPage() {
             <Typography>
               {r.startDate} – {r.endDate} · {r.hours} hours
             </Typography>
+            {r.reason && <Typography>Leave reason: {r.reason}</Typography>}
             {r.comment && <Typography>{r.comment}</Typography>}
             {r.operationError && (
               <Alert severity={processing(r.status) ? "info" : "warning"}>
                 {r.operationError}
               </Alert>
             )}
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
               <Button
                 onClick={() => setDetails(details?.id === r.id ? null : r)}
               >
@@ -405,25 +471,7 @@ export default function PTOPage() {
               {["PENDING", "APPROVED"].includes(r.status) && (
                 <Button
                   color="error"
-                  onClick={() =>
-                    setForm({
-                      title: "Cancel PTO",
-                      fields: [
-                        {
-                          name: "reason",
-                          label: "Reason",
-                          required: true,
-                          maxLength: 500,
-                        },
-                      ],
-                      initial: {},
-                      save: (v) =>
-                        send(`/api/pto/requests/${r.id}/cancel`, "POST", {
-                          ...v,
-                          version: r.version,
-                        }),
-                    })
-                  }
+                  onClick={() => cancelRequest(r)}
                 >
                   Cancel request
                 </Button>
@@ -432,38 +480,19 @@ export default function PTOPage() {
           </Stack>
         </Paper>
       ))}
-      {details && (
-        <Paper sx={{ p: 2 }}>
-          <Stack spacing={1}>
-            <Typography variant="h3">Request {details.id} history</Typography>
-            <QueryState
-              loading={history.isPending}
-              error={history.error ?? conflicts.error}
-              retry={() => {
-                void history.refetch();
-                void conflicts.refetch();
-              }}
-            />
-            {conflicts.data && (
-              <Alert
-                severity={conflicts.data.shiftIds.length ? "warning" : "info"}
-              >
-                {conflicts.data.shiftIds.length
-                  ? `Conflicting shifts: ${conflicts.data.shiftIds.join(", ")}. Remove these assignments before approval.`
-                  : "No conflicting shift assignments."}
-              </Alert>
-            )}
-            {history.data?.map((h) => (
-              <Typography key={h.id}>
-                {h.action} · {h.reason} ·{" "}
-                {new Date(h.occurredAt).toLocaleString()}
-              </Typography>
-            ))}
-            <Button onClick={() => setDetails(null)}>Close history</Button>
-          </Stack>
-        </Paper>
-      )}
-      {selected && (
+      {details && <Dialog open fullWidth aria-labelledby="pto-history-title" onClose={() => setDetails(null)}>
+        <DialogTitle id="pto-history-title">Request history and conflicts</DialogTitle>
+        <DialogContent dividers><Stack spacing={2}>
+          <Typography>{requestContext(details)}</Typography>
+          {details.reason && <Typography>Leave reason: {details.reason}</Typography>}
+          <PtoConflictSummary request={details} />
+          <QueryState loading={history.isPending} error={history.error} retry={history.refetch} />
+          {history.data?.length === 0 && <Typography>No history recorded yet.</Typography>}
+          {history.data?.map(h => <Typography key={h.id}>{statusLabel(h.action)} · {h.reason || "No comment"} · {dateTime(h.occurredAt)} MT</Typography>)}
+        </Stack></DialogContent>
+        <DialogActions><Button onClick={() => setDetails(null)}>Close history</Button></DialogActions>
+      </Dialog>}
+      {section === "requests" && selected && (
         <Paper sx={{ p: 2 }}>
           <Typography variant="h3">Balance history</Typography>
           <QueryState
@@ -478,11 +507,11 @@ export default function PTOPage() {
           ))}
         </Paper>
       )}
-      {admin && (
+      {admin && section === "settings" && (
         <Paper sx={{ p: 2 }}>
           <Typography variant="h3">Leave types</Typography>
           {types.data?.map((t) => (
-            <Stack key={t.id} direction="row">
+            <Stack key={t.id} direction={{ xs: "column", sm: "row" }}>
               <Typography sx={{ flex: 1 }}>
                 {t.name} · {t.paid ? "Paid" : "Unpaid"}
               </Typography>
@@ -491,6 +520,7 @@ export default function PTOPage() {
                 onClick={() =>
                   setForm({
                     title: "Delete unused leave type",
+                    summary: t.name,
                     fields: [],
                     initial: {},
                     notice:
@@ -508,6 +538,27 @@ export default function PTOPage() {
       {form && (
         <FormDialog
           title={form.title}
+          submitLabel={form.title.startsWith("Edit") ? form.title.replace("Edit", "Save") : form.title}
+          pendingLabel="Submitting…"
+          submitColor={/^(Cancel|Delete|Reject|Deduct)/.test(form.title) ? "error" : "primary"}
+          cancelLabel={form.title === "Cancel time off" ? "Keep request" : "Cancel"}
+          successMessage={form.title === "Deduct PTO" ? "PTO deducted. The balance and history have been updated." : "Time-off action submitted. Check the request status for completion."}
+          summary={form.summary ? <Typography>{form.summary}</Typography> : undefined}
+          validate={v => {
+            const errors = { ...form.validate?.(v) };
+            if (form.title === "Request time off") {
+              const available = ownBalances.data?.find(b => b.ptoTypeId === Number(v.ptoTypeId))?.availableHours ?? 0;
+              if (!ownBalances.data) errors.hours = "Wait for your balance to load, or retry below.";
+              else if (Number(v.hours) > available) errors.hours = `Only ${available} hours are available for this leave type.`;
+            }
+            return errors;
+          }}
+          renderSummary={v => form.title === "Request time off" ? <Stack spacing={2}>
+            <QueryState loading={ownBalances.isPending} error={ownBalances.error} retry={ownBalances.refetch} />
+            {ownBalances.data && <Typography role="status">Available: {ownBalances.data.find(b => b.ptoTypeId === Number(v.ptoTypeId))?.availableHours ?? 0} hours · After this request: {Number(((ownBalances.data.find(b => b.ptoTypeId === Number(v.ptoTypeId))?.availableHours ?? 0) - (Number(v.hours) || 0)).toFixed(2))} hours</Typography>}
+            {v.startDate && v.endDate && <Typography>{v.startDate} – {v.endDate} · {v.hours || "0"} hours requested</Typography>}
+            <Typography variant="body2">Approved leave blocks assignments for the entire selected dates. Requested hours are entered manually; paid leave is excluded from pay estimates.</Typography>
+          </Stack> : form.title === "Deduct PTO" ? <PtoDeductionSummary employeeId={v.employeeId} ptoTypeId={v.ptoTypeId} hours={v.hours} /> : form.request && form.title.startsWith("Approve") ? <PtoConflictSummary request={form.request} /> : null}
           fields={form.fields}
           initial={form.initial}
           notice={form.notice}

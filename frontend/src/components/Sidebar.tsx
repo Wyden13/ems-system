@@ -1,3 +1,4 @@
+import { statusLabel } from "../api/workflows";
 import { useAuth } from "../auth/context";
 import {
   Avatar,
@@ -81,6 +82,7 @@ export default function Sidebar({
             fontSize: 14,
             fontWeight: 700,
             bgcolor: "primary.light",
+            color: "text.primary",
           }}
         >
           {account?.email.slice(0, 2).toUpperCase()}
@@ -97,7 +99,7 @@ export default function Sidebar({
             {account?.email}
           </Typography>
           <Typography variant="caption" color="text.secondary" noWrap>
-            {account?.role}
+            {account?.role ? statusLabel(account.role) : ""}
           </Typography>
         </Box>
       </Box>
@@ -156,6 +158,7 @@ export default function Sidebar({
                     <ListItemButton
                       component={NavLink}
                       to={path}
+                      aria-label={label}
                       selected={selected}
                       sx={{
                         mx: ITEM_INSET,
@@ -216,6 +219,7 @@ export default function Sidebar({
           navigating (AppLayout closes it on pathname change). */}
       <Drawer
         variant="temporary"
+        id={isMobile ? "main-navigation" : undefined}
         open={mobileOpen}
         onClose={onClose}
         ModalProps={{ keepMounted: true }}
@@ -237,6 +241,7 @@ export default function Sidebar({
           of the flex layout on mobile, so main gets the full viewport. */}
       <Drawer
         variant="permanent"
+        id={!isMobile ? "main-navigation" : undefined}
         sx={{
           display: { xs: "none", md: "block" },
           width,

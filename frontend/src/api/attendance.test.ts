@@ -6,6 +6,7 @@ import {
   parseTime,
   zonedInput,
   duration,
+  localTimeCandidates,
 } from "./attendance";
 describe("business time", () => {
   it("anchors periods using Edmonton dates", () => {
@@ -27,6 +28,13 @@ describe("business time", () => {
     );
     expect(() => parseTime("2026-03-08T02:30:00-07:00")).toThrow();
     expect(() => parseTime("2026-09-26T08:00:00")).toThrow();
+  });
+  it("resolves wall time without the device timezone and exposes DST choices", () => {
+    expect(localTimeCandidates("2026-09-26T08:00:17")).toEqual(["2026-09-26T08:00:17-06:00"]);
+    expect(localTimeCandidates("2026-11-01T01:30:00")).toEqual(["2026-11-01T01:30:00-06:00", "2026-11-01T01:30:00-07:00"]);
+    expect(localTimeCandidates("2026-03-08T02:30:00")).toEqual([]);
+    expect(localTimeCandidates("2026-02-30T09:00:00")).toEqual([]);
+    expect(localTimeCandidates("")).toEqual([]);
   });
   it("keeps seconds and supports multi-day durations", () => {
     expect(duration(90061)).toBe("25:01:01");

@@ -4,7 +4,13 @@ import {
   type APIRequestContext,
   type Page,
 } from "@playwright/test";
-import { currentPeriod, zonedInput, addDays, businessDate, midnight } from "../src/api/attendance";
+import {
+  currentPeriod,
+  zonedInput,
+  addDays,
+  businessDate,
+  midnight,
+} from "../src/api/attendance";
 const password = "IntegrationTest123!";
 async function token(request: APIRequestContext, email: string) {
   const csrf = await (await request.get("/api/v1/auth/csrf")).json();
@@ -97,7 +103,7 @@ test("clock, restore, review, correct, and calculate payroll with role isolation
   await login(page, employee.email);
   await page.getByRole("link", { name: "Attendance", exact: true }).click();
   await expect(page.getByText("Schedule miss percentage:")).toContainText(
-    "Not available",
+    "No completed shifts",
   );
   await page.getByRole("button", { name: "Clock In", exact: true }).click();
   await expect(
@@ -113,7 +119,7 @@ test("clock, restore, review, correct, and calculate payroll with role isolation
     page.getByRole("button", { name: "Clock In", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("cell", { name: "PENDING APPROVAL", exact: true }),
+    page.getByRole("cell", { name: "Awaiting approval", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Approve", exact: true }),
@@ -198,10 +204,10 @@ test("clock, restore, review, correct, and calculate payroll with role isolation
   await page.getByRole("button", { name: "Approve", exact: true }).click();
   await page
     .getByRole("dialog")
-    .getByRole("button", { name: "Save", exact: true })
+    .getByRole("button", { name: "Approve attendance", exact: true })
     .click();
   await expect(
-    page.getByRole("cell", { name: "APPROVED", exact: true }),
+    page.getByRole("cell", { name: "Approved", exact: true }),
   ).toBeVisible();
   const report = await (await ownPay()).json();
   expect(report.estimates).toHaveLength(1);
@@ -218,19 +224,19 @@ test("clock, restore, review, correct, and calculate payroll with role isolation
     .fill("Confirm audit and reset approval");
   await page
     .getByRole("dialog")
-    .getByRole("button", { name: "Save", exact: true })
+    .getByRole("button", { name: "Save correction", exact: true })
     .click();
   await expect(
-    page.getByRole("cell", { name: "PENDING APPROVAL", exact: true }),
+    page.getByRole("cell", { name: "Awaiting approval", exact: true }),
   ).toBeVisible();
   expect((await (await ownPay()).json()).estimates[0].approvedSeconds).toBe(0);
   await page.getByRole("button", { name: "Approve", exact: true }).click();
   await page
     .getByRole("dialog")
-    .getByRole("button", { name: "Save", exact: true })
+    .getByRole("button", { name: "Approve attendance", exact: true })
     .click();
   await expect(
-    page.getByRole("cell", { name: "APPROVED", exact: true }),
+    page.getByRole("cell", { name: "Approved", exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Sign out", exact: true }).click();
   await expect(
@@ -251,8 +257,10 @@ test("clock, restore, review, correct, and calculate payroll with role isolation
     { headers: auth(employee.token) },
   );
   expect(await score.json()).toMatchObject({
-    status: "UNAVAILABLE",
-    missPercentage: null,
+    status: "AVAILABLE",
+    expectedEvents: 0,
+    missedEvents: 0,
+    missPercentage: 0,
   });
   const deactivate = await request.post(
     `/api/employees/${employee.employee.id}/deactivate`,

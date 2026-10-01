@@ -12,6 +12,7 @@ import { Alert, Box, Button, CircularProgress } from "@mui/material";
 import AuthProvider from "./auth/AuthProvider";
 import { useAuth } from "./auth/context";
 import AppLayout from "./components/layout/AppLayout";
+import FeedbackProvider from "./components/feedback/FeedbackProvider";
 import LoginPage from "./pages/LoginPage";
 const ProfilePage=lazy(()=>import("./pages/ProfilePage"));
 const EmployeeManagementPage=lazy(()=>import("./pages/EmployeeManagementPage"));
@@ -70,7 +71,7 @@ function ApplicationRoutes() {
           <Route path="/organization" element={<OrganizationPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
         </Route>
-        <Route path="/dashboard" element={account.role === "ADMIN" ? <><AdminDashboard /><WorkDashboard /></> : <WorkDashboard />} />
+        <Route path="/dashboard" element={account.role === "ADMIN" ? <Box sx={{ display: "grid", gap: 3 }}><AdminDashboard /><WorkDashboard /></Box> : <WorkDashboard />} />
         <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/pto" element={<PTOPage />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -84,11 +85,11 @@ function ApplicationRoutes() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <FeedbackProvider><AuthProvider>
         <BrowserRouter>
           <ApplicationRoutes />
         </BrowserRouter>
-      </AuthProvider>
+      </AuthProvider></FeedbackProvider>
     </QueryClientProvider>
   );
 }

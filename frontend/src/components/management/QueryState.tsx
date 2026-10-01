@@ -1,4 +1,4 @@
-import { Alert, Button, LinearProgress } from "@mui/material";
+import { Alert, Button, LinearProgress, Box } from "@mui/material";
 export default function QueryState({
   loading,
   error,
@@ -8,7 +8,12 @@ export default function QueryState({
   error: Error | null;
   retry: () => unknown;
 }) {
-  if (loading) return <LinearProgress aria-label="Loading records" />;
+  if (loading)
+    return (
+      <Box sx={{ py: 2 }}>
+        <LinearProgress aria-label="Loading records" />
+      </Box>
+    );
   if (error)
     return (
       <Alert

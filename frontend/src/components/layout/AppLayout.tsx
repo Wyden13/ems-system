@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Box,
   Breadcrumbs,
@@ -11,6 +11,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import Topbar from "./Topbar";
 import { TOPBAR_HEIGHT, getNavLabel } from "./navigation";
+import WebsiteContextMenu from "../context-menu/WebsiteContextMenu";
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -26,6 +27,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const { pathname } = useLocation();
   const current = getNavLabel(pathname);
+  useEffect(() => {
+    document.title = `${current ?? "Dashboard"} | EMS`;
+  }, [current]);
 
   const mobileOpen = mobilePath === pathname;
 
@@ -38,48 +42,71 @@ export default function AppLayout({ children }: AppLayoutProps) {
   };
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      <Topbar onToggleSidebar={toggleSidebar} isMobile={isMobile} />
-      <Sidebar
-        collapsed={collapsed}
-        isMobile={isMobile}
-        mobileOpen={mobileOpen}
-        onClose={() => setMobilePath(null)}
-      />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          minWidth: 0,
-          bgcolor: "background.default",
-          pt: `${TOPBAR_HEIGHT}px`,
-        }}
-      >
-        <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
-          <Breadcrumbs
-            separator={<NavigateNextIcon fontSize="small" />}
-            sx={{ mb: 2, fontSize: 13 }}
-          >
-            <Link
-              component={RouterLink}
-              to="/dashboard"
-              underline="hover"
-              color="primary"
+    <WebsiteContextMenu>
+      <Box sx={{ display: "flex", minHeight: "100vh" }}>
+        <Link
+          href="#main-content"
+          sx={{
+            position: "fixed",
+            top: -100,
+            left: 16,
+            zIndex: 1600,
+            bgcolor: "background.paper",
+            p: 2,
+            "&:focus": { top: 8 },
+          }}
+        >
+          Skip to main content
+        </Link>
+        <Topbar
+          onToggleSidebar={toggleSidebar}
+          isMobile={isMobile}
+          navigationOpen={isMobile ? mobileOpen : !collapsed}
+        />
+        <Sidebar
+          collapsed={collapsed}
+          isMobile={isMobile}
+          mobileOpen={mobileOpen}
+          onClose={() => setMobilePath(null)}
+        />
+        <Box
+          component="main"
+          id="main-content"
+          tabIndex={-1}
+          sx={{
+            flexGrow: 1,
+            scrollMarginTop: `${TOPBAR_HEIGHT + 16}px`,
+            minWidth: 0,
+            bgcolor: "background.default",
+            pt: `${TOPBAR_HEIGHT}px`,
+          }}
+        >
+          <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              sx={{ mb: 2, fontSize: 13 }}
             >
-              Home
-            </Link>
-            {current && (
-              <Typography
-                color="text.primary"
-                sx={{ fontSize: 13, fontWeight: 600 }}
+              <Link
+                component={RouterLink}
+                to="/dashboard"
+                underline="hover"
+                color="primary"
               >
-                {current}
-              </Typography>
-            )}
-          </Breadcrumbs>
-          {children}
+                Home
+              </Link>
+              {current && (
+                <Typography
+                  color="text.primary"
+                  sx={{ fontSize: 13, fontWeight: 600 }}
+                >
+                  {current}
+                </Typography>
+              )}
+            </Breadcrumbs>
+            {children}
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </WebsiteContextMenu>
   );
 }

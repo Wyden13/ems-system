@@ -19,40 +19,42 @@ import {
 import { api, params, send } from "../api/client";
 import {
   roles,
-  type Account,
   type Department,
   type Employee,
   type Page,
 } from "../api/types";
 import FormDialog, { type Field } from "../components/management/FormDialog";
+import useDebouncedValue from "../hooks/useDebouncedValue";
+import { useAuth } from "../auth/context";
+import { statusLabel } from "../api/workflows";
+import { businessDate, addDays } from "../api/attendance";
 import QueryState from "../components/management/QueryState";
-async function accountOptions(signal: AbortSignal) {
-  const accounts: Account[] = [];
-  for (let page = 0; ; page++) {
-    const result = await api<Page<Account>>(
-      `/api/v1/admin/accounts?page=${page}&size=100`,
-      { signal },
-    );
-    accounts.push(...result.content);
-    if (page + 1 >= result.totalPages) return accounts;
-  }
-}
+import { useObjectContextMenu } from "../components/context-menu/context";
+import { useObjectControls } from "../components/context-menu/objectControls";
 export default function EmployeeManagementPage() {
+  const contextMenu = useObjectContextMenu();
+  const { objectActions, pasteAction } = useObjectControls();
   const cache = useQueryClient();
+  const { account } = useAuth();
   const [search, setSearch] = useState("");
+  const term = useDebouncedValue(search);
+  const [jobTitle, setJobTitle] = useState("");
+  const jobTitleTerm = useDebouncedValue(jobTitle.trim());
   const [active, setActive] = useState("");
   const [department, setDepartment] = useState("");
   const [page, setPage] = useState(0);
   const [form, setForm] = useState<{
     employee?: Employee;
     readonly?: boolean;
+    initial?: Record<string, string>;
   } | null>(null);
   const [activation, setActivation] = useState<Employee | null>(null);
-  const employees = useQuery({
-    queryKey: ["employees", search, active, department, page],
+  const employees = useQuery<Page<Employee>>({
+    placeholderData: (previous, query) => query?.queryKey[1] === account?.id && query?.queryKey[2] === account?.role ? previous : undefined,
+    queryKey: ["employees", account?.id, account?.role, term, active, department, jobTitleTerm, page],
     queryFn: ({ signal }) =>
       api<Page<Employee>>(
-        `/api/employees?${params({ search, active, departmentId: department, page, size: 20 })}`,
+        `/api/employees?${params({ search: term, active, departmentId: department, jobTitle: jobTitleTerm, page, size: 20 })}`,
         { signal },
       ),
   });
@@ -60,23 +62,9 @@ export default function EmployeeManagementPage() {
     queryKey: ["departments"],
     queryFn: ({ signal }) => api<Department[]>("/api/departments", { signal }),
   });
-  const accounts = useQuery({
-    queryKey: ["account-options"],
-    queryFn: ({ signal }) => accountOptions(signal),
-    enabled: form !== null,
-  });
-  const today = new Date().toLocaleDateString("en-CA");
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  const today = businessDate();
+  const yesterday = addDays(today, -1);
   const fields: Field[] = [
-    {
-      name: "employeeNumber",
-      label: "Employee number",
-      disabled: true,
-      helper: form?.employee
-        ? undefined
-        : "Assigned in creation order when you save.",
-    },
     { name: "firstName", label: "First name", required: true, maxLength: 50 },
     { name: "lastName", label: "Last name", required: true, maxLength: 50 },
     {
@@ -105,7 +93,7 @@ export default function EmployeeManagementPage() {
       name: "role",
       label: "Workforce role",
       required: true,
-      options: roles.map((value) => ({ value, label: value })),
+      options: roles.map((value) => ({ value, label: statusLabel(value) })),
       helper: "This does not change login permissions.",
     },
     {
@@ -117,7 +105,7 @@ export default function EmployeeManagementPage() {
     },
     {
       name: "payRate",
-      label: "Pay rate",
+      label: "Hourly pay (CAD)",
       type: "number",
       min: "0",
       step: "0.01",
@@ -129,38 +117,41 @@ export default function EmployeeManagementPage() {
       name: "birthDate",
       label: "Birth date",
       type: "date",
-      max: yesterday.toLocaleDateString("en-CA"),
+      max: yesterday,
     },
     {
       name: "userAccountId",
       label: "Linked login account",
-      options: [
-        { value: "", label: "No linked account" },
-        ...(accounts.data ?? []).map((a) => ({
-          value: a.id,
-          label: `${a.email} (${a.role}, ${a.status})`,
-        })),
-      ],
+      type: "account",
       helper:
-        "Required for personal attendance, scheduling and PTO access. Employee activation and account status are managed separately.",
+        "Link a login account so this employee can use attendance, schedule and time off. Employee status and login access are managed separately.",
     },
-  ];
+  ].map(field => ({ ...field, section: ["firstName", "lastName", "email"].includes(field.name) ? "Identity" : field.name === "userAccountId" ? "Login access" : ["phoneNumber", "address", "birthDate"].includes(field.name) ? "Optional personal details" : "Employment", optionalSection: ["phoneNumber", "address", "birthDate"].includes(field.name) })) as Field[];
   async function invalidate() {
     await Promise.all([
       cache.invalidateQueries({ queryKey: ["employees"] }),
       cache.invalidateQueries({ queryKey: ["employee-summary"] }),
     ]);
   }
+  const pasteEmployee = (values: Record<string, string>) => setForm({ initial: {
+    ...Object.fromEntries(fields.filter(f => f.name !== 'userAccountId').map(f => [f.name, values[f.name] ?? ''])),
+    role: values.role || 'EMPLOYEE', email: '', userAccountId: '',
+  } });
+  const employeeTemplate = (employee: Employee) => Object.fromEntries(fields.filter(f => f.name !== 'userAccountId').map(f => {
+    const value = employee[f.name as keyof Employee];
+    return [f.name, value == null ? '' : String(value)];
+  }));
+  const clearFilters = () => { setSearch(""); setActive(""); setDepartment(""); setJobTitle(""); setPage(0); };
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }} {...contextMenu('Employees', [pasteAction({ kind: 'employee', onPaste: pasteEmployee })])}>
       <Stack spacing={2}>
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ justifyContent: "space-between" }}>
           <Typography variant="h2">Employees</Typography>
           <Button variant="contained" onClick={() => setForm({})}>
-            Add Employee
+            Add employee
           </Button>
         </Stack>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} useFlexGap sx={{ flexWrap: "wrap" }}>
           <TextField
             size="small"
             label="Search employees"
@@ -169,6 +160,15 @@ export default function EmployeeManagementPage() {
               setSearch(e.target.value);
               setPage(0);
             }}
+          />
+          <TextField
+            size="small"
+            label="Job title filter"
+            placeholder="e.g. Technician"
+            value={jobTitle}
+            onChange={(e) => { setJobTitle(e.target.value); setPage(0); }}
+            slotProps={{ htmlInput: { maxLength: 100 } }}
+            sx={{ minWidth: 180 }}
           />
           <TextField
             size="small"
@@ -204,7 +204,9 @@ export default function EmployeeManagementPage() {
               </MenuItem>
             ))}
           </TextField>
+          {(search || active || department || jobTitle) && <Button onClick={clearFilters}>Clear filters</Button>}
         </Stack>
+        {(employees.isFetching && !employees.isPending || search !== term || jobTitle.trim() !== jobTitleTerm) && <Typography role="status" variant="body2">Updating employees…</Typography>}
         <QueryState
           loading={employees.isPending || departments.isPending}
           error={employees.error || departments.error}
@@ -214,13 +216,14 @@ export default function EmployeeManagementPage() {
           }}
         />
         {!employees.isError && (
-          <TableContainer>
-            <Table>
+          <TableContainer tabIndex={0} role="region" aria-label="Employee records — scroll horizontally for more columns">
+            <Table aria-label="Employees">
               <TableHead>
                 <TableRow>
                   {[
                     "Number",
                     "Name",
+                    "Job title",
                     "Department",
                     "Email",
                     "Status",
@@ -232,7 +235,12 @@ export default function EmployeeManagementPage() {
               </TableHead>
               <TableBody>
                 {employees.data?.content.map((employee) => (
-                  <TableRow key={employee.id}>
+                  <TableRow key={employee.id} {...contextMenu(`${employee.firstName} ${employee.lastName}`, objectActions({
+                    copy: { kind: 'employee', label: `${employee.firstName} ${employee.lastName}`, values: employeeTemplate(employee) },
+                    paste: { kind: 'employee', onPaste: pasteEmployee },
+                    edit: () => setForm({ employee }), details: () => setForm({ employee, readonly: true }),
+                    deleteReason: 'Employee records can be deactivated using the row controls.',
+                  }))}>
                     <TableCell>{employee.employeeNumber}</TableCell>
                     <TableCell>
                       <Button
@@ -240,10 +248,8 @@ export default function EmployeeManagementPage() {
                       >
                         {employee.firstName} {employee.lastName}
                       </Button>
-                      <Typography variant="caption" sx={{ display: "block" }}>
-                        {employee.jobTitle}
-                      </Typography>
                     </TableCell>
+                    <TableCell>{employee.jobTitle?.trim() || "—"}</TableCell>
                     <TableCell>
                       {departments.data?.find(
                         (d) => d.id === employee.departmentId,
@@ -265,7 +271,7 @@ export default function EmployeeManagementPage() {
                 ))}
                 {employees.data?.content.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6}>
+                    <TableCell colSpan={7}>
                       No employees match your filters.
                     </TableCell>
                   </TableRow>
@@ -284,15 +290,14 @@ export default function EmployeeManagementPage() {
         />
       </Stack>
       {form &&
-        (accounts.isPending || departments.isPending ? (
+        (departments.isPending ? (
           <Alert severity="info">Loading form options…</Alert>
-        ) : accounts.error || departments.error ? (
+        ) : departments.error ? (
           <Alert
             severity="error"
             action={
               <Button
                 onClick={() => {
-                  void accounts.refetch();
                   void departments.refetch();
                 }}
               >
@@ -310,9 +315,15 @@ export default function EmployeeManagementPage() {
                 ? "Employee details"
                 : form.employee
                   ? "Edit employee"
-                  : "Add Employee"
+                  : "Add employee"
             }
+            grouped
+            submitLabel={form.employee ? "Save employee" : "Create employee"}
+            pendingLabel={form.employee ? "Saving employee…" : "Creating employee…"}
+            successMessage={form.employee ? "Employee updated." : "Employee created."}
+            summary={<Typography variant="body2">{form.employee ? `Employee number: ${form.employee.employeeNumber}` : "Employee number is assigned automatically. Create a login under Accounts first, then link it below if personal access is needed."}</Typography>}
             fields={fields}
+            notice={form.initial ? 'Review the copied details and enter a unique email. The new employee will receive a new number and has no linked login.' : undefined}
             initial={
               form.employee
                 ? Object.fromEntries(
@@ -321,7 +332,7 @@ export default function EmployeeManagementPage() {
                       value == null ? "" : String(value),
                     ]),
                   )
-                : { role: "EMPLOYEE", employeeNumber: "Assigned automatically" }
+                : { role: "EMPLOYEE", employeeNumber: "Assigned automatically", ...form.initial }
             }
             onClose={() => setForm(null)}
             onSave={
@@ -348,6 +359,10 @@ export default function EmployeeManagementPage() {
       {activation && (
         <FormDialog
           title={`${activation.active ? "Deactivate" : "Activate"} employee`}
+          submitLabel={`${activation.active ? "Deactivate" : "Activate"} employee`}
+          submitColor={activation.active ? "error" : "primary"}
+          summary={<Typography>{activation.firstName} {activation.lastName} · {activation.employeeNumber}</Typography>}
+          successMessage={`Employee ${activation.active ? "deactivated" : "activated"}.`}
           fields={[]}
           initial={{}}
           notice="This changes the employee record only. The linked login account status stays unchanged."

@@ -14,6 +14,16 @@ export interface AttendanceState {
   employeeId: number;
   todaySeconds: number;
 }
+export interface CurrentAttendance {
+  serverTime: string;
+  employees: {
+    entryId: number;
+    employeeId: number;
+    name: string;
+    employeeNumber: string;
+    clockIn: string;
+  }[];
+}
 export interface Person {
   id: number;
   name: string;
@@ -103,13 +113,29 @@ export function parseTime(value: string) {
     !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(value) ||
     !Number.isFinite(Date.parse(value))
   )
-    throw new Error("Use YYYY-MM-DDTHH:mm:ss-06:00 (MDT) or -07:00 (MST).");
+    throw new Error(
+      "Choose a valid Mountain Time date and time. If this time occurs twice, select its occurrence.",
+    );
   const iso = new Date(value).toISOString();
   if (zonedInput(iso) !== value)
     throw new Error(
       "Use the valid Mountain Time offset for this date: -06:00 for MDT or -07:00 for MST.",
     );
   return iso;
+}
+/** Resolve Edmonton wall time by round-tripping candidates through the IANA zone.
+ * A gap has no candidates; the autumn repeated hour has two. */
+export function localTimeCandidates(value: string) {
+  const wall = value.slice(0, 19);
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(wall)) return [];
+  return ["-06:00", "-07:00"].flatMap((offset) => {
+    const candidate = `${wall}${offset}`;
+    const time = Date.parse(candidate);
+    return Number.isFinite(time) &&
+      zonedInput(new Date(time).toISOString()) === candidate
+      ? [candidate]
+      : [];
+  });
 }
 // Midnight never falls within Edmonton's DST transition gap or repeated hour.
 export function midnight(day: string) {

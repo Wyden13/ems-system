@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -11,13 +11,14 @@ import {
 import { useAuth } from "../auth/context";
 export default function LoginPage() {
   const { signIn } = useAuth();
+  useEffect(() => { document.title = "Sign in | EMS"; }, []);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   return (
     <Box
       sx={{ minHeight: "100vh", display: "grid", placeItems: "center", p: 2 }}
     >
-      <Paper sx={{ p: 4, width: "100%", maxWidth: 420 }}>
+      <Paper sx={{ p: { xs: 3, sm: 4 }, width: "100%", maxWidth: 420 }}>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -58,6 +59,7 @@ export default function LoginPage() {
             <Button type="submit" variant="contained" disabled={pending}>
               {pending ? "Signing in…" : "Sign in"}
             </Button>
+            <Typography variant="body2" color="text.secondary">Forgot your password or need access? Contact your EMS administrator for help.</Typography>
           </Stack>
         </form>
       </Paper>

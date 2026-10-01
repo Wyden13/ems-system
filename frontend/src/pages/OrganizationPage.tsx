@@ -7,6 +7,7 @@ import {
   Tab,
   Tabs,
   Table,
+  TableContainer,
   TableHead,
   TableBody,
   TableRow,
@@ -17,18 +18,24 @@ import { api, send } from "../api/client";
 import type { Department, Location } from "../api/types";
 import FormDialog from "../components/management/FormDialog";
 import QueryState from "../components/management/QueryState";
+import { useObjectContextMenu } from "../components/context-menu/context";
+import { useObjectControls } from "../components/context-menu/objectControls";
 export default function OrganizationPage() {
+  const contextMenu = useObjectContextMenu();
+  const { objectActions, pasteAction, showDetails } = useObjectControls();
   const cache = useQueryClient();
   const [tab, setTab] = useState(0);
   const [form, setForm] = useState<{
     kind: "location" | "department";
     record?: Department | Location;
+    initial?: Record<string, string>;
   } | null>(null);
   const [action, setAction] = useState<{
     title: string;
     path: string;
     method: string;
     notice: string;
+    target: string;
   } | null>(null);
   const locations = useQuery({
     queryKey: ["locations"],
@@ -45,7 +52,9 @@ export default function OrganizationPage() {
     ]);
   }
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }} {...contextMenu(tab === 0 ? 'Departments' : 'Locations', [
+      pasteAction({ kind: tab === 0 ? 'department' : 'location', onPaste: values => setForm({ kind: tab === 0 ? 'department' : 'location', initial: values }) }),
+    ])}>
       <Stack spacing={2}>
         <Typography variant="h2">Organization</Typography>
         <Tabs value={tab} onChange={(_, value) => setTab(value)}>
@@ -70,7 +79,7 @@ export default function OrganizationPage() {
             void departments.refetch();
           }}
         />
-        <Table>
+        <TableContainer tabIndex={0} role="region" aria-label="Organization records — scroll horizontally for more columns"><Table aria-label={tab === 0 ? "Departments" : "Locations"}>
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -86,7 +95,13 @@ export default function OrganizationPage() {
           <TableBody>
             {tab === 0
               ? departments.data?.map((d) => (
-                  <TableRow key={d.id}>
+                  <TableRow key={d.id} {...contextMenu(d.name, objectActions({
+                    copy: { kind: 'department', label: d.name, values: { name: d.name, locationId: String(d.locationId) } },
+                    paste: { kind: 'department', onPaste: values => setForm({ kind: 'department', initial: values }) },
+                    edit: () => setForm({ kind: 'department', record: d }),
+                    deleteReason: 'Departments can be archived using the row controls.',
+                    details: () => showDetails('Department details', { name: d.name, location: d.locationName, status: d.archived ? 'Archived' : 'Active' }),
+                  }))}>
                     <TableCell>{d.name}</TableCell>
                     <TableCell>{d.locationName}</TableCell>
                     <TableCell>{d.archived ? "Archived" : "Active"}</TableCell>
@@ -104,6 +119,7 @@ export default function OrganizationPage() {
                             title: `${d.archived ? "Restore" : "Archive"} department`,
                             path: `/api/departments/${d.id}/${d.archived ? "restore" : "archive"}`,
                             method: "POST",
+                            target: d.name,
                             notice:
                               "Existing employee records keep their department. Archived departments cannot be selected for new assignments.",
                           })
@@ -115,7 +131,13 @@ export default function OrganizationPage() {
                   </TableRow>
                 ))
               : locations.data?.map((location) => (
-                  <TableRow key={location.id}>
+                  <TableRow key={location.id} {...contextMenu(location.name, objectActions({
+                    copy: { kind: 'location', label: location.name, values: { name: location.name } },
+                    paste: { kind: 'location', onPaste: values => setForm({ kind: 'location', initial: values }) },
+                    edit: () => setForm({ kind: 'location', record: location }),
+                    delete: () => setAction({ title: 'Delete location', path: `/api/locations/${location.id}`, method: 'DELETE', target: location.name,
+                      notice: 'Deletion is blocked if any active or archived department still references this location.' }) },
+                  ))}>
                     <TableCell>{location.name}</TableCell>
                     <TableCell>
                       <Button
@@ -132,6 +154,7 @@ export default function OrganizationPage() {
                             title: "Delete location",
                             path: `/api/locations/${location.id}`,
                             method: "DELETE",
+                            target: location.name,
                             notice:
                               "Deletion is blocked if any active or archived department still references this location.",
                           })
@@ -145,15 +168,16 @@ export default function OrganizationPage() {
             {(tab === 0 ? departments.data : locations.data)?.length === 0 && (
               <TableRow>
                 <TableCell colSpan={4}>
-                  No {tab === 0 ? "departments" : "locations"} yet.
+                  No {tab === 0 ? "departments" : "locations"} yet. {tab === 0 && "Create a location first, then add a department."}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </Table></TableContainer>
       </Stack>
       {form && (
         <FormDialog
+          submitLabel={`${form.record ? "Save" : "Create"} ${form.kind}`}
           title={`${form.record ? "Edit" : "Add"} ${form.kind}`}
           fields={[
             { name: "name", label: "Name", required: true, maxLength: 100 },
@@ -183,7 +207,7 @@ export default function OrganizationPage() {
                       ? String(form.record.locationId)
                       : "",
                 }
-              : {}
+              : form.initial ?? {}
           }
           onClose={() => setForm(null)}
           onSave={async (values) => {
@@ -204,6 +228,9 @@ export default function OrganizationPage() {
       {action && (
         <FormDialog
           title={action.title}
+          submitLabel={action.title}
+          submitColor={action.title.startsWith("Delete") || action.title.startsWith("Archive") ? "error" : "primary"}
+          summary={<Typography>{action.target}</Typography>}
           notice={action.notice}
           fields={[]}
           initial={{}}

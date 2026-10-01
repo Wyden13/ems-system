@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Alert,
   Box,
   Button,
-  Chip,
   CircularProgress,
   Dialog,
   DialogContent,
@@ -20,11 +19,12 @@ import {
   TableRow,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import { api, params, send } from "../api/client";
 import {
   addDays,
-  businessDate,
   currentPeriod,
   dateTime,
   duration,
@@ -32,15 +32,18 @@ import {
   parseTime,
   zonedInput,
 } from "../api/attendance";
-import type {
-  AttendanceState,
-  Person,
-  Score,
-  TimeEntry,
-} from "../api/attendance";
+import type { Person, Score, TimeEntry } from "../api/attendance";
 import { useAuth } from "../auth/context";
+import useAttendanceClock from "../hooks/useAttendanceClock";
+import { AttendanceClockPanel } from "../components/management/AttendanceClockPanel";
+import { statusLabel } from "../api/workflows";
 import PeriodPicker from "../components/management/PeriodPicker";
 import FormDialog from "../components/management/FormDialog";
+import {
+  useObjectContextMenu,
+  type ContextAction,
+} from "../components/context-menu/context";
+import { useObjectControls } from "../components/context-menu/objectControls";
 function AuditDialog({
   entry,
   onClose,
@@ -106,25 +109,29 @@ function AuditDialog({
   );
 }
 export default function AttendancePage() {
+  const contextMenu = useObjectContextMenu();
+  const { objectActions } = useObjectControls();
   const { account } = useAuth();
   const queryClient = useQueryClient();
   const manages = account?.role === "MANAGER" || account?.role === "ADMIN";
   const [period, setPeriod] = useState(() => currentPeriod());
   const [selected, setSelected] = useState("");
-  const [status, setStatus] = useState("");
-  const [tick, setTick] = useState(() => Date.now());
+  const [searchParams] = useSearchParams();
+  const [status, setStatus] = useState(
+    ["OPEN", "PENDING_APPROVAL", "APPROVED", "REJECTED"].includes(
+      searchParams.get("status") ?? "",
+    )
+      ? searchParams.get("status")!
+      : "",
+  );
+  const clock = useAttendanceClock();
+  const serverNow = clock.serverNow;
+  const mobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [form, setForm] = useState<{
     entry: TimeEntry;
     action: "approve" | "reject" | "adjust";
   } | null>(null);
   const [history, setHistory] = useState<TimeEntry | null>(null);
-  const requestId = useRef<string | null>(null);
-  const state = useQuery({
-    queryKey: ["attendance", "state"],
-    queryFn: ({ signal }) => api<AttendanceState>("/api/time-entries/state", { signal }),
-    enabled: account?.role !== "ADMIN",
-    refetchInterval: 30000,
-  });
   const people = useQuery({
     queryKey: ["attendance", "people"],
     queryFn: () => api<Person[]>("/api/time-entries/people"),
@@ -156,55 +163,51 @@ export default function AttendancePage() {
       queryClient.invalidateQueries({ queryKey: ["payroll"] }),
     ]);
   };
-  const clockAction = useMutation({
-    mutationFn: async () => {
-      if (state.data?.active)
-        return send<TimeEntry>("/api/time-entries/clock-out", "POST", {
-          entryId: state.data.active.id,
-        });
-      requestId.current ??= crypto.randomUUID();
-      return send<TimeEntry>("/api/time-entries/clock-in", "POST", {
-        requestId: requestId.current,
-      });
-    },
-    onSuccess: async () => {
-      requestId.current = null;
-      await invalidate();
-    },
-    onError: () => {
-      void invalidate();
-    },
-  });
-  useEffect(() => {
-    const timer = setInterval(() => setTick(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-  const serverNow = state.data
-    ? Date.parse(state.data.serverTime) +
-      Math.max(0, tick - state.dataUpdatedAt)
-    : tick;
-  const today = businessDate(new Date(serverNow));
-  const stateDay = state.data
-    ? businessDate(new Date(state.data.serverTime))
-    : today;
-  useEffect(() => {
-    if (stateDay !== today)
-      void queryClient.invalidateQueries({ queryKey: ["attendance", "state"] });
-  }, [today, stateDay, queryClient]);
-  const elapsed = state.data?.active
-    ? Math.max(0, (serverNow - Date.parse(state.data.active.clockIn)) / 1000)
-    : 0;
-  const todaySeconds = state.data
-    ? stateDay === today
-      ? state.data.todaySeconds +
-        (state.data.active
-          ? Math.max(0, (serverNow - Date.parse(state.data.serverTime)) / 1000)
-          : 0)
-      : Math.min(
-          elapsed,
-          Math.max(0, (serverNow - Date.parse(midnight(today))) / 1000),
-        )
-    : 0;
+  const entryActions = (entry: TimeEntry): ContextAction[] =>
+    objectActions({
+      copy: {
+        kind: "attendance",
+        label: `attendance ${dateTime(entry.clockIn)}`,
+        values: {
+          clockIn: entry.clockIn,
+          clockOut: entry.clockOut ?? "",
+          status: statusLabel(entry.status),
+        },
+      },
+      edit:
+        manages && !person?.self
+          ? () => setForm({ entry, action: "adjust" })
+          : undefined,
+      editReason: "Only managers can correct another employee’s attendance.",
+      deleteReason:
+        "Attendance history is retained. Use Edit to make an audited correction.",
+      details: () => setHistory(entry),
+    });
+  const recordActions = (entry: TimeEntry) => (
+    <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
+      <Button onClick={() => setHistory(entry)}>History</Button>
+      {manages && !person?.self && (
+        <>
+          {entry.status === "PENDING_APPROVAL" && (
+            <>
+              <Button onClick={() => setForm({ entry, action: "approve" })}>
+                Approve
+              </Button>
+              <Button
+                color="error"
+                onClick={() => setForm({ entry, action: "reject" })}
+              >
+                Reject
+              </Button>
+            </>
+          )}
+          <Button onClick={() => setForm({ entry, action: "adjust" })}>
+            Correct
+          </Button>
+        </>
+      )}
+    </Stack>
+  );
   return (
     <Stack spacing={3}>
       <Box>
@@ -214,65 +217,15 @@ export default function AttendancePage() {
         </Typography>
       </Box>
       {account?.role !== "ADMIN" && (
-        <Paper sx={{ p: 3 }}>
-          <Stack spacing={2}>
-            {state.isPending && (
-              <CircularProgress aria-label="Loading clock status" />
-            )}
-            {state.error && (
-              <Alert
-                severity="error"
-                action={
-                  <Button onClick={() => void state.refetch()}>Retry</Button>
-                }
-              >
-                {state.error.message}
-              </Alert>
-            )}
-            {state.data && (
-              <>
-                <Chip
-                  sx={{ alignSelf: "flex-start" }}
-                  color={state.data.active ? "success" : "default"}
-                  label={state.data.active ? "Clocked in" : "Clocked out"}
-                />
-                <Typography variant="h3" aria-label="Session duration">
-                  {duration(elapsed)}
-                </Typography>
-                <Typography>
-                  Today’s recorded time: {duration(todaySeconds)}
-                </Typography>
-                {state.data.active && (
-                  <Typography>
-                    Clocked in {dateTime(state.data.active.clockIn)}
-                  </Typography>
-                )}
-                <Button
-                  variant="contained"
-                  size="large"
-                  sx={{ alignSelf: "flex-start" }}
-                  disabled={clockAction.isPending || state.isFetching}
-                  onClick={() => clockAction.mutate()}
-                >
-                  {clockAction.isPending
-                    ? "Saving…"
-                    : state.data.active
-                      ? "Clock Out"
-                      : "Clock In"}
-                </Button>
-              </>
-            )}
-            {clockAction.error && (
-              <Alert severity="error">{clockAction.error.message}</Alert>
-            )}
-          </Stack>
+        <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+          <AttendanceClockPanel clock={clock} />
         </Paper>
       )}
       <Alert severity="info">
-        Scheduled break deductions and attendance scoring are deferred. No scheduled break deduction is
-        applied. Completed time must be approved before it appears in payroll.
+        No unpaid break deduction is applied. Completed time must be approved
+        before it appears in payroll estimates.
       </Alert>
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={2}>
           <Typography variant="h3">Attendance records</Typography>
           <PeriodPicker start={period} onChange={setPeriod} />
@@ -303,7 +256,7 @@ export default function AttendancePage() {
               {["", "OPEN", "PENDING_APPROVAL", "APPROVED", "REJECTED"].map(
                 (s) => (
                   <MenuItem key={s} value={s}>
-                    {s ? s.replaceAll("_", " ") : "All statuses"}
+                    {s ? statusLabel(s) : "All statuses"}
                   </MenuItem>
                 ),
               )}
@@ -327,8 +280,12 @@ export default function AttendancePage() {
               <Typography>
                 Schedule miss percentage:{" "}
                 <strong>
-                  {score.data.missPercentage === null
-                    ? "Not available"
+                  {score.data.status !== "AVAILABLE" ||
+                  score.data.missPercentage === null ||
+                  score.data.expectedEvents === 0
+                    ? score.data.expectedEvents === 0
+                      ? "No completed shifts"
+                      : "Not available"
                     : `${score.data.missPercentage}%`}
                 </strong>
               </Typography>
@@ -351,91 +308,99 @@ export default function AttendancePage() {
               {rows.error.message}
             </Alert>
           )}
-          {rows.data && (
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {[
-                      "Clock in (MT)",
-                      "Clock out (MT)",
-                      "Recorded time",
-                      "Status",
-                      "Actions",
-                    ].map((h) => (
-                      <TableCell key={h}>{h}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.data.map((entry) => (
-                    <TableRow key={entry.id}>
-                      <TableCell>{dateTime(entry.clockIn)}</TableCell>
-                      <TableCell>
+          {rows.data &&
+            (mobile ? (
+              <Stack spacing={2}>
+                {rows.data.length === 0 && (
+                  <Typography>No attendance entries in this period.</Typography>
+                )}
+                {rows.data.map((entry) => (
+                  <Paper
+                    key={entry.id}
+                    variant="outlined"
+                    sx={{ p: 2 }}
+                    {...contextMenu(
+                      `Attendance · ${dateTime(entry.clockIn)}`,
+                      entryActions(entry),
+                    )}
+                  >
+                    <Stack spacing={1}>
+                      <Typography variant="subtitle2">
+                        {dateTime(entry.clockIn)} MT
+                      </Typography>
+                      <Typography>
+                        Clock out:{" "}
                         {entry.clockOut
                           ? dateTime(entry.clockOut)
                           : "Still clocked in"}
-                      </TableCell>
-                      <TableCell>
+                      </Typography>
+                      <Typography>
+                        Recorded:{" "}
                         {entry.clockOut
                           ? duration(entry.workedSeconds)
-                          : "In progress"}
-                      </TableCell>
-                      <TableCell>{entry.status.replaceAll("_", " ")}</TableCell>
-                      <TableCell>
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          sx={{ flexWrap: "wrap" }}
-                        >
-                          <Button onClick={() => setHistory(entry)}>
-                            History
-                          </Button>
-                          {manages && !person?.self && (
-                            <>
-                              {entry.status === "PENDING_APPROVAL" && (
-                                <>
-                                  <Button
-                                    onClick={() =>
-                                      setForm({ entry, action: "approve" })
-                                    }
-                                  >
-                                    Approve
-                                  </Button>
-                                  <Button
-                                    color="error"
-                                    onClick={() =>
-                                      setForm({ entry, action: "reject" })
-                                    }
-                                  >
-                                    Reject
-                                  </Button>
-                                </>
-                              )}
-                              <Button
-                                onClick={() =>
-                                  setForm({ entry, action: "adjust" })
-                                }
-                              >
-                                Correct
-                              </Button>
-                            </>
-                          )}
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {rows.data.length === 0 && (
+                          : "In progress"}{" "}
+                        · {statusLabel(entry.status)}
+                      </Typography>
+                      {recordActions(entry)}
+                    </Stack>
+                  </Paper>
+                ))}
+              </Stack>
+            ) : (
+              <TableContainer
+                tabIndex={0}
+                role="region"
+                aria-label="Attendance records — scroll horizontally for more columns"
+              >
+                <Table aria-label="Attendance records">
+                  <TableHead>
                     <TableRow>
-                      <TableCell colSpan={5}>
-                        No attendance entries in this period.
-                      </TableCell>
+                      {[
+                        "Clock in (MT)",
+                        "Clock out (MT)",
+                        "Recorded time",
+                        "Status",
+                        "Actions",
+                      ].map((h) => (
+                        <TableCell key={h}>{h}</TableCell>
+                      ))}
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
+                  </TableHead>
+                  <TableBody>
+                    {rows.data.map((entry) => (
+                      <TableRow
+                        key={entry.id}
+                        {...contextMenu(
+                          `Attendance · ${dateTime(entry.clockIn)}`,
+                          entryActions(entry),
+                        )}
+                      >
+                        <TableCell>{dateTime(entry.clockIn)}</TableCell>
+                        <TableCell>
+                          {entry.clockOut
+                            ? dateTime(entry.clockOut)
+                            : "Still clocked in"}
+                        </TableCell>
+                        <TableCell>
+                          {entry.clockOut
+                            ? duration(entry.workedSeconds)
+                            : "In progress"}
+                        </TableCell>
+                        <TableCell>{statusLabel(entry.status)}</TableCell>
+                        <TableCell>{recordActions(entry)}</TableCell>
+                      </TableRow>
+                    ))}
+                    {rows.data.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={5}>
+                          No attendance entries in this period.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ))}
         </Stack>
       </Paper>
       {history && (
@@ -443,6 +408,35 @@ export default function AttendancePage() {
       )}
       {form && (
         <FormDialog
+          submitLabel={
+            form.action === "adjust"
+              ? "Save correction"
+              : form.action === "approve"
+                ? "Approve attendance"
+                : "Reject attendance"
+          }
+          pendingLabel="Submitting…"
+          submitColor={form.action === "reject" ? "error" : "primary"}
+          summary={
+            <Typography>
+              {person?.name} · {dateTime(form.entry.clockIn)} –{" "}
+              {form.entry.clockOut
+                ? dateTime(form.entry.clockOut)
+                : "Still clocked in"}{" "}
+              MT
+            </Typography>
+          }
+          successMessage={
+            form.action === "adjust"
+              ? "Attendance corrected. It requires approval again."
+              : `Attendance ${form.action === "approve" ? "approved" : "rejected"}.`
+          }
+          validate={(values) =>
+            form.action === "adjust" &&
+            Date.parse(values.clockOut) <= Date.parse(values.clockIn)
+              ? { clockOut: "Clock-out must be after clock-in." }
+              : ({} as Record<string, string>)
+          }
           title={
             form.action === "adjust"
               ? "Correct attendance"
@@ -452,7 +446,7 @@ export default function AttendancePage() {
           }
           notice={
             form.action === "adjust"
-              ? "Corrections are audited and require approval again. Use Mountain Time with its UTC offset to distinguish daylight saving changes."
+              ? "Corrections are audited and require approval again. All dates and times use Mountain Time."
               : undefined
           }
           fields={
@@ -460,13 +454,16 @@ export default function AttendancePage() {
               ? [
                   {
                     name: "clockIn",
-                    label: "Clock-in (Mountain time)",
+                    label: "Clock-in",
+                    type: "datetime",
                     required: true,
-                    helper: "YYYY-MM-DDTHH:mm:ss-06:00 (MDT) or -07:00 (MST)",
+                    helper:
+                      "Seconds are preserved when correcting existing records.",
                   },
                   {
                     name: "clockOut",
-                    label: "Clock-out (Mountain time)",
+                    label: "Clock-out",
+                    type: "datetime",
                     required: true,
                   },
                   {

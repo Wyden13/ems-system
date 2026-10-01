@@ -22,7 +22,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Backend unit and PostgreSQL tests
         working-directory: ems-services
-        run: ./ems-auth-service/mvnw -B -f pom.xml -Pintegration verify
+        run: ./mvnw -B -Dtest='*Test,*Tests,*IT' -Dsurefire.failIfNoSpecifiedTests=false test
       - name: Frontend checks
         working-directory: frontend
         run: |

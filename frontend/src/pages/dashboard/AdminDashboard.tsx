@@ -26,7 +26,7 @@ export default function AdminDashboard() {
               <Typography sx={{ textTransform: "capitalize" }}>
                 {key} employees
               </Typography>
-              <Typography variant="h2">{summary.data[key]}</Typography>
+              <Typography variant="h2" component="p">{summary.data[key]}</Typography>
             </Paper>
           ))}
         </Stack>

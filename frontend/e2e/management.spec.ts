@@ -38,7 +38,9 @@ test("admin manages real records; archive preserves references and logout ends r
     .getByRole("dialog")
     .getByLabel(/^Name(?:\s*\*)?$/)
     .fill(office);
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Create location", exact: true })
+    .click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await page.getByRole("tab", { name: "Departments", exact: true }).click();
   await page
@@ -50,7 +52,9 @@ test("admin manages real records; archive preserves references and logout ends r
     .fill(department);
   await page.getByRole("combobox", { name: "Location", exact: true }).click();
   await page.getByRole("option", { name: office, exact: true }).click();
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Create department", exact: true })
+    .click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await page.getByRole("link", { name: "Accounts", exact: true }).click();
   await page.getByRole("button", { name: "Add account", exact: true }).click();
@@ -59,17 +63,16 @@ test("admin manages real records; archive preserves references and logout ends r
     .getByLabel(/^Email(?:\s*\*)?$/)
     .fill(employeeEmail);
   await page.getByLabel(/^Initial password(?:\s*\*)?$/).fill(password);
-  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Create account", exact: true })
+    .click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await page.getByRole("link", { name: "Employees", exact: true }).click();
-  await page.getByRole("button", { name: "Add Employee", exact: true }).click();
+  await page.getByRole("button", { name: "Add employee", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await expect(
-    dialog.getByLabel("Employee number", { exact: true }),
-  ).toBeDisabled();
-  await expect(
-    dialog.getByLabel("Employee number", { exact: true }),
-  ).toHaveValue("Assigned automatically");
+    dialog.getByText(/Employee number is assigned automatically/),
+  ).toBeVisible();
   await dialog.getByLabel(/^First name(?:\s*\*)?$/).fill("Integration");
   await dialog.getByLabel(/^Last name(?:\s*\*)?$/).fill("Employee");
   await dialog.getByLabel(/^Employee email(?:\s*\*)?$/).fill(employeeEmail);
@@ -78,37 +81,42 @@ test("admin manages real records; archive preserves references and logout ends r
     .click();
   await page.getByRole("option", { name: department, exact: true }).click();
   await dialog.getByLabel(/^Hire date(?:\s*\*)?$/).fill("2024-01-01");
-  await dialog.getByLabel(/^Pay rate(?:\s*\*)?$/).fill("25.50");
+  await dialog.getByLabel(/^Hourly pay \(CAD\)(?:\s*\*)?$/).fill("25.50");
   await dialog
     .getByRole("combobox", { name: "Linked login account", exact: true })
-    .click();
+    .fill(employeeEmail);
   await page
     .getByRole("option", {
-      name: `${employeeEmail} (EMPLOYEE, ACTIVE)`,
+      name: `${employeeEmail} (Employee, Active)`,
       exact: true,
     })
     .click();
-  await dialog.getByRole("button", { name: "Save", exact: true }).click();
+  await dialog
+    .getByRole("button", { name: "Create employee", exact: true })
+    .click();
   await expect(dialog).not.toBeVisible();
-  await page.getByLabel("Search employees", { exact: true }).fill(employeeEmail);
+  await page
+    .getByLabel("Search employees", { exact: true })
+    .fill(employeeEmail);
   const row = page.getByRole("row").filter({ hasText: employeeEmail });
   await expect(row).toBeVisible();
   await expect(row.getByRole("cell").first()).toHaveText(/^\d{6}$/);
   const employeeNumber = await row.getByRole("cell").first().innerText();
   await row.getByRole("button", { name: "Edit", exact: true }).click();
   await expect(
-    dialog.getByLabel("Employee number", { exact: true }),
-  ).toBeDisabled();
-  await expect(
-    dialog.getByLabel("Employee number", { exact: true }),
-  ).toHaveValue(/^\d{6}$/);
+    dialog.getByText(`Employee number: ${employeeNumber}`),
+  ).toBeVisible();
   await dialog.getByLabel(/^Job title(?:\s*\*)?$/).fill("Updated technician");
-  await dialog.getByRole("button", { name: "Save", exact: true }).click();
+  await dialog
+    .getByRole("button", { name: "Save employee", exact: true })
+    .click();
   await expect(dialog).not.toBeVisible();
   await expect(row).toContainText("Updated technician");
   await expect(row.getByRole("cell").first()).toHaveText(employeeNumber);
   await row.getByRole("button", { name: "Deactivate", exact: true }).click();
-  await dialog.getByRole("button", { name: "Save", exact: true }).click();
+  await dialog
+    .getByRole("button", { name: "Deactivate employee", exact: true })
+    .click();
   await expect(dialog).not.toBeVisible();
   await expect(row).toContainText("Inactive");
   await page.getByRole("link", { name: "Organization", exact: true }).click();
@@ -117,10 +125,14 @@ test("admin manages real records; archive preserves references and logout ends r
     .filter({ hasText: department })
     .getByRole("button", { name: "Archive", exact: true })
     .click();
-  await dialog.getByRole("button", { name: "Save", exact: true }).click();
+  await dialog
+    .getByRole("button", { name: "Archive department", exact: true })
+    .click();
   await expect(dialog).not.toBeVisible();
   await page.getByRole("link", { name: "Employees", exact: true }).click();
-  await page.getByLabel("Search employees", { exact: true }).fill(employeeEmail);
+  await page
+    .getByLabel("Search employees", { exact: true })
+    .fill(employeeEmail);
   await expect(
     page.getByRole("row").filter({ hasText: employeeEmail }),
   ).toContainText(department);
@@ -147,7 +159,7 @@ test("admin manages real records; archive preserves references and logout ends r
   const token = await loginApi(request, employeeEmail);
   for (const url of [
     "http://localhost:18082/api/employees",
-    "http://localhost:18087/api/departments",
+    "http://localhost:18082/api/departments",
   ])
     expect(
       (
@@ -163,7 +175,7 @@ test("gateway and services reject spoofed identity, invalid tokens, CSRF, and in
   for (const url of [
     "/api/employees",
     "http://localhost:18082/api/employees",
-    "http://localhost:18087/api/locations",
+    "http://localhost:18082/api/locations",
   ]) {
     expect(
       (

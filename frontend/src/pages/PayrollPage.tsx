@@ -2,9 +2,13 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Alert,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+  useMediaQuery,
   Button,
   Chip,
-  CircularProgress,
   Paper,
   Stack,
   Table,
@@ -15,6 +19,9 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMoreRounded";
+import { useAuth } from "../auth/context";
+import QueryState from "../components/management/QueryState";
 import { api, params } from "../api/client";
 import { currentPeriod, dateTime, duration } from "../api/attendance";
 import type { PayrollReport } from "../api/attendance";
@@ -24,9 +31,12 @@ const money = (value: number | string) =>
     Number(value),
   );
 export default function PayrollPage() {
+  const { account } = useAuth();
+  const mobile = useMediaQuery(theme => theme.breakpoints.down("sm"));
+  const personal = account?.role === "EMPLOYEE" || account?.role === "SUPERVISOR";
   const [period, setPeriod] = useState(() => currentPeriod());
   const query = useQuery({
-    queryKey: ["payroll", period],
+    queryKey: ["payroll", account?.id, period],
     queryFn: () =>
       api<PayrollReport>(
         `/api/payroll/estimates?${params({ periodStart: period })}`,
@@ -36,19 +46,9 @@ export default function PayrollPage() {
   return (
     <Stack spacing={3}>
       <Typography variant="h2">Payroll estimates</Typography>
-      <Alert severity="info">
-        Estimated gross pay in CAD, using approved time and current hourly
-        rates. Estimates can change when attendance is approved or corrected, or
-        pay rates change. No taxes or deductions are included.
-      </Alert>
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={2}>
           <PeriodPicker start={period} onChange={setPeriod} />
-          <Typography variant="body2">
-            Overtime: 1.5× the greater of daily hours over 8 or Saturday–Friday
-            weekly hours over 44, without double counting. No scheduled break
-            deduction is applied while scheduling is unavailable.
-          </Typography>
           <Button
             sx={{ alignSelf: "flex-start" }}
             disabled={query.isFetching}
@@ -56,10 +56,14 @@ export default function PayrollPage() {
           >
             Refresh estimates
           </Button>
-          {query.isPending && <CircularProgress aria-label="Loading payroll" />}
-          {query.error && <Alert severity="error">{query.error.message}</Alert>}
+          <QueryState loading={query.isPending} error={query.error} retry={query.refetch} />
           {query.data && (
             <>
+              {query.data.estimates.length > 0 && <Paper variant="outlined" sx={{ p: 3, bgcolor: "primary.main", color: "primary.contrastText" }}>
+                <Typography variant="body2">{personal ? "My estimated gross pay" : "Total estimated gross pay in your view"}</Typography>
+                <Typography variant="h2" component="p" sx={{ mt: 1, mb: 2 }}>{money(query.data.estimates.reduce((sum, e) => sum + Number(e.grossPay), 0))}</Typography>
+                <Typography variant="body2">CAD · Approved worked time only. Taxes, deductions and paid leave are excluded.</Typography>
+              </Paper>}
               <Typography variant="body2">
                 Calculated {dateTime(query.data.calculatedAt)} MT. Includes
                 workweek context through {query.data.workweekCoverageEnd}.
@@ -71,8 +75,21 @@ export default function PayrollPage() {
                   to this period.
                 </Alert>
               )}
-              <TableContainer>
-                <Table>
+              {mobile ? <Stack spacing={2}>
+                {query.data.estimates.length === 0 && <Typography>No estimate is available for this period. Check another period or ask your administrator about your employee profile.</Typography>}
+                {query.data.estimates.map(e => <Paper key={e.employeeId} variant="outlined" sx={{ p: 2 }}><Stack spacing={1}>
+                  <Typography variant="h3">{e.employeeName}</Typography><Typography variant="caption">Employee {e.employeeNumber}</Typography>
+                  <Typography variant="h2" component="p">{money(e.grossPay)}</Typography><Chip sx={{ alignSelf: "flex-start" }} label={e.provisional ? "Provisional" : "Estimate"} />
+                  <Box component="dl" sx={{ m: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, "& dd": { m: 0, textAlign: "right" } }}>
+                    <Typography component="dt" variant="body2">Hourly rate</Typography><Typography component="dd" variant="body2">{money(e.hourlyRate)}</Typography>
+                    <Typography component="dt" variant="body2">Approved time</Typography><Typography component="dd" variant="body2">{duration(e.approvedSeconds)}</Typography>
+                    <Typography component="dt" variant="body2">Regular time</Typography><Typography component="dd" variant="body2">{duration(e.regularSeconds)}</Typography>
+                    <Typography component="dt" variant="body2">Overtime</Typography><Typography component="dd" variant="body2">{duration(e.overtimeSeconds)}</Typography>
+                  </Box>
+                  {e.pendingEntries > 0 && <Typography variant="body2">{e.pendingEntries} open or pending entries in related workweeks.</Typography>}
+                </Stack></Paper>)}
+              </Stack> : <TableContainer tabIndex={0} role="region" aria-label="Pay estimates — scroll horizontally for more columns">
+                <Table aria-label="Payroll estimates">
                   <TableHead>
                     <TableRow>
                       {[
@@ -125,15 +142,27 @@ export default function PayrollPage() {
                     {query.data.estimates.length === 0 && (
                       <TableRow>
                         <TableCell colSpan={7}>
-                          No employees available.
+                          No estimates available for this period. Check another period or ask your administrator about employee setup.
                         </TableCell>
                       </TableRow>
                     )}
                   </TableBody>
                 </Table>
-              </TableContainer>
+              </TableContainer>}
             </>
           )}
+          <Accordion disableGutters>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography variant="subtitle2">How this estimate is calculated</Typography></AccordionSummary>
+            <AccordionDetails><Stack spacing={2}>
+              <Typography variant="body2">Estimates use approved worked time and current hourly rates. They may change after approvals, corrections or rate changes. They are not final pay.</Typography>
+          <Typography variant="body2">
+            Overtime: 1.5× the greater of daily hours over 8 or Saturday–Friday
+            weekly hours over 44, without double counting. No unpaid break
+            deduction is applied.
+          </Typography>
+              <Typography variant="body2">Paid leave, taxes and deductions are excluded. Provisional estimates can change while related workweeks remain open.</Typography>
+            </Stack></AccordionDetails>
+          </Accordion>
         </Stack>
       </Paper>
     </Stack>
