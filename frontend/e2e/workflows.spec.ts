@@ -149,15 +149,34 @@ test("published shifts, employee response, PTO conflicts, approval and reversal 
     page.getByRole("heading", { name: "My work", exact: true }),
   ).toBeVisible();
   await page.getByRole("link", { name: "Schedule", exact: true }).click();
-  await page.getByRole("button", { name: "Accept", exact: true }).click();
+  // The roster defaults to this week; the future shift may be in the next one.
+  await page.getByLabel("Week of", { exact: true }).fill(day);
   await page
-    .getByRole("dialog")
+    .getByRole("button", {
+      name: `${category.name}, ${day}, shift ${shift.id}`,
+      exact: true,
+    })
+    .click();
+  const shiftDetails = page.getByRole("dialog", {
+    name: "Shift details",
+    exact: true,
+  });
+  await shiftDetails.getByRole("button", { name: "Accept", exact: true }).click();
+  const acceptShift = page.getByRole("dialog", {
+    name: "Accept shift",
+    exact: true,
+  });
+  await acceptShift
     .getByRole("button", { name: "Accept shift", exact: true })
     .click();
-  await expect(page.getByRole("dialog")).not.toBeVisible();
+  await expect(acceptShift).not.toBeVisible();
   await expect(
-    page.getByText("ScheduleWorker Workflow: Accepted", { exact: true }),
+    shiftDetails.getByText("ScheduleWorker Workflow: Accepted", { exact: true }),
   ).toBeVisible();
+  await shiftDetails
+    .getByRole("button", { name: "Close shift details", exact: true })
+    .click();
+  await expect(shiftDetails).not.toBeVisible();
   await page.getByRole("link", { name: "Time off", exact: true }).click();
   await page
     .getByRole("button", { name: "Request time off", exact: true })
