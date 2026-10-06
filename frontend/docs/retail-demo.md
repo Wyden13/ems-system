@@ -6,12 +6,12 @@ Open **http://127.0.0.1:16173**. This separate frontend talks to the real local 
 
 100 linked employees and login accounts across Edmonton, Calgary and Red Deer. Each location has Sales floor and Stockroom departments.
 
-| Role | Count | Example login | Access |
-| --- | --- | --- | --- |
-| Admin | 3 | admin1@prairie.demo.test; admin2@prairie.demo.test; admin3@prairie.demo.test | Account/employee/organization administration; all schedules, attendance and wage estimates |
-| Manager | 6 | manager1@prairie.demo.test through manager6@prairie.demo.test | All schedules and attendance, reviews, team wage estimates |
-| Supervisor | 12 | supervisor1@prairie.demo.test through supervisor12@prairie.demo.test | Planning/PTO within their linked department; only own wage estimates |
-| Employee | 79 | employee1@prairie.demo.test through employee79@prairie.demo.test | Own published shifts, clock-in/out, PTO and wage estimates |
+| Role       | Count | Example login                                                                | Access                                                                                     |
+| ---------- | ----- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Admin      | 3     | admin1@prairie.demo.test; admin2@prairie.demo.test; admin3@prairie.demo.test | Account/employee/organization administration; all schedules, attendance and wage estimates |
+| Manager    | 6     | manager1@prairie.demo.test through manager6@prairie.demo.test                | All schedules and attendance, reviews, team wage estimates                                 |
+| Supervisor | 12    | supervisor1@prairie.demo.test through supervisor12@prairie.demo.test         | Planning/PTO within their linked department; only own wage estimates                       |
+| Employee   | 79    | employee1@prairie.demo.test through employee79@prairie.demo.test             | Own published shifts, clock-in/out, PTO and wage estimates                                 |
 
 Passwords are generated locally and saved in **`.demo.local/accounts.csv`**, together with each account's role, employee number and department. All accounts are real records in the isolated auth database, with hashed passwords and linked employee records. These credentials must only be used for this fictional local demo. The private directory is ignored by Git.
 

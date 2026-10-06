@@ -107,11 +107,9 @@ test("record menus paste new drafts without login links, enforce permissions and
     .click();
 
   await page.getByRole("link", { name: "Accounts", exact: true }).click();
-  const own = page
-    .getByRole("row")
-    .filter({
-      has: page.getByRole("button", { name: account.email, exact: true }),
-    });
+  const own = page.getByRole("row").filter({
+    has: page.getByRole("button", { name: account.email, exact: true }),
+  });
   await own.click({ button: "right" });
   await expect(
     page.getByRole("menuitem", { name: "Edit", exact: true }),

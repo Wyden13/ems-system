@@ -1,33 +1,73 @@
-# EMS frontend
+# EMS Frontend
 
-React, TypeScript, MUI and TanStack Query frontend for the integrated workforce MVP. See [backend setup and current feature status](../ems-services/DOCUMENTATION.md).
+## Introduction
 
-Use Node.js 24.21.0 or newer in the 24.x series to match CI's updated Edmonton timezone rules. Older timezone data incorrectly predicts an autumn clock change in November 2026. DST tests use the historical November 2025 transition.
+The web interface for the Employee Management System (EMS), a portfolio project supporting employees, supervisors, managers, and administrators through everyday workforce tasks.
 
-Run `npm ci` and `npm run dev`, then open http://localhost:5173. API requests now use the deployed AWS microservices through https://d2z6z22jatofwt.cloudfront.net. Sign in with an account from the AWS deployment.
+## Objective
 
-Vite proxies `/api` to the AWS gateway for both development and `npm run preview`. It forwards the gateway's HTTPS origin to satisfy the services' origin checks while keeping CSRF and refresh cookies on the frontend's origin. `EMS_GATEWAY_URL` in `.env` or the shell overrides the gateway; shell values take precedence. Restart Vite after changing it. To use the local services, run `EMS_GATEWAY_URL=http://localhost:8080 npm run dev`. The browser tests override this setting with their isolated local gateway.
+Demonstrate a responsive React application connected to secure backend APIs, with role-based workflows for employee administration, scheduling, attendance, time off, and pay estimates.
 
-For HTTP loopback requests only, Vite removes `Secure` from the upstream `XSRF-TOKEN` and `ems_refresh` cookies so Safari can retain them on localhost. `HttpOnly`, `SameSite`, paths and expiry remain intact. HTTPS, non-loopback requests and all other cookies retain their original attributes; production backend cookies remain secure.
+## Core Features
 
-For a hosted production build, configure the web host to proxy `/api/*` to the AWS gateway, forwarding cookies, authorization headers, query strings, and the gateway's origin with API caching disabled. Vite's proxy is only active in its development and preview servers; `dist` uses relative `/api` URLs. Keeping the frontend and API on one browser origin preserves the backend's `SameSite=Lax` session cookies.
+- Role-based dashboards, sign-in, and profile management.
+- Administrator tools for accounts, employees, departments, and locations.
+- Shift planning, publication, availability, and assignment responses.
+- Clock-in/out, attendance review, corrections, and audit history.
+- PTO requests, approvals, balances, and allocations.
+- CAD gross-pay estimates from approved worked time.
+- Light, dark, and system appearance; a public onboarding preview.
 
-All roles have a real dashboard, attendance, payroll estimates, scheduling and PTO navigation. Supervisors plan shifts/review PTO within their employee department; managers/admins work across departments. Only admins manage accounts/employees/organization and allocate PTO. Account links are required for personal workforce features. Payroll estimates include approved worked time only; paid leave, scheduled break deductions and scores remain deferred.
+Payroll estimates exclude taxes, deductions, payments, paid leave, and scheduled break deductions. The onboarding preview uses fictional session-only data.
 
-Access tokens stay in memory; refresh tokens use HttpOnly cookies. Each service independently enforces JWT and row-level authorization. Forms preserve input on errors and new workflow screens use actual API data.
+## Technologies
 
-The onboarding prototype is available at `/onboarding-preview` without signing in, or under **Onboarding preview** for managers/admins. It uses fictional session-only data and does not send emails, create accounts or change workforce access. Switch between the manager/admin and employee views to try invitation, setup, draft, submission, changes, approval, expiry and cancellation. See [agreed onboarding design](docs/onboarding-design.md) and [detailed backend implementation plan](docs/onboarding-backend-plan.md).
+React 19, TypeScript, Vite, Material UI, React Router, and TanStack Query. Verification uses ESLint, Vitest, Testing Library, and Playwright.
+
+## Installation
+
+Requirements: Node.js 24 (used in CI), npm, and a running EMS backend.
+
+Complete the [backend setup](../ems-services/README.md), then run these commands from `frontend/`. Skip the copy command if `.env` already exists:
 
 ```sh
-npm run build
+npm ci
+cp .env.example .env
+EMS_GATEWAY_URL=http://localhost:8080 npm run dev
+```
+
+Open <http://localhost:5173> and sign in with the administrator created during backend setup. The command targets the local gateway; without the override, `.env.example` configures the AWS gateway. You can also set `EMS_GATEWAY_URL` in `.env` and restart Vite. Shell values take precedence.
+
+## Usage
+
+1. **Administrator:** create locations, departments, accounts, and employee records; link employees to accounts, set hourly rates, and allocate PTO balances.
+2. **Manager or supervisor:** plan and publish shifts, assign employees, and review PTO requests. Supervisors work within their department.
+3. **Employee:** set availability, respond to assignments, clock in/out, and request time off. Managers or administrators review attendance.
+4. **Payroll:** view CAD gross-pay estimates for approved worked time in a selected pay period.
+
+Personal workflows require a linked employee record. Users cannot approve their own PTO or review their own attendance.
+
+Explore the onboarding prototype at `/onboarding-preview`. For sample workforce data, follow the isolated [retail demo](docs/retail-demo.md). Run `npm run build` to generate `dist/`, then `npm run preview` to inspect it locally. Production setup is covered in the [AWS hosting guide](../ems-services/deploy/aws/README.md).
+
+## Testing
+
+```sh
 npm run lint
+npm run build
 npm test
 npx playwright install chromium
 ../ems-services/scripts/test-stack.sh
 ```
 
-The browser script builds the service images and uses its own isolated database volume. It tests management, attendance, scheduling, PTO and role isolation. Normal platform data is not reset.
+The last command requires the backend prerequisites and runs browser workflows against an isolated stack with its own database volume.
 
-The isolated Prairie Market demo uses 100 real linked accounts, four weeks of retail schedules/attendance and protected base wage estimates. Run `npm run demo:start` and `npm run dev:demo`, then open http://127.0.0.1:16173. See [demo accounts, scenarios and commands](docs/retail-demo.md). The normal AWS-backed app remains on its existing URL.
+## Documentation
 
-Appearance follows the system theme by default. Use **Change appearance** in the header (or on the sign-in/public onboarding page) to select Light, Dark, or System; the choice is saved in this browser. Dashboard actions sit beside section titles, and lists group records by workflow status while retaining filters, pagination, permissions, and row actions.
+- [Backend features, API, and access rules](../ems-services/DOCUMENTATION.md)
+- [Design system](docs/DESIGN_SYSTEM.md)
+- [Onboarding design](docs/onboarding-design.md) and [backend plan](docs/onboarding-backend-plan.md)
+- [Cloud demo](docs/cloud-demo.md)
+
+## License
+
+No license is currently specified for this project.

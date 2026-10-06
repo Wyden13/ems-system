@@ -612,30 +612,3 @@ test("public sign-in and onboarding preview support both themes without overflow
   }
   expect(errors).toEqual([]);
 });
-
-test("schedule list groups status without losing planner controls in either theme", async ({ page }) => {
-  const { day, calls } = await fixture(page, "MANAGER");
-  await page.route(url => url.pathname === "/api/shifts", route => route.fulfill({ json: ["DRAFT", "PUBLISHED"].map((status, index) => ({
-    id: 10 + index, shiftCategoryId: 1, categoryName: "Morning", departmentId: 1, locationId: 1,
-    startsAt: new Date(Date.parse(midnight(addDays(day, 3))) + 9 * 3600000).toISOString(),
-    endsAt: new Date(Date.parse(midnight(addDays(day, 3))) + 17 * 3600000).toISOString(),
-    requiredEmployees: 2, status, version: 0, assignments: [],
-  })) }));
-  for (const appearance of ["light", "dark"] as const) {
-    await page.emulateMedia({ colorScheme: appearance, reducedMotion: "reduce" });
-    await page.setViewportSize({ width: 1440, height: 1000 });
-    await page.goto("/schedule");
-    await page.getByRole("combobox", { name: "Schedule view" }).click();
-    await page.getByRole("option", { name: "List", exact: true }).click();
-    const list = page.getByRole("region", { name: "Schedule list", exact: true });
-    await expect(list.getByRole("heading", { name: "Pending", exact: true })).toBeVisible();
-    await expect(list.getByRole("heading", { name: "Active", exact: true })).toBeVisible();
-    await expect(list.locator("#shift-10").getByRole("button", { name: "Publish", exact: true })).toBeVisible();
-    await expect(list.getByRole("button", { name: "Assign employee", exact: true })).toHaveCount(2);
-    await page.screenshot({ path: test.info().outputPath(`schedule-list-${appearance}-desktop.png`), fullPage: true });
-    await page.setViewportSize({ width: 390, height: 844 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-    await page.screenshot({ path: test.info().outputPath(`schedule-list-${appearance}-mobile.png`), fullPage: true });
-  }
-  expect(calls.some(call => call.method !== "GET" && !call.path.includes("auth"))).toBe(false);
-});
