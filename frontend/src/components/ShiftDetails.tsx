@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
-import { Alert, Box, Button, Chip, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Alert, Button, Chip, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { send } from "../api/client";
-import { dateTime } from "../api/attendance";
+import ShiftSummary from "./ShiftSummary";
 import { checkAssignment, previewKey } from "../api/scheduling";
 import { statusLabel, type ScheduleOptions, type Shift, type WorkforcePerson } from "../api/workflows";
 import { activeAssignments } from "./scheduleRoster";
@@ -28,7 +28,6 @@ export default function ShiftDetails({ shift, options, planner, onEdit, onPublis
         version: number;
     }>();
     const assigned = activeAssignments(shift);
-    const department = options?.departments.find(d => d.id === shift.departmentId);
     const locations = new Map(options?.departments.map(d => [String(d.locationId), d.locationName]));
     if (!locations.has(String(shift.locationId)))
         locations.set(String(shift.locationId), `Location ${shift.locationId}`);
@@ -110,15 +109,7 @@ export default function ShiftDetails({ shift, options, planner, onEdit, onPublis
         return filter === "all" || (filter === "assigned" ? state === "assigned" : filter === "available" ? state === "available" : state === "blocked" || state === "warning");
     });
     return <Stack spacing={3}>
-    <Stack direction="row" spacing={1} sx={{ alignItems: "center", flexWrap: "wrap" }}>
-      <Typography variant="h3">{shift.categoryName}</Typography><Chip size="small" label={statusLabel(shift.status)}/>
-      <Typography color="text.secondary">Shift {shift.id} · {department?.locationName ?? `Location ${shift.locationId}`} · {department?.name ?? "Department unavailable"}</Typography>
-    </Stack>
-    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2, bgcolor: "action.hover", p: 2, borderRadius: 2 }}>
-      <Box><Typography variant="body2" color="text.secondary">Start</Typography><Typography>{dateTime(shift.startsAt)}</Typography></Box>
-      <Box><Typography variant="body2" color="text.secondary">End · Mountain Time</Typography><Typography>{dateTime(shift.endsAt)}</Typography></Box>
-      <Box><Typography variant="body2" color="text.secondary">Needed staff</Typography><Typography>{assigned.length} of {shift.requiredEmployees} assigned · {Math.max(0, shift.requiredEmployees - assigned.length)} needed</Typography></Box>
-    </Box>
+    <ShiftSummary shift={shift} options={options} />
     {error && <Alert severity="error" onClose={() => setError("")}>{error}</Alert>}
     {notice && <Alert severity="success" role="status">{notice}</Alert>}
     <Stack spacing={2}>

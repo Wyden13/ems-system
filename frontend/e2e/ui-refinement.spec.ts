@@ -371,6 +371,7 @@ test("planner: overnight shift controls send Mountain Time instants", async ({
     .getByRole("combobox", { name: "Department and location" })
     .click();
   await page.getByRole("option", { name: "Operations — Edmonton" }).click();
+  await dialog.getByRole("textbox", { name: "Required job role" }).fill("Care staff");
   await dialog.getByLabel("Start date", { exact: false }).fill(day);
   await dialog.getByLabel("Start time", { exact: false }).fill("22:00:17");
   await dialog.getByLabel("End date", { exact: false }).fill(addDays(day, 1));

@@ -110,6 +110,7 @@ test("published shifts, employee response, PTO conflicts, approval and reversal 
       startsAt: start,
       endsAt: end,
       requiredEmployees: 1,
+      requiredJobRole: "Care staff",
     },
     supervisor.token,
   );

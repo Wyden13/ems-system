@@ -21,6 +21,7 @@ import { parseTime } from "../../api/attendance";
 import { useFeedback } from "../feedback/context";
 import MountainDateTimeField from "./MountainDateTimeField";
 import AccountPicker from "./AccountPicker";
+import ColorPickerField from "./ColorPickerField";
 export interface Field {
   name: string;
   label: string;
@@ -32,7 +33,8 @@ export interface Field {
     | "date"
     | "time"
     | "datetime"
-    | "account";
+    | "account"
+    | "color";
   required?: boolean;
   disabled?: boolean;
   options?: { value: string; label: string }[];
@@ -106,6 +108,12 @@ export default function FormDialog({
       !!fieldErrors[f.name] ||
       (error instanceof ApiError && !!error.fields[f.name]);
     const disabled = pending || !onSave || f.disabled;
+    if (f.type === "color")
+      return (
+        <ColorPickerField key={f.name} label={f.label} value={values[f.name] ?? ""}
+          onChange={(value) => change(f.name, value)} disabled={disabled}
+          required={f.required} error={invalid} helper={helper} autoFocus={f.name === first} />
+      );
     if (f.type === "datetime")
       return (
         <MountainDateTimeField
@@ -206,6 +214,10 @@ export default function FormDialog({
           e.preventDefault();
           if (!onSave || pending) return;
           const errors = { ...validate?.(values) };
+          for (const f of fields.filter((f) => f.type === "color")) {
+            if ((values[f.name] || f.required) && !/^#[0-9a-f]{6}$/i.test(values[f.name] ?? ""))
+              errors[f.name] = "Enter a valid six-digit hex color, e.g. #5B4BE1.";
+          }
           for (const f of fields.filter((f) => f.type === "datetime")) {
             try {
               if (values[f.name] || f.required) parseTime(values[f.name] ?? "");

@@ -3,6 +3,7 @@ import type { Shift } from "../../api/workflows";
 
 export function shiftTemplate(shift: Shift): Record<string, string> {
   return {
+    requiredJobRole: shift.requiredJobRole ?? "",
     categoryId: String(shift.shiftCategoryId),
     departmentId: String(shift.departmentId ?? ""),
     startsAt: zonedInput(shift.startsAt),

@@ -32,6 +32,7 @@ export interface Assignment {
   version: number;
 }
 export interface Shift {
+  requiredJobRole?: string | null;
   id: number;
   shiftCategoryId: number;
   categoryName: string;

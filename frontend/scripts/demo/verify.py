@@ -60,7 +60,7 @@ else:
     options = manager.request('/api/shifts/options')
     department = next(row for row in options['departments'] if row['id'] == worker['departmentId'])
     category = next(row for row in manager.request('/api/shift-categories') if row['name'] == 'Retail opening')
-    scheduled = manager.request('/api/shifts', {'categoryId': category['id'], 'departmentId': department['id'], 'locationId': department['locationId'], 'startsAt': stamp(future_day, 7).isoformat(), 'endsAt': stamp(future_day, 15).isoformat(), 'requiredEmployees': 2})
+    scheduled = manager.request('/api/shifts', {'requiredJobRole': 'Care staff', 'categoryId': category['id'], 'departmentId': department['id'], 'locationId': department['locationId'], 'startsAt': stamp(future_day, 7).isoformat(), 'endsAt': stamp(future_day, 15).isoformat(), 'requiredEmployees': 2})
     scheduled = manager.request(f'/api/shifts/{scheduled["id"]}/assign', {'employeeId': worker['id'], 'version': scheduled['version']})
     scheduled = manager.request(f'/api/shifts/{scheduled["id"]}/publish', {'version': scheduled['version']})
 assert scheduled['status'] == 'PUBLISHED'

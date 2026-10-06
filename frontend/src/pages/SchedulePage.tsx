@@ -38,6 +38,7 @@ import type {
 } from "../api/workflows";
 import FormDialog, { type Field } from "../components/management/FormDialog";
 import QueryState from "../components/management/QueryState";
+import ShiftSummary from "../components/ShiftSummary";
 import ShiftDetails from "../components/ShiftDetails";
 import ScheduleCalendar from "../components/ScheduleCalendar";
 import ScheduleNavigation from "../components/ScheduleNavigation";
@@ -64,7 +65,7 @@ type Form = {
   fields: Field[];
   initial: Record<string, string>;
   notice?: string;
-  summary?: string;
+  summary?: React.ReactNode;
   onValuesChange?: (
     values: Record<string, string>,
     name: string,
@@ -134,7 +135,7 @@ export default function SchedulePage() {
     url: string,
     body?: unknown,
     method = "POST",
-    summary?: string,
+    summary?: React.ReactNode,
   ) =>
     setForm({
       title,
@@ -212,6 +213,13 @@ export default function SchedulePage() {
               label: `${d.name} — ${d.locationName}`,
             })),
         },
+        {
+          name: "requiredJobRole",
+          label: "Required job role",
+          required: true,
+          maxLength: 100,
+          helper: "For example, Registered nurse or Receptionist.",
+        },
         { name: "startsAt", label: "Start", type: "datetime", required: true },
         { name: "endsAt", label: "End", type: "datetime", required: true },
         {
@@ -225,6 +233,7 @@ export default function SchedulePage() {
       ],
       initial: shift
         ? {
+            requiredJobRole: shift.requiredJobRole ?? "",
             categoryId: String(shift.shiftCategoryId),
             departmentId: String(shift.departmentId ?? ""),
             startsAt: zonedInput(shift.startsAt),
@@ -232,6 +241,7 @@ export default function SchedulePage() {
             requiredEmployees: String(shift.requiredEmployees),
           }
         : {
+            requiredJobRole: "",
             requiredEmployees: "1",
             categoryId,
             departmentId: "",
@@ -259,6 +269,7 @@ export default function SchedulePage() {
         </Stack>
       ),
       validate: (v): Record<string, string> => {
+        if (!v.requiredJobRole?.trim()) return { requiredJobRole: "Enter the required job role." };
         const hours = (Date.parse(v.endsAt) - Date.parse(v.startsAt)) / 3600000;
         return Number.isFinite(hours) && (hours <= 0 || hours > 24)
           ? {
@@ -269,6 +280,7 @@ export default function SchedulePage() {
       },
       save: async (v) => {
         const input = {
+          requiredJobRole: v.requiredJobRole.trim(),
           categoryId: Number(v.categoryId),
           departmentId: Number(v.departmentId),
           locationId: options.data?.departments.find(
@@ -307,7 +319,7 @@ export default function SchedulePage() {
       title: c ? "Edit category" : "Create category",
       fields: [
         { name: "name", label: "Category name", required: true, maxLength: 50 },
-        { name: "color", label: "Color (#RRGGBB)", required: true },
+        { name: "color", label: "Color", type: "color", required: true },
         {
           name: "defaultStartTime",
           label: "Default start",
@@ -495,6 +507,16 @@ export default function SchedulePage() {
   const visibleShifts = shifts.data ?? [];
   const shiftContext = (s: Shift) =>
     `${s.categoryName} · ${dateTime(s.startsAt)} – ${dateTime(s.endsAt)} · ${options.data?.departments.find((d) => d.id === s.departmentId)?.name ?? "Department"}`;
+  const cancelShift = (s: Shift) => confirm(
+    "Cancel shift",
+    `/api/shifts/${s.id}/cancel`,
+    { version: s.version },
+    "POST",
+    <Stack spacing={2}>
+      <ShiftSummary shift={s} options={options.data} />
+      <Alert severity="warning">Cancelling this shift also cancels its active staff assignments.</Alert>
+    </Stack>,
+  );
   const pasteShift = (
     values: Record<string, string>,
     day: string,
@@ -527,6 +549,7 @@ export default function SchedulePage() {
         (() =>
           showDetails("Shift details", {
             category: s.categoryName,
+            requiredJobRole: s.requiredJobRole ?? "Not specified",
             start: dateTime(s.startsAt),
             end: dateTime(s.endsAt),
             status: statusLabel(s.status),
@@ -558,6 +581,7 @@ export default function SchedulePage() {
           </Typography>
           <Chip label={statusLabel(s.status)} />
         </Stack>
+        <Typography>Required job role: {s.requiredJobRole || "Not specified"}</Typography>
         <Typography>
           {dateTime(s.startsAt)} – {dateTime(s.endsAt)}
         </Typography>
@@ -666,17 +690,7 @@ export default function SchedulePage() {
             <Button onClick={() => assignForm(s)}>Assign employee</Button>
             <Button
               color="error"
-              onClick={() =>
-                confirm(
-                  "Cancel shift",
-                  `/api/shifts/${s.id}/cancel`,
-                  {
-                    version: s.version,
-                  },
-                  "POST",
-                  shiftContext(s),
-                )
-              }
+              onClick={() => cancelShift(s)}
             >
               Cancel shift
             </Button>
@@ -783,7 +797,7 @@ export default function SchedulePage() {
           renderDetails={(s) => <ShiftDetails key={s.id} shift={s} options={options.data} planner={planner}
             onEdit={() => shiftForm(s)}
             onPublish={() => confirm("Publish shift", `/api/shifts/${s.id}/publish`, { version: s.version }, "POST", shiftContext(s))}
-            onCancel={() => confirm("Cancel shift", `/api/shifts/${s.id}/cancel`, { version: s.version }, "POST", shiftContext(s))}
+            onCancel={() => cancelShift(s)}
           />}
           createShift={(day, employee) => shiftForm(undefined, day, employee)}
           assignEmployee={assignForm}
@@ -876,7 +890,7 @@ export default function SchedulePage() {
               : "primary"
           }
           summary={
-            form.summary ? <Typography>{form.summary}</Typography> : undefined
+            typeof form.summary === "string" ? <Typography>{form.summary}</Typography> : form.summary
           }
           renderSummary={form.renderSummary}
           validate={form.validate}

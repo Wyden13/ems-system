@@ -183,7 +183,7 @@ async function dragRosterEmployee(
 async function fixture(page: Page, role = "MANAGER", directory = people) {
   const mutations: string[] = [];
   const requests: { path: string; body: Record<string, unknown> }[] = [];
-  const rosterShifts = structuredClone(shifts);
+  const rosterShifts: Shift[] = structuredClone(shifts).map(s => ({ ...s, requiredJobRole: "Care staff" }));
   let availability: Availability[] = [];
   let nextId = 100;
   const errors: string[] = [];
@@ -235,12 +235,18 @@ async function fixture(page: Page, role = "MANAGER", directory = people) {
           startsAt: String(body.startsAt),
           endsAt: String(body.endsAt),
           requiredEmployees: Number(body.requiredEmployees),
+          requiredJobRole: String(body.requiredJobRole),
           status: "DRAFT",
           version: 0,
           assignments: [],
         };
         rosterShifts.push(created);
         data = created;
+      } else if (/^\/api\/shifts\/\d+$/.test(path) && method === "PUT") {
+        const shift = rosterShifts.find(s => s.id === Number(path.split("/")[3]))!;
+        shift.requiredJobRole = String(body.requiredJobRole);
+        shift.version++;
+        data = shift;
       } else if (path === "/api/shifts") data = rosterShifts;
       else if (path === "/api/shifts/assignment-preview")
         data = {
@@ -344,6 +350,7 @@ test("right-click uses copy paste edit and details while preserving shift confir
     exact: true,
   });
   await expect(cancel).toBeVisible();
+  await page.screenshot({ path: test.info().outputPath("cancel-shift-labeled.png"), animations: "disabled" });
   expect(requests).toHaveLength(0);
   await cancel.getByRole("button", { name: "Keep shift", exact: true }).click();
   await details
@@ -447,6 +454,7 @@ test("pasting a published overnight shift creates a new draft without copying as
   expect(body).toMatchObject({
     categoryId: 3,
     departmentId: 1,
+    requiredJobRole: "Care staff",
     requiredEmployees: 1,
     startsAt: "2026-10-03T04:00:00.000Z",
     endsAt: "2026-10-03T12:00:00.000Z",
@@ -770,6 +778,7 @@ test("planner drops an employee onto a shift and an empty day, with warning and 
     create.getByRole("combobox", { name: "Department and location" }),
   ).toContainText("Operations");
   await expect(create).toContainText("Within stated available hours");
+  await create.getByRole("textbox", { name: "Required job role" }).fill("Receptionist");
   await create.getByRole("button", { name: "Create and assign shift" }).click();
   await expect(create).toHaveCount(0);
   const newShift = requests.find(
@@ -956,4 +965,28 @@ test("staff warnings require explicit override and conflicts cannot be assigned"
   await sam.getByRole("button", { name: "Assign anyway", exact: true }).click();
   await expect(sam.getByRole("button", { name: "Remove", exact: true })).toBeVisible();
   expect(requests.filter(r => r.path.endsWith("/assign"))).toHaveLength(1);
+});
+
+
+test("required job role validates and persists through the shift editor", async ({ page }) => {
+  const { requests, errors } = await fixture(page);
+  await page.goto(`/schedule?from=${start}&shift=12`);
+  const details = page.getByRole("dialog", { name: "Shift details", exact: true });
+  await expect(details).toContainText("Care staff");
+  await details.getByRole("button", { name: "Edit", exact: true }).click();
+  const edit = page.getByRole("dialog", { name: "Edit shift", exact: true });
+  const role = edit.getByRole("textbox", { name: "Required job role" });
+  await expect(role).toHaveValue("Care staff");
+  await role.fill("   ");
+  await edit.getByRole("button", { name: "Save shift", exact: true }).click();
+  await expect(edit).toContainText("Enter the required job role.");
+  expect(requests.filter(r => r.path === "/api/shifts/12")).toHaveLength(0);
+  await role.fill("  Registered nurse  ");
+  await edit.getByRole("button", { name: "Save shift", exact: true }).click();
+  await expect(edit).toHaveCount(0);
+  await expect(details).toContainText("Registered nurse");
+  expect(requests.find(r => r.path === "/api/shifts/12")?.body.requiredJobRole).toBe("Registered nurse");
+  await page.reload();
+  await expect(details).toContainText("Registered nurse");
+  expect(errors).toEqual([]);
 });

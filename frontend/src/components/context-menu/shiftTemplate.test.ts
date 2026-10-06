@@ -13,12 +13,14 @@ it("copies only editable shift fields, excluding identity, status, version and a
     startsAt: "2026-09-30T22:00:17-06:00",
     endsAt: "2026-10-01T06:00:17-06:00",
     requiredEmployees: 2,
+    requiredJobRole: "Registered nurse",
     assignments: [{ id: 1, employeeId: 7 }],
   } as Shift;
   expect(shiftTemplate(shift)).toEqual({
     categoryId: "2",
     departmentId: "3",
     requiredEmployees: "2",
+    requiredJobRole: "Registered nurse",
     startsAt: "2026-09-30T22:00:17-06:00",
     endsAt: "2026-10-01T06:00:17-06:00",
   });
