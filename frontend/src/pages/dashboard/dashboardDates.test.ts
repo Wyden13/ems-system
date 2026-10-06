@@ -22,6 +22,8 @@ describe("dashboard date labels", () => {
       time: "7 AM – 3:30 PM MDT",
       overnight: false,
     });
+    // The input offset identifies an instant, not the display timezone.
+    // Edmonton uses UTC-06 (ABT) here, so UTC-07 inputs display one hour later.
     expect(
       compactShiftTime(
         "2026-12-31T22:15:00-07:00",
