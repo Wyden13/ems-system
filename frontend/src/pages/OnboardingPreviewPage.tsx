@@ -1,3 +1,4 @@
+import { zoneForDate } from "../api/timezone";
 import AppearanceControl from "../components/layout/AppearanceControl";
 import { StatusGroups } from "../components/ui/StatusGroups";
 import { workGroup } from "../components/ui/statusGrouping";
@@ -56,7 +57,7 @@ const dateLabel = (value: string) =>
   new Intl.DateTimeFormat("en-CA", {
     dateStyle: "medium",
     timeStyle: "short",
-    timeZone: "America/Edmonton",
+    timeZone: zoneForDate(new Date(value)),
   }).format(new Date(value));
 
 function EmployeeExperience({

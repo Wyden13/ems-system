@@ -1,3 +1,4 @@
+import { zoneForDate } from "../api/timezone";
 import { StatusGroups } from "./ui/StatusGroups";
 import { workGroup } from "./ui/statusGrouping";
 import {
@@ -59,7 +60,7 @@ const time = (value: string) =>
   new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "2-digit",
-    timeZone: "America/Edmonton",
+    timeZone: zoneForDate(new Date(value)),
   })
     .format(new Date(value))
     .replace(" AM", "a")

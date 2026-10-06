@@ -1,4 +1,5 @@
-export const ZONE = "America/Edmonton";
+import { ZONE, zoneForDate } from "./timezone";
+export { ZONE } from "./timezone";
 export interface TimeEntry {
   id: number;
   employeeId: number;
@@ -59,9 +60,9 @@ export interface PayrollReport {
   workweekCoverageEnd: string;
   estimates: Estimate[];
 }
-export function businessDate(now = new Date()) {
+export function businessDate(now = new Date(), zone = ZONE) {
   const p = new Intl.DateTimeFormat("en-CA", {
-    timeZone: ZONE,
+    timeZone: zoneForDate(now, zone),
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -88,14 +89,14 @@ export function duration(seconds: number) {
 }
 export function dateTime(value: string) {
   return new Intl.DateTimeFormat("en-CA", {
-    timeZone: ZONE,
+    timeZone: zoneForDate(new Date(value)),
     dateStyle: "medium",
     timeStyle: "medium",
   }).format(new Date(value));
 }
 export function zonedInput(value: string) {
   const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: ZONE,
+    timeZone: zoneForDate(new Date(value)),
     year: "numeric",
     month: "2-digit",
     day: "2-digit",

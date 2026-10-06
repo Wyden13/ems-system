@@ -45,4 +45,13 @@ describe("business time", () => {
       "2026-09-26T08:00:17-06:00",
     );
   });
+  it("keeps Alberta at UTC-06 after the November 2026 change on older runtimes", () => {
+    expect(midnight("2026-11-02")).toBe("2026-11-02T06:00:00.000Z");
+    expect(midnight("2027-01-01")).toBe("2027-01-01T06:00:00.000Z");
+    expect(businessDate(new Date("2027-01-01T06:30:00Z"))).toBe("2027-01-01");
+    expect(zonedInput("2027-01-01T05:15:00Z")).toBe("2026-12-31T23:15:00-06:00");
+    expect(parseTime("2027-01-01T06:00:00-06:00")).toBe("2027-01-01T12:00:00.000Z");
+    expect(() => parseTime("2027-01-01T06:00:00-07:00")).toThrow();
+    expect(localTimeCandidates("2026-11-01T01:30:00")).toEqual(["2026-11-01T01:30:00-06:00"]);
+  });
 });

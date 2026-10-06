@@ -1,3 +1,4 @@
+import { zoneForDate } from "../api/timezone";
 import {
   Box,
   Button,
@@ -158,7 +159,7 @@ export default function ScheduleStaffingSummary({
                       weekday: "short",
                       month: "short",
                       day: "numeric",
-                      timeZone: "America/Edmonton",
+                      timeZone: zoneForDate(new Date(shift.startsAt)),
                     }).format(new Date(shift.startsAt))}
                   </Typography>
                   <Stack
