@@ -81,7 +81,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             pt: `${TOPBAR_HEIGHT}px`,
           }}
         >
-          <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
+          <Box sx={{ px: { xs: 2, md: 3 }, py: 2 }}>
             <Breadcrumbs
               separator={<NavigateNextIcon fontSize="small" />}
               sx={{ mb: 2, fontSize: 13 }}

@@ -1,3 +1,4 @@
+import { StatusGroups } from "../components/ui/StatusGroups";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -34,6 +35,7 @@ import {
 } from "../api/attendance";
 import type { Person, Score, TimeEntry } from "../api/attendance";
 import { useAuth } from "../auth/context";
+import { cad, scheduleWagesEnabled, wageQuery } from "../api/wages";
 import useAttendanceClock from "../hooks/useAttendanceClock";
 import { AttendanceClockPanel } from "../components/management/AttendanceClockPanel";
 import { statusLabel } from "../api/workflows";
@@ -157,6 +159,13 @@ export default function AttendancePage() {
         `/api/timesheets/score?${params({ employeeId: personId, from: period, to: addDays(period, 13) })}`,
       ),
   });
+  const wages = useQuery({
+    queryKey: ["attendance", "wages", account?.id, account?.role, period],
+    enabled: scheduleWagesEnabled,
+    queryFn: ({ signal }) => wageQuery(period, 14, signal),
+    refetchInterval: 30000,
+  });
+  const wage = wages.data?.estimates.find(estimate => String(estimate.employeeId) === personId);
   const invalidate = async () => {
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: ["attendance"] }),
@@ -209,7 +218,7 @@ export default function AttendancePage() {
     </Stack>
   );
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <Box>
         <Typography variant="h2">Attendance</Typography>
         <Typography color="text.secondary">
@@ -217,7 +226,7 @@ export default function AttendancePage() {
         </Typography>
       </Box>
       {account?.role !== "ADMIN" && (
-        <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+        <Paper sx={{ p: 2 }}>
           <AttendanceClockPanel clock={clock} />
         </Paper>
       )}
@@ -225,7 +234,7 @@ export default function AttendancePage() {
         No unpaid break deduction is applied. Completed time must be approved
         before it appears in payroll estimates.
       </Alert>
-      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+      <Paper sx={{ p: 2 }}>
         <Stack spacing={2}>
           <Typography variant="h3">Attendance records</Typography>
           <PeriodPicker start={period} onChange={setPeriod} />
@@ -275,6 +284,8 @@ export default function AttendancePage() {
           {people.data?.length === 0 && (
             <Typography>No employees available.</Typography>
           )}
+          {wages.error && <Alert severity="warning" action={<Button onClick={() => void wages.refetch()}>Retry</Button>}>Base wage estimates are temporarily unavailable.</Alert>}
+          {wage && <Paper variant="outlined" sx={{ p: 2 }}><Typography variant="body2">Approved worked time × hourly rate</Typography><Typography variant="h3">{cad(Number(wage.approvedWorkedGrossPay))}</Typography><Typography variant="caption" color="text.secondary">{duration(wage.approvedWorkedSeconds)} at {cad(Number(wage.hourlyRate))}/hour · Base wage estimate; excludes overtime and deductions.</Typography></Paper>}
           {score.data && (
             <Box>
               <Typography>
@@ -310,15 +321,15 @@ export default function AttendancePage() {
           )}
           {rows.data &&
             (mobile ? (
-              <Stack spacing={2}>
+              <Stack spacing={0}>
                 {rows.data.length === 0 && (
                   <Typography>No attendance entries in this period.</Typography>
                 )}
-                {rows.data.map((entry) => (
+                <StatusGroups items={rows.data} category={entry => entry.status === "PENDING_APPROVAL" ? "Pending" : entry.status === "OPEN" ? "Active" : "Completed"}>{entry => (
                   <Paper
                     key={entry.id}
                     variant="outlined"
-                    sx={{ p: 2 }}
+                    sx={{ px: 1.5, py: 1, borderRadius: 0 }}
                     {...contextMenu(
                       `Attendance · ${dateTime(entry.clockIn)}`,
                       entryActions(entry),
@@ -344,7 +355,7 @@ export default function AttendancePage() {
                       {recordActions(entry)}
                     </Stack>
                   </Paper>
-                ))}
+                )}</StatusGroups>
               </Stack>
             ) : (
               <TableContainer
@@ -367,7 +378,7 @@ export default function AttendancePage() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.data.map((entry) => (
+                    <StatusGroups items={rows.data} category={entry => entry.status === "PENDING_APPROVAL" ? "Pending" : entry.status === "OPEN" ? "Active" : "Completed"} tableColumns={5}>{entry => (
                       <TableRow
                         key={entry.id}
                         {...contextMenu(
@@ -389,7 +400,7 @@ export default function AttendancePage() {
                         <TableCell>{statusLabel(entry.status)}</TableCell>
                         <TableCell>{recordActions(entry)}</TableCell>
                       </TableRow>
-                    ))}
+                    )}</StatusGroups>
                     {rows.data.length === 0 && (
                       <TableRow>
                         <TableCell colSpan={5}>

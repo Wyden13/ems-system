@@ -1,3 +1,4 @@
+import AppearanceControl from "./AppearanceControl";
 import { useState } from "react";
 import {
   Alert,
@@ -30,7 +31,7 @@ export default function Topbar({
       <AppBar
         position="fixed"
         elevation={0}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: "background.paper", color: "text.primary", borderBottom: 1, borderColor: "divider" }}
       >
         <Toolbar sx={{ minHeight: `${TOPBAR_HEIGHT}px !important`, gap: 1 }}>
           <IconButton
@@ -51,7 +52,7 @@ export default function Topbar({
             <MenuIcon />
           </IconButton>
           <HubIcon />
-          <Typography variant="h6">EMS</Typography>
+          <Typography variant="h6">{import.meta.env.VITE_DEMO_ORGANIZATION === "true" ? "Prairie Market · Demo" : "EMS"}</Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Typography
             variant="body2"
@@ -60,6 +61,7 @@ export default function Topbar({
           >
             {account?.email}
           </Typography>
+          <AppearanceControl />
           <Button
             color="inherit"
             disabled={pending}

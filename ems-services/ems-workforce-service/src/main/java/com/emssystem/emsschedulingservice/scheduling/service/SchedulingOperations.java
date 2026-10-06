@@ -111,6 +111,45 @@ public class SchedulingOperations {
         }).toList();
   }
 
+  @Transactional(readOnly = true)
+  public Map<String, Object> wageEstimates(Instant from, Instant to) {
+    var caller = Caller.current();
+    // A supervisor's roster access must never grant access to coworkers' wages.
+    var people = caller.manages() ? workforce.list(0) : List.of(mine());
+    var shifts = list(from, to);
+    var estimates = new ArrayList<Map<String, Object>>();
+    for (var person : people) {
+      long scheduled = 0;
+      for (var shift : shifts) {
+        if ("CANCELLED".equals(shift.get("status"))) continue;
+        @SuppressWarnings("unchecked")
+        var assignments = (List<Map<String, Object>>) shift.get("assignments");
+        boolean assigned = assignments.stream().anyMatch(a -> id(a, "employeeId") == person.getEmployeeId()
+            && List.of("ASSIGNED", "ACCEPTED").contains(a.get("status")));
+        if (assigned) scheduled += clippedSeconds((Instant) shift.get("startsAt"), (Instant) shift.get("endsAt"), from, to);
+      }
+      var worked = query(db, "select clock_in,clock_out from time_entries where employee_id=? and status='APPROVED' and clock_in<? and clock_out>?",
+          person.getEmployeeId(), java.sql.Timestamp.from(to), java.sql.Timestamp.from(from));
+      long approved = worked.stream().mapToLong(e -> clippedSeconds((Instant) e.get("clockIn"), (Instant) e.get("clockOut"), from, to)).sum();
+      var rate = new java.math.BigDecimal(person.getHourlyRate());
+      estimates.add(Map.of("employeeId", person.getEmployeeId(), "hourlyRate", rate,
+          "scheduledSeconds", scheduled, "scheduledGrossPay", basePay(scheduled, rate),
+          "approvedWorkedSeconds", approved, "approvedWorkedGrossPay", basePay(approved, rate)));
+    }
+    return Map.of("from", from, "to", to, "currency", "CAD", "basis", "BASE_RATE", "estimates", estimates);
+  }
+
+  static long clippedSeconds(Instant start, Instant end, Instant from, Instant to) {
+    var a = start.isAfter(from) ? start : from;
+    var b = end.isBefore(to) ? end : to;
+    return Math.max(0, Duration.between(a, b).getSeconds());
+  }
+
+  static java.math.BigDecimal basePay(long seconds, java.math.BigDecimal rate) {
+    return rate.multiply(java.math.BigDecimal.valueOf(seconds))
+        .divide(java.math.BigDecimal.valueOf(3600), 2, java.math.RoundingMode.HALF_UP);
+  }
+
   public Map<String, Object> get(long id) {
     var s = shift(id);
     var c = Caller.current();

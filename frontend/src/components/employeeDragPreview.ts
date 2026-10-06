@@ -1,7 +1,8 @@
+import type { Palette } from "@mui/material/styles";
 import type { WorkforcePerson } from "../api/workflows";
 
 /** A self-contained drag image avoids WebKit capturing the scrollable employee list. */
-export function employeeDragPreview(person: WorkforcePerson) {
+export function employeeDragPreview(person: WorkforcePerson, palette: Palette) {
   const canvas = document.createElement("canvas");
   canvas.width = 240;
   canvas.height = 64;
@@ -20,19 +21,19 @@ export function employeeDragPreview(person: WorkforcePerson) {
   });
   const ctx = canvas.getContext("2d");
   if (!ctx) return undefined;
-  ctx.fillStyle = "#FFFFFF";
-  ctx.strokeStyle = "#5B4BE1";
+  ctx.fillStyle = palette.background.paper;
+  ctx.strokeStyle = palette.primary.main;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.roundRect(1, 1, 238, 62, 8);
+  ctx.roundRect(1, 1, 238, 62, 4);
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle = "#EBE8FB";
+  ctx.fillStyle = palette.primary.light;
   ctx.beginPath();
   ctx.arc(30, 32, 17, 0, Math.PI * 2);
   ctx.fill();
   ctx.font = "600 12px system-ui";
-  ctx.fillStyle = "#5B4BE1";
+  ctx.fillStyle = palette.primary.main;
   ctx.textAlign = "center";
   ctx.fillText(
     person.name
@@ -46,7 +47,7 @@ export function employeeDragPreview(person: WorkforcePerson) {
   );
   ctx.textAlign = "left";
   ctx.font = "600 13px system-ui";
-  ctx.fillStyle = "#1C2138";
+  ctx.fillStyle = palette.text.primary;
   let label = person.name;
   if (ctx.measureText(label).width > 172) {
     while (label.length && ctx.measureText(`${label}…`).width > 172)
@@ -55,7 +56,7 @@ export function employeeDragPreview(person: WorkforcePerson) {
   }
   ctx.fillText(label, 56, 28);
   ctx.font = "12px system-ui";
-  ctx.fillStyle = "#5C6379";
+  ctx.fillStyle = palette.text.secondary;
   ctx.fillText(person.employeeNumber, 56, 46, 172);
   document.body.append(canvas);
   return canvas;

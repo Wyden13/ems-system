@@ -25,7 +25,7 @@ export { SIDEBAR_WIDTH } from "./layout/navigation";
 
 /** Vertical rhythm is fixed so nothing shifts when the rail collapses. */
 const HEADER_HEIGHT = 72;
-const GROUP_HEADING_HEIGHT = 36;
+const GROUP_HEADING_HEIGHT = 28;
 const ITEM_INSET = 1.5; // 12px — item margin
 const ITEM_PADDING = 2; // 16px — item padding, must match in both states
 
@@ -106,7 +106,10 @@ export default function Sidebar({
 
       <Box component="nav" aria-label="Main navigation" sx={{ py: 1 }}>
         {NAV_GROUPS.filter(
-          (group) => !group.admin || account?.role === "ADMIN",
+          (group) =>
+            (!group.admin || account?.role === "ADMIN") &&
+            (!group.roles ||
+              Boolean(account && group.roles.includes(account.role))),
         ).map((group) => (
           <Box key={group.heading} sx={{ mb: 1 }}>
             {/* Fixed-height slot: the heading fades out and a rule fades in,
@@ -162,12 +165,12 @@ export default function Sidebar({
                       selected={selected}
                       sx={{
                         mx: ITEM_INSET,
-                        my: 0.25,
+                        my: 0,
                         px: ITEM_PADDING,
                         // Roomier touch target on mobile; vertical only, so the
                         // icon axis is untouched.
-                        py: { xs: 1.25, md: 1 },
-                        borderRadius: 2,
+                        py: { xs: 1.25, md: 0.5 },
+                        borderRadius: 1,
                         overflow: "hidden",
                         whiteSpace: "nowrap",
                         color: "text.secondary",

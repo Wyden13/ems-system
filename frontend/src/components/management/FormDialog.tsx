@@ -170,10 +170,14 @@ export default function FormDialog({
       </TextField>
     );
   };
-  const sections = [...new Set([
-    ...fields.filter((f) => !f.optionalSection),
-    ...fields.filter((f) => f.optionalSection),
-  ].map((f) => f.section ?? "Details"))];
+  const sections = [
+    ...new Set(
+      [
+        ...fields.filter((f) => !f.optionalSection),
+        ...fields.filter((f) => f.optionalSection),
+      ].map((f) => f.section ?? "Details"),
+    ),
+  ];
   return (
     <Dialog
       open

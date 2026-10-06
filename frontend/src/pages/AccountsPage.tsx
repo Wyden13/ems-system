@@ -1,3 +1,4 @@
+import { StatusGroups } from "../components/ui/StatusGroups";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -69,7 +70,7 @@ export default function AccountsPage() {
     setForm({ kind: "create", initial: { role: values.role || "EMPLOYEE" } });
   return (
     <Paper
-      sx={{ p: { xs: 2, sm: 3 } }}
+      sx={{ p: 2 }}
       {...contextMenu("Accounts", [
         pasteAction({ kind: "account", onPaste: pasteAccount }),
       ])}
@@ -165,7 +166,7 @@ export default function AccountsPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {accounts.data?.content.map((account) => (
+              <StatusGroups items={accounts.data?.content ?? []} category={account => account.status === "ACTIVE" ? "Active" : account.status === "SUSPENDED" ? "Suspended" : "Disabled"} tableColumns={4}>{account => (
                 <TableRow
                   key={account.id}
                   {...contextMenu(
@@ -213,7 +214,7 @@ export default function AccountsPage() {
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}</StatusGroups>
               {accounts.data?.content.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={4}>

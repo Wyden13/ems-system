@@ -118,9 +118,7 @@ export function parseTime(value: string) {
     );
   const iso = new Date(value).toISOString();
   if (zonedInput(iso) !== value)
-    throw new Error(
-      "Use the valid America/Edmonton UTC offset for this date.",
-    );
+    throw new Error("Use the valid America/Edmonton UTC offset for this date.");
   return iso;
 }
 /** Resolve Edmonton wall time by round-tripping candidates through the IANA zone.

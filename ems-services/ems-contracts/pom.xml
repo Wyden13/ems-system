@@ -7,5 +7,5 @@
 <dependency><groupId>io.grpc</groupId><artifactId>grpc-protobuf</artifactId></dependency>
 <dependency><groupId>io.grpc</groupId><artifactId>grpc-stub</artifactId></dependency>
 </dependencies>
-<build><plugins><plugin><groupId>io.github.ascopes</groupId><artifactId>protobuf-maven-plugin</artifactId><configuration><binaryMavenPlugins><binaryMavenPlugin><groupId>io.grpc</groupId><artifactId>protoc-gen-grpc-java</artifactId><version>${grpc-java.version}</version></binaryMavenPlugin></binaryMavenPlugins></configuration></plugin></plugins></build>
+<build><plugins><plugin><groupId>io.github.ascopes</groupId><artifactId>protobuf-maven-plugin</artifactId></plugin></plugins></build>
 </project>

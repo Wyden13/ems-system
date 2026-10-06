@@ -1,3 +1,5 @@
+import { StatusGroups } from "../components/ui/StatusGroups";
+import { workGroup } from "../components/ui/statusGrouping";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -307,7 +309,7 @@ export default function PTOPage() {
           requests={!requests.error && !requests.isPending ? requests.data : undefined}
           employeeName={people.data?.find(p => p.id === selected)?.name}
         />
-        <Paper variant="outlined" sx={{ borderRadius: 3, overflow: "hidden" }}>
+        <Paper variant="outlined" sx={{ borderRadius: 1, overflow: "hidden" }}>
           <Stack spacing={2} sx={{ p: { xs: 2, sm: 2.5 }, borderBottom: 1, borderColor: "divider" }}>
             <Stack direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
               <Typography variant="h3">Time-off requests</Typography>
@@ -358,10 +360,10 @@ export default function PTOPage() {
           <Box sx={{ px: { xs: 2, sm: 2.5 } }}><QueryState loading={requests.isPending} error={requests.error} retry={requests.refetch} /></Box>
           {requests.data?.length === 0 && <Box sx={{ p: 3 }}><Typography color="text.secondary">No time-off requests match these filters.</Typography><Button onClick={() => { setEmployee(""); setStatus(""); }}>Clear filters</Button></Box>}
           {!!requests.data?.length && <Box role="table" aria-label="Time-off requests">
-            <Box role="row" sx={{ display: { xs: "none", lg: "grid" }, gridTemplateColumns: "minmax(150px, 1.2fr) minmax(170px, 1.3fr) 100px 145px minmax(220px, 1.5fr)", gap: 2, px: 2.5, py: 1.5, borderBottom: 1, borderColor: "divider", bgcolor: "#FAFCFA" }}>
-              {["Leave type", "Dates", "Duration", "Status", "Actions"].map(label => <Typography key={label} role="columnheader" sx={{ fontSize: 11, textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.8px", color: "text.secondary" }}>{label}</Typography>)}
+            <Box role="row" sx={{ display: { xs: "none", lg: "grid" }, gridTemplateColumns: "minmax(150px, 1.2fr) minmax(170px, 1.3fr) 100px 145px minmax(220px, 1.5fr)", gap: 2, px: 2.5, py: 1, borderBottom: 1, borderColor: "divider", bgcolor: "action.hover" }}>
+              {["Leave type", "Dates", "Duration", "Status", "Actions"].map(label => <Typography key={label} role="columnheader" sx={{ fontSize: 12, fontWeight: 600, color: "text.secondary" }}>{label}</Typography>)}
             </Box>
-            {requests.data.map(r => <Box key={r.id} role="row" {...contextMenu(`${r.ptoTypeName} · ${r.startDate} – ${r.endDate}`, requestActions(r))} sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr) minmax(0, 1fr)", lg: "minmax(150px, 1.2fr) minmax(170px, 1.3fr) 100px 145px minmax(220px, 1.5fr)" }, alignItems: "center", gap: { xs: 1.5, lg: 2 }, px: { xs: 2, sm: 2.5 }, py: 2.5, borderBottom: 1, borderColor: "divider", "&:last-child": { borderBottom: 0 }, "&:hover": { bgcolor: "#FCFDFC" } }}>
+            <StatusGroups items={requests.data} category={r => workGroup(r.status)} grid>{r => <Box key={r.id} role="row" {...contextMenu(`${r.ptoTypeName} · ${r.startDate} – ${r.endDate}`, requestActions(r))} sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr) minmax(0, 1fr)", lg: "minmax(150px, 1.2fr) minmax(170px, 1.3fr) 100px 145px minmax(220px, 1.5fr)" }, alignItems: "center", gap: { xs: 1.5, lg: 2 }, px: { xs: 2, sm: 2.5 }, py: 1, borderBottom: 1, borderColor: "divider", "& .MuiButton-root": { fontSize: 12, px: 1, minHeight: 30, "@media (pointer: coarse), (max-width: 599px)": { minHeight: 44 } }, "&:last-child": { borderBottom: 0 }, "&:hover": { bgcolor: "action.hover" } }}>
               <Box role="cell" sx={{ gridColumn: { xs: "1 / -1", lg: "auto" }, minWidth: 0 }}>
                 <Typography sx={{ fontWeight: 700 }}>{r.ptoTypeName}</Typography>
                 {reviewer && <Typography variant="caption" color="text.secondary">{people.data?.find(p => p.id === r.employeeId)?.name ?? `Employee ${r.employeeId}`}</Typography>}
@@ -376,7 +378,7 @@ export default function PTOPage() {
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>{r.requestUnit === "DAYS" && r.requestedAmount != null ? `${r.requestedAmount} ${Number(r.requestedAmount) === 1 ? "day" : "days"}` : `${r.hours} hours`}</Typography>
                 {r.requestUnit === "DAYS" && <Typography variant="caption" color="text.secondary">{r.hours} PTO hours</Typography>}
               </Box>
-              <Box role="cell"><Chip size="small" label={r.status === "PENDING" ? "Pending" : statusLabel(r.status)} sx={{ fontWeight: 700, px: 1, borderRadius: "999px", ...badgeStyle(r.status) }} /></Box>
+              <Box role="cell"><Chip size="small" label={r.status === "PENDING" ? "Pending" : statusLabel(r.status)} sx={{ fontWeight: 700, px: 1, borderRadius: 1, ...badgeStyle(r.status) }} /></Box>
               <Box role="cell" sx={{ gridColumn: { xs: "1 / -1", lg: "auto" } }}>
                 <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
                   <Button
@@ -407,7 +409,7 @@ export default function PTOPage() {
                 </Stack>
               </Box>
               {r.operationError && <Alert sx={{ gridColumn: "1 / -1" }} severity={processing(r.status) ? "info" : "warning"}>{r.operationError}</Alert>}
-            </Box>)}
+            </Box>}</StatusGroups>
           </Box>}
         </Paper>
       </>}
@@ -540,8 +542,8 @@ function dateRange(start: string, end: string) {
 }
 
 function badgeStyle(status: string) {
-  if (status === "APPROVED") return { bgcolor: "#E8F5EB", color: "#28763F" };
-  if (["PENDING", "APPROVING", "CANCELLING"].includes(status)) return { bgcolor: "#FFF3DF", color: "#966411" };
-  if (status === "REJECTED") return { bgcolor: "#FDEDEB", color: "#B34940" };
-  return { bgcolor: "#EEF0F4", color: "#596273" };
+  if (status === "APPROVED") return { bgcolor: "success.light", color: "success.main" };
+  if (["PENDING", "APPROVING", "CANCELLING"].includes(status)) return { bgcolor: "warning.light", color: "warning.main" };
+  if (status === "REJECTED") return { bgcolor: "error.light", color: "error.main" };
+  return { bgcolor: "action.hover", color: "text.secondary" };
 }

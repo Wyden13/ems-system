@@ -59,6 +59,11 @@ public class SchedulingApi {
         return service.list(from, to);
     }
 
+    @GetMapping("/shifts/wage-estimates")
+    public Object wages(@RequestParam Instant from, @RequestParam Instant to) {
+        return service.wageEstimates(from, to);
+    }
+
     @GetMapping("/shifts/{id}")
     public Object get(@PathVariable long id) {
         return service.get(id);

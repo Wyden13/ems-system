@@ -1,0 +1,5 @@
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY Provision.class driver.jar ./
+USER 1000:1000
+ENTRYPOINT ["java", "-cp", "/app:/app/driver.jar", "Provision"]

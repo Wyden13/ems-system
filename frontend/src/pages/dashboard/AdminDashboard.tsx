@@ -12,7 +12,7 @@ export default function AdminDashboard() {
       ),
   });
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <Typography variant="h2">Workforce overview</Typography>
       <QueryState
         loading={summary.isPending}
@@ -22,11 +22,13 @@ export default function AdminDashboard() {
       {summary.data && (
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
           {(["total", "active", "inactive"] as const).map((key) => (
-            <Paper key={key} sx={{ p: 3, flex: 1 }}>
+            <Paper key={key} sx={{ p: 2, flex: 1 }}>
               <Typography sx={{ textTransform: "capitalize" }}>
                 {key} employees
               </Typography>
-              <Typography variant="h2" component="p">{summary.data[key]}</Typography>
+              <Typography variant="h2" component="p">
+                {summary.data[key]}
+              </Typography>
             </Paper>
           ))}
         </Stack>

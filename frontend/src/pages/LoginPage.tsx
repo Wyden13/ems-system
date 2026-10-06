@@ -1,3 +1,4 @@
+import AppearanceControl from "../components/layout/AppearanceControl";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -15,6 +16,8 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   return (
+    <>
+      <div style={{ position: "absolute", top: 12, right: 16 }}><AppearanceControl /></div>
     <Box
       sx={{ minHeight: "100vh", display: "grid", placeItems: "center", p: 2 }}
     >
@@ -39,6 +42,7 @@ export default function LoginPage() {
         >
           <Stack spacing={3}>
             <Typography variant="h2">Sign in to EMS</Typography>
+            {import.meta.env.VITE_DEMO_ORGANIZATION === "true" && <Alert severity="info">Prairie Market · Local demo organization</Alert>}
             {error && <Alert severity="error">{error}</Alert>}
             <TextField
               name="email"
@@ -64,5 +68,6 @@ export default function LoginPage() {
         </form>
       </Paper>
     </Box>
+    </>
   );
 }

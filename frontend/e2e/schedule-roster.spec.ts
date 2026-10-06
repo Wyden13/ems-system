@@ -601,10 +601,13 @@ test("weekly roster shows partial coverage and overnight hours, filters and open
   await page.getByRole("button", { name: "Clear", exact: true }).click();
   await page.getByRole("combobox", { name: "Location", exact: true }).click();
   await page.getByRole("option", { name: "Calgary", exact: true }).click();
+  await page.getByRole("button", { name: "Close filters", exact: true }).click();
   await expect(page.getByRole("row", { name: /Jordan Lee, 8h/ })).toBeVisible();
   await expect(page.getByRole("row", { name: /Alex Morgan/ })).toHaveCount(0);
+  await page.getByRole("button", { name: "Filters (1)", exact: true }).click();
   await page.getByRole("button", { name: "Clear", exact: true }).click();
   await page.getByRole("checkbox", { name: "Needs attention" }).check();
+  await page.getByRole("button", { name: "Close filters", exact: true }).click();
   await expect(page.getByText("2 shifts · 16h scheduled")).toBeVisible();
   await page.getByRole("combobox", { name: "Schedule view", exact: true }).click();
   await page.getByRole("option", { name: "List", exact: true }).click();
@@ -617,58 +620,38 @@ test("weekly roster shows partial coverage and overnight hours, filters and open
   expect(errors).toEqual([]);
 });
 
-test("mobile agenda and filter drawer fit small screens and restore focus", async ({
-  page,
-}) => {
+test("mobile weekly grid scrolls horizontally, pins names and restores drawer focus", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 900 });
   const { errors } = await fixture(page);
-  await expect(
-    page.getByRole("button", { name: "Show 2026-09-28" }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Show 2026-09-26" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Show 2026-09-28" }).click();
-  await expect(page.getByText("3/4 positions staffed")).toBeVisible();
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
-    ),
-  ).toBe(true);
-  await expect(
-    page.getByRole("button", { name: "Create shift", exact: true }),
-  ).toBeEnabled();
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({
-    path: test.info().outputPath("ems-schedule-mobile.png"),
-    fullPage: true,
-    animations: "disabled",
-  });
+  const scroll = page.getByRole("region", { name: "Scrollable weekly roster", exact: true });
+  await expect(page.getByRole("table", { name: "Employee weekly roster" })).toBeVisible();
+  const rowHeader = page.getByRole("row", { name: "Alex Morgan, 16h scheduled", exact: true }).getByRole("rowheader");
+  const before = await rowHeader.boundingBox();
+  await scroll.evaluate(el => { el.scrollLeft = 550; });
+  await expect.poll(() => scroll.evaluate(el => el.scrollLeft)).toBeGreaterThan(0);
+  const after = await rowHeader.boundingBox();
+  expect(Math.abs(before!.x - after!.x)).toBeLessThan(2);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: test.info().outputPath("ems-schedule-mobile.png"), fullPage: true, animations: "disabled" });
   await page.getByRole("button", { name: "Filters", exact: true }).click();
   const filters = page.getByRole("dialog", { name: "Schedule filters" });
   await filters.getByRole("checkbox", { name: "Night", exact: true }).check();
   await page.keyboard.press("Escape");
-  await expect(
-    page.getByRole("button", { name: "Filters (1)", exact: true }),
-  ).toBeFocused();
-  await page.getByRole("button", { name: "Show 2026-09-29" }).click();
-  await expect(page.getByText("Continues from previous day")).toBeVisible();
-  await page.getByRole("button", { name: /shift 11/ }).click();
-  await expect(
-    page.getByRole("dialog", { name: "Shift details" }),
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Filters (1)", exact: true })).toBeFocused();
+  const continuation = page.getByRole("cell", { name: "Alex Morgan 2026-09-29", exact: true }).getByRole("button", { name: /shift 11/ });
+  await continuation.scrollIntoViewIfNeeded();
+  await expect(continuation).toContainText("Continues from previous day");
+  await continuation.click();
+  await expect(page.getByRole("dialog", { name: "Shift details" })).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("button", { name: /shift 11/ })).toBeFocused();
+  await expect(continuation).toBeFocused();
   for (const width of [320, 768, 1280]) {
     await page.setViewportSize({ width, height: 900 });
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   }
   expect(errors).toEqual([]);
 });
+
 
 test("employee cannot see planner actions and linked shifts open details", async ({
   page,
@@ -849,10 +832,9 @@ test("planner drops an employee onto a shift and an empty day, with warning and 
     .getByRole("button", { name: /shift 10/ })
     .first();
   await expect(blocked).toContainText("Blocked");
-  await blocked.click();
-  await expect(
-    page.getByRole("alert").filter({ hasText: "approved or processing PTO" }),
-  ).toBeVisible();
+  await dragRosterEmployee(page, employee, blocked);
+  await expect(blocked).toContainText("approved or processing PTO");
+  expect(requests.filter(r => r.path.endsWith("/assign"))).toHaveLength(1);
   await expect(
     page.getByRole("dialog", { name: "Assign employee" }),
   ).toHaveCount(0);
@@ -893,9 +875,12 @@ test("supervisor can select employees on mobile and preview failures prevent ass
   await page
     .getByRole("button", { name: "Select Taylor Reed for scheduling" })
     .click();
-  await page.getByRole("button", { name: "Show 2026-09-29" }).click();
-  await page.getByRole("button", { name: /shift 12/ }).click();
+  await page.getByRole("row", { name: "Open coverage", exact: true }).getByRole("button", { name: /shift 12/ }).click();
+  const details = page.getByRole("dialog", { name: "Shift details" });
+  await details.getByRole("button", { name: "Assign employee", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Assign employee" });
+  await dialog.getByRole("combobox", { name: "Employee", exact: true }).click();
+  await page.getByRole("option", { name: /Taylor Reed/ }).click();
   await expect(dialog).toContainText("Availability check failed");
   await dialog
     .getByRole("button", { name: "Assign employee", exact: true })
@@ -999,7 +984,7 @@ test("employee rows replace the separate panel and empty day clicks prefill assi
   const { requests, errors } = await fixture(page);
   const table = page.getByRole("table", { name: "Employee weekly roster" });
   await expect(table).toBeVisible();
-  await expect(page.getByRole("complementary")).toHaveCount(0);
+  await expect(page.getByRole("complementary", { name: "Staffing summary" })).toBeVisible();
   const taylor = page.getByRole("row", {
     name: "Taylor Reed, 0h scheduled",
     exact: true,
@@ -1048,9 +1033,9 @@ test("employee rows replace the separate panel and empty day clicks prefill assi
   await create.getByRole("button", { name: "Cancel", exact: true }).click();
   await page.getByRole("button", { name: "Filters", exact: true }).click();
   await expect(
-    page.getByRole("complementary", { name: "Schedule filters", exact: true }),
+    page.getByRole("dialog", { name: "Schedule filters", exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Filters", exact: true }).click();
+  await page.getByRole("button", { name: "Close filters", exact: true }).click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: test.info().outputPath(`ems-schedule-row-assignment-${page.context().browser()!.browserType().name()}.png`),
@@ -1063,5 +1048,29 @@ test("employee rows replace the separate panel and empty day clicks prefill assi
         r.path === "/api/shifts/with-assignment" || r.path.endsWith("/assign"),
     ),
   ).toHaveLength(0);
+  expect(errors).toEqual([]);
+});
+
+
+test("staffing summary follows filters and reviews shifts without writing data", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1200 });
+  const { requests, errors } = await fixture(page);
+  const summary = page.getByRole("complementary", { name: "Staffing summary" });
+  await expect(summary).toContainText("10 of 12 positions staffed");
+  await page.screenshot({ path: test.info().outputPath("ems-schedule-refined.png"), fullPage: true, animations: "disabled" });
+  await expect(summary.getByRole("button", { name: "Review Evening shift 12" })).toBeVisible();
+  await summary.getByRole("button", { name: "Review Evening shift 12" }).click();
+  await expect(page.getByRole("dialog", { name: "Shift details" })).toContainText("Shift 12");
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Filters", exact: true }).click();
+  await page.getByRole("checkbox", { name: "Night", exact: true }).check();
+  await page.keyboard.press("Escape");
+  await expect(summary).toContainText("1 of 1 positions staffed");
+  await expect(summary).toContainText("All shifts are published and staffed.");
+  await page.getByRole("button", { name: "Staffing summary", exact: true }).click();
+  await expect(summary).toHaveCount(0);
+  await page.getByRole("button", { name: "Staffing summary", exact: true }).click();
+  await expect(summary).toBeVisible();
+  expect(requests).toHaveLength(0);
   expect(errors).toEqual([]);
 });

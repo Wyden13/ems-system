@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const [form, setForm] = useState<"email" | "password" | null>(null);
   const [message, setMessage] = useState("");
   return (
-    <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+    <Paper sx={{ p: 2 }}>
       <Stack spacing={2}>
         <Typography variant="h2">My Profile</Typography>
         <Typography>{account?.email}</Typography>

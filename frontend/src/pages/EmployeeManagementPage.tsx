@@ -1,3 +1,4 @@
+import { StatusGroups } from "../components/ui/StatusGroups";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -143,7 +144,7 @@ export default function EmployeeManagementPage() {
   }));
   const clearFilters = () => { setSearch(""); setActive(""); setDepartment(""); setJobTitle(""); setPage(0); };
   return (
-    <Paper sx={{ p: { xs: 2, sm: 3 } }} {...contextMenu('Employees', [pasteAction({ kind: 'employee', onPaste: pasteEmployee })])}>
+    <Paper sx={{ p: 2 }} {...contextMenu('Employees', [pasteAction({ kind: 'employee', onPaste: pasteEmployee })])}>
       <Stack spacing={2}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ justifyContent: "space-between" }}>
           <Typography variant="h2">Employees</Typography>
@@ -234,7 +235,7 @@ export default function EmployeeManagementPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees.data?.content.map((employee) => (
+                <StatusGroups items={employees.data?.content ?? []} category={employee => employee.active ? "Active" : "Inactive"} tableColumns={7}>{employee => (
                   <TableRow key={employee.id} {...contextMenu(`${employee.firstName} ${employee.lastName}`, objectActions({
                     copy: { kind: 'employee', label: `${employee.firstName} ${employee.lastName}`, values: employeeTemplate(employee) },
                     paste: { kind: 'employee', onPaste: pasteEmployee },
@@ -268,7 +269,7 @@ export default function EmployeeManagementPage() {
                       </Button>
                     </TableCell>
                   </TableRow>
-                ))}
+                )}</StatusGroups>
                 {employees.data?.content.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={7}>

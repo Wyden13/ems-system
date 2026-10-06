@@ -1,3 +1,4 @@
+import { StatusGroups } from "../components/ui/StatusGroups";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -52,7 +53,7 @@ export default function OrganizationPage() {
     ]);
   }
   return (
-    <Paper sx={{ p: { xs: 2, sm: 3 } }} {...contextMenu(tab === 0 ? 'Departments' : 'Locations', [
+    <Paper sx={{ p: 2 }} {...contextMenu(tab === 0 ? 'Departments' : 'Locations', [
       pasteAction({ kind: tab === 0 ? 'department' : 'location', onPaste: values => setForm({ kind: tab === 0 ? 'department' : 'location', initial: values }) }),
     ])}>
       <Stack spacing={2}>
@@ -94,7 +95,7 @@ export default function OrganizationPage() {
           </TableHead>
           <TableBody>
             {tab === 0
-              ? departments.data?.map((d) => (
+              ? <StatusGroups items={departments.data ?? []} category={d => d.archived ? "Archived" : "Active"} tableColumns={4}>{d => (
                   <TableRow key={d.id} {...contextMenu(d.name, objectActions({
                     copy: { kind: 'department', label: d.name, values: { name: d.name, locationId: String(d.locationId) } },
                     paste: { kind: 'department', onPaste: values => setForm({ kind: 'department', initial: values }) },
@@ -129,7 +130,7 @@ export default function OrganizationPage() {
                       </Button>
                     </TableCell>
                   </TableRow>
-                ))
+                )}</StatusGroups>
               : locations.data?.map((location) => (
                   <TableRow key={location.id} {...contextMenu(location.name, objectActions({
                     copy: { kind: 'location', label: location.name, values: { name: location.name } },

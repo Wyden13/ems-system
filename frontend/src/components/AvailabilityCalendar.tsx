@@ -275,7 +275,7 @@ export default function AvailabilityCalendar({
                 position: "sticky",
                 top: 0,
                 zIndex: 4,
-                bgcolor: "#FAFBFD",
+                bgcolor: "background.default",
                 borderBottom: 1,
                 borderColor: "divider",
               }}
@@ -309,7 +309,7 @@ export default function AvailabilityCalendar({
                 sx={{
                   position: "relative",
                   height: HEIGHT,
-                  bgcolor: "#FAFBFD",
+                  bgcolor: "background.default",
                 }}
               >
                 {Array.from({ length: 24 }, (_, h) => (
@@ -397,7 +397,7 @@ export default function AvailabilityCalendar({
                     borderColor: "divider",
                     cursor: pending ? "wait" : "crosshair",
                     backgroundImage:
-                      "repeating-linear-gradient(to bottom, transparent 0, transparent 25px, #F1F2F6 25px, #F1F2F6 26px, transparent 26px, transparent 51px, #E4E6ED 51px, #E4E6ED 52px)",
+                      (theme) => `repeating-linear-gradient(to bottom, transparent 0, transparent 25px, ${theme.palette.divider} 25px, ${theme.palette.divider} 26px, transparent 26px, transparent 51px, ${theme.palette.divider} 51px, ${theme.palette.divider} 52px)`,
                   }}
                 >
                   {visible

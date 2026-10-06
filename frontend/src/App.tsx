@@ -14,15 +14,18 @@ import { useAuth } from "./auth/context";
 import AppLayout from "./components/layout/AppLayout";
 import FeedbackProvider from "./components/feedback/FeedbackProvider";
 import LoginPage from "./pages/LoginPage";
-const ProfilePage=lazy(()=>import("./pages/ProfilePage"));
-const EmployeeManagementPage=lazy(()=>import("./pages/EmployeeManagementPage"));
-const OrganizationPage=lazy(()=>import("./pages/OrganizationPage"));
-const AccountsPage=lazy(()=>import("./pages/AccountsPage"));
-const AttendancePage=lazy(()=>import("./pages/AttendancePage"));
-const PayrollPage=lazy(()=>import("./pages/PayrollPage"));
-const SchedulePage=lazy(()=>import("./pages/SchedulePage"));
-const PTOPage=lazy(()=>import("./pages/PTOPage"));
-const WorkDashboard=lazy(()=>import("./pages/dashboard/WorkDashboard"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const EmployeeManagementPage = lazy(
+  () => import("./pages/EmployeeManagementPage"),
+);
+const OrganizationPage = lazy(() => import("./pages/OrganizationPage"));
+const AccountsPage = lazy(() => import("./pages/AccountsPage"));
+const OnboardingPreviewPage = lazy(() => import("./pages/OnboardingPreviewPage"));
+const AttendancePage = lazy(() => import("./pages/AttendancePage"));
+const PayrollPage = lazy(() => import("./pages/PayrollPage"));
+const SchedulePage = lazy(() => import("./pages/SchedulePage"));
+const PTOPage = lazy(() => import("./pages/PTOPage"));
+const WorkDashboard = lazy(() => import("./pages/dashboard/WorkDashboard"));
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +39,10 @@ function AdminOnly() {
   ) : (
     <Navigate to="/profile" replace />
   );
+}
+function HiringOnly() {
+  const role = useAuth().account?.role;
+  return role === "MANAGER" || role === "ADMIN" ? <Outlet /> : <Navigate to="/profile" replace />;
 }
 function ApplicationRoutes() {
   const { account, loading, error, restore } = useAuth();
@@ -64,32 +71,51 @@ function ApplicationRoutes() {
     );
   return (
     <AppLayout>
-      <Suspense fallback={<CircularProgress aria-label="Loading page" />}><Routes>
-        <Route element={<AdminOnly />}>
-          
-          <Route path="/employees" element={<EmployeeManagementPage />} />
-          <Route path="/organization" element={<OrganizationPage />} />
-          <Route path="/accounts" element={<AccountsPage />} />
-        </Route>
-        <Route path="/dashboard" element={account.role === "ADMIN" ? <Box sx={{ display: "grid", gap: 3 }}><AdminDashboard /><WorkDashboard /></Box> : <WorkDashboard />} />
-        <Route path="/schedule" element={<SchedulePage />} />
-        <Route path="/pto" element={<PTOPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/attendance" element={<AttendancePage />} />
-        <Route path="/payroll" element={<PayrollPage />} />
-        <Route path="*" element={<Navigate to={landing} replace />} />
-      </Routes></Suspense>
+      <Suspense fallback={<CircularProgress aria-label="Loading page" />}>
+        <Routes>
+          <Route element={<HiringOnly />}>
+            <Route path="/onboarding" element={<OnboardingPreviewPage />} />
+          </Route>
+          <Route element={<AdminOnly />}>
+            <Route path="/employees" element={<EmployeeManagementPage />} />
+            <Route path="/organization" element={<OrganizationPage />} />
+            <Route path="/accounts" element={<AccountsPage />} />
+          </Route>
+          <Route
+            path="/dashboard"
+            element={
+              account.role === "ADMIN" ? (
+                <Box sx={{ display: "grid", gap: 2 }}>
+                  <AdminDashboard />
+                  <WorkDashboard />
+                </Box>
+              ) : (
+                <WorkDashboard />
+              )
+            }
+          />
+          <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/pto" element={<PTOPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/payroll" element={<PayrollPage />} />
+          <Route path="*" element={<Navigate to={landing} replace />} />
+        </Routes>
+      </Suspense>
     </AppLayout>
   );
 }
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <FeedbackProvider><AuthProvider>
+      <FeedbackProvider>
         <BrowserRouter>
-          <ApplicationRoutes />
+          <Routes>
+            <Route path="/onboarding-preview" element={<Suspense fallback={<CircularProgress aria-label="Loading onboarding preview" />}><OnboardingPreviewPage /></Suspense>} />
+            <Route path="*" element={<AuthProvider><ApplicationRoutes /></AuthProvider>} />
+          </Routes>
         </BrowserRouter>
-      </AuthProvider></FeedbackProvider>
+      </FeedbackProvider>
     </QueryClientProvider>
   );
 }

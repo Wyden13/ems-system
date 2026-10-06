@@ -4,19 +4,36 @@ import PeopleIcon from "@mui/icons-material/PeopleAltRounded";
 import BusinessIcon from "@mui/icons-material/BusinessRounded";
 import AccountIcon from "@mui/icons-material/ManageAccountsRounded";
 import ProfileIcon from "@mui/icons-material/PersonRounded";
+import OnboardingIcon from "@mui/icons-material/PersonAddAltRounded";
+import type { Role } from "../../api/types";
 export const SIDEBAR_WIDTH = 264;
 export const SIDEBAR_WIDTH_COLLAPSED = 76;
 export const TOPBAR_HEIGHT = 64;
 export type NavItem = { label: string; path: string; icon: SvgIconComponent };
-export type NavGroup = { heading: string; admin?: boolean; items: NavItem[] };
+export type NavGroup = {
+  heading: string;
+  admin?: boolean;
+  roles?: Role[];
+  items: NavItem[];
+};
 import AttendanceIcon from "@mui/icons-material/AccessTimeRounded";
 import PayrollIcon from "@mui/icons-material/PaymentsRounded";
 export const NAV_GROUPS: NavGroup[] = [
   {
+    heading: "Hiring",
+    roles: ["MANAGER", "ADMIN"],
+    items: [
+      {
+        label: "Onboarding preview",
+        path: "/onboarding",
+        icon: OnboardingIcon,
+      },
+    ],
+  },
+  {
     heading: "Management",
     admin: true,
     items: [
-      
       { label: "Employees", path: "/employees", icon: PeopleIcon },
       { label: "Organization", path: "/organization", icon: BusinessIcon },
       { label: "Accounts", path: "/accounts", icon: AccountIcon },

@@ -8,21 +8,21 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record EmployeeResponse(
-        Long id,
-        String employeeNumber,
-        String firstName,
-        String lastName,
-        String email,
-        String phoneNumber,
-        String address,
-        LocalDate birthDate,
-        LocalDate hireDate,
-        Long departmentId,
-        EmployeeRole role,
-        UUID userAccountId,
-        BigDecimal payRate,
-        String jobTitle,
-        boolean active,
-        Instant createdAt,
-        Instant updatedAt) {
+                Long id,
+                String employeeNumber,
+                String firstName,
+                String lastName,
+                String email,
+                String phoneNumber,
+                String address,
+                LocalDate birthDate,
+                LocalDate hireDate,
+                Long departmentId,
+                EmployeeRole role,
+                UUID userAccountId,
+                BigDecimal payRate,
+                String jobTitle,
+                boolean active,
+                Instant createdAt,
+                Instant updatedAt) {
 }

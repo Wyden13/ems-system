@@ -452,7 +452,8 @@ test("time-off: insufficient balance is blocked and reviewer sees named conflict
   await expect(overview.getByText("16 hours · Alex Worker", { exact: true })).toBeVisible();
   const table = page.getByRole("table", { name: "Time-off requests" });
   await expect(table.getByRole("columnheader", { name: "Duration", exact: true })).toBeVisible();
-  await expect(table.getByText("Pending", { exact: true })).toBeVisible();
+  await expect(table.getByRole("heading", { name: "Pending", exact: true })).toBeVisible();
+  await expect(table.locator(".MuiChip-root").getByText("Pending", { exact: true })).toBeVisible();
   await page.screenshot({ path: test.info().outputPath("time-off-desktop.png"), fullPage: true, animations: "disabled" });
   await page
     .getByRole("button", { name: "Request time off", exact: true })
@@ -547,4 +548,94 @@ test("time-off: hourly requests use requested hours with an optional total on mo
   expect(calls.find(call => call.path === "/api/pto/requests" && call.method === "POST")?.body).toMatchObject({
     requestUnit: "HOURS", requestedHours: 2.5, hours: null, reasonCategory: "Medical leave", employeeSignature: "Alex Worker",
   });
+});
+
+for (const role of ["EMPLOYEE", "SUPERVISOR", "MANAGER", "ADMIN"] as const) {
+  for (const appearance of ["light", "dark"] as const) {
+    test(`overhaul preview: ${role} ${appearance} preserves screens and mobile reflow`, async ({ page }) => {
+      await fixture(page, role);
+      await page.emulateMedia({ colorScheme: appearance, reducedMotion: "reduce" });
+      const errors: string[] = [];
+      page.on("pageerror", error => errors.push(error.message));
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      const paths = ["dashboard", "pto", "attendance", "payroll", "schedule", "profile", ...(role === "ADMIN" ? ["employees", "accounts", "organization"] : []), ...(role === "ADMIN" || role === "MANAGER" ? ["onboarding"] : [])];
+      for (const path of paths) {
+        await page.goto(`/${path}`);
+        await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({ timeout: 15000 });
+        await expect(page.locator("body")).toHaveCSS("color-scheme", appearance);
+        await expect(page.getByRole("progressbar", { name: /loading|restoring/i })).toHaveCount(0);
+        await expect(page.getByRole("alert").filter({ hasText: /failed|unavailable|try again/i })).toHaveCount(0);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        await page.screenshot({ path: test.info().outputPath(`${path}-desktop.png`), fullPage: true, animations: "disabled" });
+        await page.setViewportSize({ width: 390, height: 844 });
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        await page.screenshot({ path: test.info().outputPath(`${path}-mobile.png`), fullPage: true, animations: "disabled" });
+        await page.setViewportSize({ width: 1440, height: 1000 });
+      }
+      expect(errors).toEqual([]);
+    });
+  }
+}
+
+test("appearance follows system, persists a manual choice, and resumes system changes", async ({ page }) => {
+  await fixture(page, "MANAGER");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/dashboard");
+  await expect(page.locator("body")).toHaveCSS("color-scheme", "dark");
+  await page.getByRole("button", { name: "Change appearance" }).click();
+  await page.getByRole("menuitem", { name: "Light", exact: true }).click();
+  await expect(page.locator("body")).toHaveCSS("color-scheme", "light");
+  await page.reload();
+  await expect(page.locator("body")).toHaveCSS("color-scheme", "light");
+  await page.getByRole("button", { name: "Change appearance" }).click();
+  await page.getByRole("menuitem", { name: "System", exact: true }).click();
+  await expect(page.locator("body")).toHaveCSS("color-scheme", "dark");
+  await page.emulateMedia({ colorScheme: "light" });
+  await expect(page.locator("body")).toHaveCSS("color-scheme", "light");
+});
+
+test("public sign-in and onboarding preview support both themes without overflow", async ({ page }) => {
+  await page.route(url => url.pathname.startsWith("/api/"), route => route.fulfill({ status: 401, json: { message: "Sign in required" } }));
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  for (const appearance of ["light", "dark"] as const) {
+    await page.emulateMedia({ colorScheme: appearance, reducedMotion: "reduce" });
+    for (const path of ["login", "onboarding-preview"]) {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto(`/${path}`);
+      await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({ timeout: 15000 });
+      await expect(page.locator("body")).toHaveCSS("color-scheme", appearance);
+      await expect(page.getByRole("button", { name: "Change appearance" })).toHaveCount(1);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      await page.screenshot({ path: test.info().outputPath(`${path}-${appearance}-mobile.png`), fullPage: true });
+    }
+  }
+  expect(errors).toEqual([]);
+});
+
+test("schedule list groups status without losing planner controls in either theme", async ({ page }) => {
+  const { day, calls } = await fixture(page, "MANAGER");
+  await page.route(url => url.pathname === "/api/shifts", route => route.fulfill({ json: ["DRAFT", "PUBLISHED"].map((status, index) => ({
+    id: 10 + index, shiftCategoryId: 1, categoryName: "Morning", departmentId: 1, locationId: 1,
+    startsAt: new Date(Date.parse(midnight(addDays(day, 3))) + 9 * 3600000).toISOString(),
+    endsAt: new Date(Date.parse(midnight(addDays(day, 3))) + 17 * 3600000).toISOString(),
+    requiredEmployees: 2, status, version: 0, assignments: [],
+  })) }));
+  for (const appearance of ["light", "dark"] as const) {
+    await page.emulateMedia({ colorScheme: appearance, reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/schedule");
+    await page.getByRole("combobox", { name: "Schedule view" }).click();
+    await page.getByRole("option", { name: "List", exact: true }).click();
+    const list = page.getByRole("region", { name: "Schedule list", exact: true });
+    await expect(list.getByRole("heading", { name: "Pending", exact: true })).toBeVisible();
+    await expect(list.getByRole("heading", { name: "Active", exact: true })).toBeVisible();
+    await expect(list.locator("#shift-10").getByRole("button", { name: "Publish", exact: true })).toBeVisible();
+    await expect(list.getByRole("button", { name: "Assign employee", exact: true })).toHaveCount(2);
+    await page.screenshot({ path: test.info().outputPath(`schedule-list-${appearance}-desktop.png`), fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: test.info().outputPath(`schedule-list-${appearance}-mobile.png`), fullPage: true });
+  }
+  expect(calls.some(call => call.method !== "GET" && !call.path.includes("auth"))).toBe(false);
 });

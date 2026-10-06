@@ -1,0 +1,150 @@
+name: ems-retail-demo
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+      POSTGRES_DB: postgres
+      AUTH_DB_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+      PEOPLE_DB_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+      WORKFORCE_DB_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+    volumes:
+    - retail-demo-data:/var/lib/postgresql
+    - ../../../ems-services/docker/postgres-server/init-databases.sh:/opt/ems/init-databases.sh:ro
+    healthcheck:
+      test:
+      - CMD
+      - pg_isready
+      - -U
+      - postgres
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  auth-service:
+    image: ems/auth-service:retail-demo
+    environment:
+      JWT_SECRET: ${DEMO_JWT_SECRET:?Run scripts/demo/start.sh}
+      SECURE_COOKIE: 'false'
+      ALLOWED_ORIGINS: http://127.0.0.1:16173
+      DB_URL: jdbc:postgresql://postgres:5432/ems_auth_db
+      DB_USERNAME: auth_user
+      DB_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+      TLS_CERT: file:/certs/auth-service.crt
+      TLS_KEY: file:/certs/auth-service.key
+      TLS_CA: file:/certs/ca.crt
+    volumes:
+    - ../../../ems-services/.local/certs/ca.crt:/certs/ca.crt:ro
+    - ../../../ems-services/.local/certs/auth-service.crt:/certs/auth-service.crt:ro
+    - ../../../ems-services/.local/certs/auth-service.key:/certs/auth-service.key:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+    - 127.0.0.1:28081:8080
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://localhost:8080/actuator/health/readiness
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+  people-service:
+    image: ems/people-service:retail-demo
+    environment:
+      JWT_SECRET: ${DEMO_JWT_SECRET:?Run scripts/demo/start.sh}
+      SECURE_COOKIE: 'false'
+      ALLOWED_ORIGINS: http://127.0.0.1:16173
+      TLS_CERT: file:/certs/people-service.crt
+      TLS_KEY: file:/certs/people-service.key
+      TLS_CA: file:/certs/ca.crt
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ems_people_db
+      SPRING_DATASOURCE_USERNAME: people_user
+      SPRING_DATASOURCE_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+    volumes:
+    - ../../../ems-services/.local/certs/ca.crt:/certs/ca.crt:ro
+    - ../../../ems-services/.local/certs/people-service.crt:/certs/people-service.crt:ro
+    - ../../../ems-services/.local/certs/people-service.key:/certs/people-service.key:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+    - 127.0.0.1:28082:8080
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://localhost:8080/actuator/health/readiness
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+  workforce-service:
+    image: ems/workforce-service:retail-demo
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: '8080'
+      JWT_SECRET: ${DEMO_JWT_SECRET:?Run scripts/demo/start.sh}
+      SECURE_COOKIE: 'false'
+      ALLOWED_ORIGINS: http://127.0.0.1:16173
+      TLS_CERT: file:/certs/workforce-service.crt
+      TLS_KEY: file:/certs/workforce-service.key
+      TLS_CA: file:/certs/ca.crt
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ems_workforce_db
+      SPRING_DATASOURCE_USERNAME: workforce_user
+      SPRING_DATASOURCE_PASSWORD: ${DEMO_DB_PASSWORD:?Run scripts/demo/start.sh}
+    volumes:
+    - ../../../ems-services/.local/certs/ca.crt:/certs/ca.crt:ro
+    - ../../../ems-services/.local/certs/workforce-service.crt:/certs/workforce-service.crt:ro
+    - ../../../ems-services/.local/certs/workforce-service.key:/certs/workforce-service.key:ro
+    ports:
+    - 127.0.0.1:28083:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      people-service:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://localhost:8080/actuator/health/readiness
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 30s
+  gateway-service:
+    image: ems/gateway-service:retail-demo
+    environment:
+      JWT_SECRET: ${DEMO_JWT_SECRET:?Run scripts/demo/start.sh}
+      SECURE_COOKIE: 'false'
+      ALLOWED_ORIGINS: http://127.0.0.1:16173
+      AUTH_URL: http://auth-service:8080
+      PEOPLE_URL: http://people-service:8080
+      WORKFORCE_URL: http://workforce-service:8080
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      people-service:
+        condition: service_healthy
+      workforce-service:
+        condition: service_healthy
+    ports:
+    - 127.0.0.1:28080:8080
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -fsS
+      - http://localhost:8080/actuator/health/readiness
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 20s
+volumes:
+  retail-demo-data: null

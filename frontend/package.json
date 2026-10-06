@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "dev:demo": "EMS_GATEWAY_URL=http://localhost:28080 VITE_DEMO_ORGANIZATION=true VITE_SCHEDULE_WAGES=true vite --host 127.0.0.1 --port 16173",
+    "demo:start": "bash scripts/demo/start.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -53,7 +53,12 @@ export default function MountainDateTimeField({
           disabled={disabled}
           error={error || invalid}
           onChange={(e) => change(e.target.value, time)}
-          slotProps={{ inputLabel: { shrink: true }, htmlInput: { "aria-describedby": helper || invalid ? helperId : undefined } }}
+          slotProps={{
+            inputLabel: { shrink: true },
+            htmlInput: {
+              "aria-describedby": helper || invalid ? helperId : undefined,
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -64,7 +69,13 @@ export default function MountainDateTimeField({
           disabled={disabled}
           error={error || invalid}
           onChange={(e) => change(date, e.target.value)}
-          slotProps={{ inputLabel: { shrink: true }, htmlInput: { step: 1, "aria-describedby": helper || invalid ? helperId : undefined } }}
+          slotProps={{
+            inputLabel: { shrink: true },
+            htmlInput: {
+              step: 1,
+              "aria-describedby": helper || invalid ? helperId : undefined,
+            },
+          }}
         />
       </Stack>
       {ambiguous && (

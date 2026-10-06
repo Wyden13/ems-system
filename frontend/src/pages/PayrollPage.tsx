@@ -1,3 +1,4 @@
+import { StatusGroups } from "../components/ui/StatusGroups";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -44,9 +45,9 @@ export default function PayrollPage() {
     refetchInterval: 30000,
   });
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <Typography variant="h2">Payroll estimates</Typography>
-      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+      <Paper sx={{ p: 2 }}>
         <Stack spacing={2}>
           <PeriodPicker start={period} onChange={setPeriod} />
           <Button
@@ -59,7 +60,7 @@ export default function PayrollPage() {
           <QueryState loading={query.isPending} error={query.error} retry={query.refetch} />
           {query.data && (
             <>
-              {query.data.estimates.length > 0 && <Paper variant="outlined" sx={{ p: 3, bgcolor: "primary.main", color: "primary.contrastText" }}>
+              {query.data.estimates.length > 0 && <Paper variant="outlined" sx={{ p: 2, bgcolor: "action.hover" }}>
                 <Typography variant="body2">{personal ? "My estimated gross pay" : "Total estimated gross pay in your view"}</Typography>
                 <Typography variant="h2" component="p" sx={{ mt: 1, mb: 2 }}>{money(query.data.estimates.reduce((sum, e) => sum + Number(e.grossPay), 0))}</Typography>
                 <Typography variant="body2">CAD · Approved worked time only. Taxes, deductions and paid leave are excluded.</Typography>
@@ -77,7 +78,7 @@ export default function PayrollPage() {
               )}
               {mobile ? <Stack spacing={2}>
                 {query.data.estimates.length === 0 && <Typography>No estimate is available for this period. Check another period or ask your administrator about your employee profile.</Typography>}
-                {query.data.estimates.map(e => <Paper key={e.employeeId} variant="outlined" sx={{ p: 2 }}><Stack spacing={1}>
+                <StatusGroups items={query.data.estimates} category={e => e.provisional ? "Provisional" : "Estimates"}>{e => <Paper key={e.employeeId} variant="outlined" sx={{ p: 2 }}><Stack spacing={1}>
                   <Typography variant="h3">{e.employeeName}</Typography><Typography variant="caption">Employee {e.employeeNumber}</Typography>
                   <Typography variant="h2" component="p">{money(e.grossPay)}</Typography><Chip sx={{ alignSelf: "flex-start" }} label={e.provisional ? "Provisional" : "Estimate"} />
                   <Box component="dl" sx={{ m: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, "& dd": { m: 0, textAlign: "right" } }}>
@@ -87,7 +88,7 @@ export default function PayrollPage() {
                     <Typography component="dt" variant="body2">Overtime</Typography><Typography component="dd" variant="body2">{duration(e.overtimeSeconds)}</Typography>
                   </Box>
                   {e.pendingEntries > 0 && <Typography variant="body2">{e.pendingEntries} open or pending entries in related workweeks.</Typography>}
-                </Stack></Paper>)}
+                </Stack></Paper>}</StatusGroups>
               </Stack> : <TableContainer tabIndex={0} role="region" aria-label="Pay estimates — scroll horizontally for more columns">
                 <Table aria-label="Payroll estimates">
                   <TableHead>
@@ -106,7 +107,7 @@ export default function PayrollPage() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {query.data.estimates.map((e) => (
+                    <StatusGroups items={query.data.estimates} category={e => e.provisional ? "Provisional" : "Estimates"} tableColumns={7}>{e => (
                       <TableRow key={e.employeeId}>
                         <TableCell>
                           {e.employeeName}
@@ -138,7 +139,7 @@ export default function PayrollPage() {
                           )}
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}</StatusGroups>
                     {query.data.estimates.length === 0 && (
                       <TableRow>
                         <TableCell colSpan={7}>
