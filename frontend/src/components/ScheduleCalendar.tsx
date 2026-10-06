@@ -17,6 +17,10 @@ import {
   Chip,
   Divider,
   Drawer,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  useMediaQuery,
   FormControlLabel,
   IconButton,
   MenuItem,
@@ -94,6 +98,7 @@ export default function ScheduleCalendar({
   wageEstimates,
   wageScope = "team",
   renderShift,
+  renderDetails,
   createShift,
   assignEmployee,
   shiftActions,
@@ -109,6 +114,7 @@ export default function ScheduleCalendar({
   navigationControls?: ReactNode;
   wageEstimates?: WageEstimate[];
   wageScope?: "team" | "self";
+  renderDetails: (shift: Shift) => ReactNode;
   renderShift: (shift: Shift, viewDetails?: () => void) => ReactNode;
   createShift: (day: string, employee?: WorkforcePerson) => void;
   assignEmployee: (shift: Shift, employee?: WorkforcePerson) => void;
@@ -124,6 +130,7 @@ export default function ScheduleCalendar({
   ) => void;
 }) {
   const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const contextMenu = useObjectContextMenu();
   const { objectActions, pasteAction, showDetails } = useObjectControls();
   const dragPreview = useRef<HTMLCanvasElement | undefined>(undefined);
@@ -1430,33 +1437,20 @@ export default function ScheduleCalendar({
       >
         {filters}
       </Drawer>
-      <Drawer
-        anchor="right"
+      <Dialog
         open={!!selected}
         onClose={() => setSelectedId(undefined)}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 3 }}
-        slotProps={{
-          paper: {
-            role: "dialog",
-            "aria-label": "Shift details",
-            sx: { width: { xs: "100%", sm: 440 }, p: 2.5 },
-          },
-        }}
+        fullWidth
+        maxWidth="lg"
+        fullScreen={smallScreen}
+        aria-labelledby="shift-details-title"
       >
-        <Stack
-          direction="row"
-          sx={{ alignItems: "center", justifyContent: "space-between", mb: 2 }}
-        >
-          <Typography variant="h3">Shift details</Typography>
-          <IconButton
-            aria-label="Close shift details"
-            onClick={() => setSelectedId(undefined)}
-          >
-            <CloseRounded />
-          </IconButton>
-        </Stack>
-        {selected && renderShift(selected)}
-      </Drawer>
+        <DialogTitle id="shift-details-heading-container" component="div" sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Typography id="shift-details-title" variant="h3">Shift details</Typography>
+          <IconButton aria-label="Close shift details" onClick={() => setSelectedId(undefined)}><CloseRounded /></IconButton>
+        </DialogTitle>
+        <DialogContent dividers>{selected && renderDetails(selected)}</DialogContent>
+      </Dialog>
     </Stack>
   );
 }

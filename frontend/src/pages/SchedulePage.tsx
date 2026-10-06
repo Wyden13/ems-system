@@ -38,6 +38,7 @@ import type {
 } from "../api/workflows";
 import FormDialog, { type Field } from "../components/management/FormDialog";
 import QueryState from "../components/management/QueryState";
+import ShiftDetails from "../components/ShiftDetails";
 import ScheduleCalendar from "../components/ScheduleCalendar";
 import ScheduleNavigation from "../components/ScheduleNavigation";
 import SchedulePreviewDialog from "../components/SchedulePreviewDialog";
@@ -779,6 +780,11 @@ export default function SchedulePage() {
           }
           initialShiftId={Number(searchParams.get("shift")) || undefined}
           renderShift={renderShift}
+          renderDetails={(s) => <ShiftDetails key={s.id} shift={s} options={options.data} planner={planner}
+            onEdit={() => shiftForm(s)}
+            onPublish={() => confirm("Publish shift", `/api/shifts/${s.id}/publish`, { version: s.version }, "POST", shiftContext(s))}
+            onCancel={() => confirm("Cancel shift", `/api/shifts/${s.id}/cancel`, { version: s.version }, "POST", shiftContext(s))}
+          />}
           createShift={(day, employee) => shiftForm(undefined, day, employee)}
           assignEmployee={assignForm}
           shiftActions={shiftActions}

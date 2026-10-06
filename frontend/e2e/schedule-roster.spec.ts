@@ -274,6 +274,14 @@ async function fixture(page: Page, role = "MANAGER", directory = people) {
         });
         shift.version++;
         data = shift;
+      } else if (/\/api\/shift-assignments\/\d+\/cancel/.test(path)) {
+        const assignmentId = Number(path.split("/")[3]);
+        const shift = rosterShifts.find(s => s.assignments.some(a => a.id === assignmentId))!;
+        const assignment = shift.assignments.find(a => a.id === assignmentId)!;
+        assignment.status = "CANCELLED";
+        assignment.version++;
+        shift.version++;
+        data = assignment;
       } else if (path === "/api/shift-categories") data = categories;
       await route.fulfill({
         status: 200,
@@ -790,15 +798,11 @@ test("supervisor can select employees on mobile and preview failures prevent ass
     .click();
   await page.getByRole("row", { name: "Open coverage", exact: true }).getByRole("button", { name: /shift 12/ }).click();
   const details = page.getByRole("dialog", { name: "Shift details" });
-  await details.getByRole("button", { name: "Assign employee", exact: true }).click();
-  const dialog = page.getByRole("dialog", { name: "Assign employee" });
-  await dialog.getByRole("combobox", { name: "Employee", exact: true }).click();
-  await page.getByRole("option", { name: /Taylor Reed/ }).click();
-  await expect(dialog).toContainText("Availability check failed");
-  await dialog
-    .getByRole("button", { name: "Assign employee", exact: true })
-    .click();
-  await expect(dialog).toContainText("Scheduling service unavailable");
+  const row = details.getByRole("row").filter({ hasText: "Taylor Reed" });
+  await expect(row).toContainText("Check failed");
+  await expect(row.getByRole("button", { name: "Assign", exact: true })).toBeDisabled();
+  await row.getByRole("button", { name: "Retry", exact: true }).click();
+  await expect(row).toContainText("Check failed");
   expect(requests.filter((r) => r.path.endsWith("/assign"))).toHaveLength(0);
   expect(
     await page.evaluate(
@@ -904,4 +908,52 @@ test("staffing summary follows filters and reviews shifts without writing data",
   await expect(summary).toBeVisible();
   expect(requests).toHaveLength(0);
   expect(errors).toEqual([]);
+});
+
+
+test("shift modal filters location staff, pins assignments, and assigns immediately", async ({ page }) => {
+  const { requests, errors } = await fixture(page);
+  await page.goto(`/schedule?from=${start}&shift=10`);
+  const details = page.getByRole("dialog", { name: "Shift details", exact: true });
+  await expect(details.getByRole("table", { name: "Shift staff" })).toBeVisible();
+  await expect(details).toContainText("2 of 3 assigned · 1 needed");
+  await expect(details.getByRole("row").filter({ hasText: "Jordan Lee" })).toHaveCount(0);
+  await details.getByRole("combobox", { name: "Staff location" }).click();
+  await page.getByRole("option", { name: "Calgary", exact: true }).click();
+  await expect(details.getByRole("row").filter({ hasText: "Alex Morgan" })).toBeVisible();
+  const jordan = details.getByRole("row").filter({ hasText: "Jordan Lee" });
+  await expect(jordan).toContainText("Different department");
+  await expect(jordan.getByRole("button", { name: "Assign", exact: true })).toBeDisabled();
+  await details.getByRole("combobox", { name: "Staff location" }).click();
+  await page.getByRole("option", { name: "Edmonton", exact: true }).click();
+  const sam = details.getByRole("row").filter({ hasText: "Sam Wilson" });
+  await expect(sam).toContainText("Available");
+  await sam.getByRole("button", { name: "Assign", exact: true }).click();
+  await expect(sam.getByRole("button", { name: "Remove", exact: true })).toBeVisible();
+  await expect(details).toContainText("3 of 3 assigned · 0 needed");
+  expect(requests.filter(r => r.path === "/api/shifts/10/assign")).toHaveLength(1);
+  await sam.getByRole("button", { name: "Remove", exact: true }).click();
+  await expect(details).toContainText("2 of 3 assigned · 1 needed");
+  await expect(sam).toContainText("Cancelled");
+  await page.screenshot({ path: test.info().outputPath("shift-details-modal.png"), animations: "disabled" });
+  expect(errors).toEqual([]);
+});
+
+test("staff warnings require explicit override and conflicts cannot be assigned", async ({ page }) => {
+  const { requests } = await fixture(page);
+  await page.route("**/api/shifts/assignment-preview", route => route.fulfill({ json: route.request().postDataJSON().employeeId === 4
+    ? { state: "WARNING", reasons: ["Outside preferred hours"] }
+    : { state: "BLOCKED", reasons: ["Overlapping shift"] } }));
+  await page.goto(`/schedule?from=${start}&shift=10`);
+  const details = page.getByRole("dialog", { name: "Shift details", exact: true });
+  const sam = details.getByRole("row").filter({ hasText: "Sam Wilson" });
+  const taylor = details.getByRole("row").filter({ hasText: "Taylor Reed" });
+  await expect(taylor).toContainText("Overlapping shift");
+  await expect(taylor.getByRole("button", { name: "Assign", exact: true })).toBeDisabled();
+  await sam.getByRole("button", { name: "Assign", exact: true }).click();
+  await expect(details).toContainText("Select “Assign anyway” to proceed.");
+  expect(requests.filter(r => r.path.endsWith("/assign"))).toHaveLength(0);
+  await sam.getByRole("button", { name: "Assign anyway", exact: true }).click();
+  await expect(sam.getByRole("button", { name: "Remove", exact: true })).toBeVisible();
+  expect(requests.filter(r => r.path.endsWith("/assign"))).toHaveLength(1);
 });
